@@ -5,4 +5,9 @@
     <string name="business_logo">Business Logo</string>
     <string name="copyright">© Dash Coffee - Pilar, Las Piñas</string>
     <string name="all_rights_reserved">All rights reserved</string>
+    <string name="search">Search</string>
+    <string name="hamburger_icon">Hamburger Icon</string>
+    <string name="shopping_cart">Shopping Cart</string>
+    <string name="food">Food</string>
+    <string name="drinks">Drinks</string>
 </resources>
