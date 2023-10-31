@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainOrderMenu">
 
-
     <ImageView
         android:id="@+id/imageView_ChatArea_Hamburger"
         android:layout_width="0dp"
@@ -20,8 +19,8 @@
         app:srcCompat="@drawable/hamburger" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="288dp"
+        android:id="@+id/search_bar"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:background="@drawable/round_edit_text"
         android:ems="10"
@@ -33,7 +32,11 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_top"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_max="70dp"
+        app:layout_constraintHeight_min="10dp"
+        app:layout_constraintWidth_max="488dp"
+        app:layout_constraintWidth_min="200dp"/>
 
     <ImageView
         android:id="@+id/imageView_tutorial_info"
@@ -69,6 +72,13 @@
         app:layout_constraintGuide_percent="0.50" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,17 +86,81 @@
         app:layout_constraintGuide_percent="0.10" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_top1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.17" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_coffee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_button"
+                android:text="@string/coffee"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/textView_milktea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_button"
+                android:text="@string/milktea"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/textView_frappe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_button"
+                android:text="@string/frappe"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/textView_dessert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_button"
+                android:text="@string/dessert"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/textView_croffles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_button"
+                android:text="@string/croffles"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="26sp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

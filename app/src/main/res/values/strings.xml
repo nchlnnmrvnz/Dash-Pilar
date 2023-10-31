@@ -10,4 +10,9 @@
     <string name="shopping_cart">Shopping Cart</string>
     <string name="food">Food</string>
     <string name="drinks">Drinks</string>
+    <string name="coffee">Coffee</string>
+    <string name="milktea">Milktea</string>
+    <string name="frappe">Frappe</string>
+    <string name="dessert">Dessert</string>
+    <string name="croffles">Croffles</string>
 </resources>
