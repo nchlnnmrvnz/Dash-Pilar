@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".MainOrderMenu">
 
-    <TextView
-        android:id="@+id/textView_coffee_dashLatte2"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/dropDownMenu"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/round_button"
         android:paddingHorizontal="8dp"
         android:text="@string/choose_category"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textColor="@color/white"
         android:textSize="26sp"
         app:drawableEndCompat="@drawable/drop_down"
@@ -33,7 +33,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/hamburger" />
-
 
     <ImageView
         android:id="@+id/imageView_cart"
@@ -208,6 +207,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
