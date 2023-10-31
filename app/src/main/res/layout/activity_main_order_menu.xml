@@ -6,9 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainOrderMenu">
 
+    <TextView
+        android:id="@+id/textView_coffee_dashLatte2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button"
+        android:paddingHorizontal="8dp"
+        android:text="@string/choose_category"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        app:drawableEndCompat="@drawable/drop_down"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/imageView_ChatArea_Hamburger"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:contentDescription="@string/hamburger_icon"
@@ -18,37 +34,136 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/hamburger" />
 
-    <EditText
-        android:id="@+id/search_bar"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="@drawable/round_edit_text"
-        android:ems="10"
-        android:hint="@string/search"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:padding="8dp"
-        android:textColorHint="@color/green"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHeight_max="70dp"
-        app:layout_constraintHeight_min="10dp"
-        app:layout_constraintWidth_max="488dp"
-        app:layout_constraintWidth_min="200dp"/>
 
     <ImageView
-        android:id="@+id/imageView_tutorial_info"
-        android:layout_width="0dp"
+        android:id="@+id/imageView_cart"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginVertical="8dp"
         android:contentDescription="@string/shopping_cart"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_right"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cart" />
+
+    <ScrollView
+        android:id="@+id/right_menu"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView_coffee_dashLatte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:text="@string/dash_latte"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                app:drawableEndCompat="@drawable/add_item"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_coffee_dashLattePrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:text="@string/from_39_00"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/textView_coffee_dashLatte"
+                app:layout_constraintStart_toStartOf="@+id/textView_coffee_dashLatte"
+                app:layout_constraintTop_toBottomOf="@+id/textView_coffee_dashLatte" />
+
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="@color/green"
+                app:layout_constraintEnd_toEndOf="@id/textView_coffee_dashLattePrice"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@id/textView_coffee_dashLattePrice"
+                app:layout_constraintTop_toBottomOf="@+id/textView_coffee_dashLattePrice" />
+
+            <TextView
+                android:id="@+id/textView_coffee_cloudLatte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:text="@string/cloud_latte"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                app:drawableEndCompat="@drawable/add_item"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+            <TextView
+                android:id="@+id/textView_coffee_cloudLattePrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:text="@string/from_39_00"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_coffee_cloudLatte" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="@color/green"
+                app:layout_constraintEnd_toEndOf="@id/textView_coffee_cloudLattePrice"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@id/textView_coffee_cloudLattePrice"
+                app:layout_constraintTop_toBottomOf="@+id/textView_coffee_cloudLattePrice" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/text_copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/copyright"
+        android:textColor="@color/green"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/text_rights_reserved"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/right_menu"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <TextView
+        android:id="@+id/text_rights_reserved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_rights_reserved"
+        android:textColor="@color/green"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/text_copyright"
+        app:layout_constraintStart_toStartOf="@+id/text_copyright"
+        app:layout_constraintTop_toBottomOf="@id/text_copyright" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -64,19 +179,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.30" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top"
@@ -92,75 +194,20 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top">
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
 
-            <TextView
-                android:id="@+id/textView_coffee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/round_button"
-                android:text="@string/coffee"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
 
-            <TextView
-                android:id="@+id/textView_milktea"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/round_button"
-                android:text="@string/milktea"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
-
-            <TextView
-                android:id="@+id/textView_frappe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/round_button"
-                android:text="@string/frappe"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
-
-            <TextView
-                android:id="@+id/textView_dessert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/round_button"
-                android:text="@string/dessert"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
-
-            <TextView
-                android:id="@+id/textView_croffles"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/round_button"
-                android:text="@string/croffles"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
-
-        </LinearLayout>
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

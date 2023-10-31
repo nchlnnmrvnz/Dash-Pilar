@@ -15,4 +15,13 @@
     <string name="frappe">Frappe</string>
     <string name="dessert">Dessert</string>
     <string name="croffles">Croffles</string>
+    <string name="dash_latte">Dash Latte</string>
+    <string name="cloud_latte">Cloud Latte</string>
+    <string name="cloud_seasalt">Cloud Seasalt</string>
+    <string name="spanish_latte">Spanish Latte</string>
+    <string name="macchiato_coffee">Macchiato Coffee</string>
+    <string name="sweet_americano">Sweet Americano</string>
+    <string name="dark_mocha">Dark Mocha</string>
+    <string name="choose_category">Choose Category</string>
+    <string name="from_39_00">from ₱39.00</string>
 </resources>
