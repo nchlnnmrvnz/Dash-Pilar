@@ -24,4 +24,5 @@
     <string name="dark_mocha">Dark Mocha</string>
     <string name="choose_category">Choose Category</string>
     <string name="from_39_00">from ₱39.00</string>
+    <string name="menu_options_available_per_category">Menu Options Available per Category</string>
 </resources>

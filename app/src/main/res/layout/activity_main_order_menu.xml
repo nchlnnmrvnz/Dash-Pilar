@@ -20,10 +20,11 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_top"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="320dp" />
 
     <ImageView
-        android:id="@+id/imageView_ChatArea_Hamburger"
+        android:id="@+id/imageView_hamburger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -47,9 +48,10 @@
         app:srcCompat="@drawable/cart" />
 
     <ScrollView
-        android:id="@+id/right_menu"
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@string/menu_options_available_per_category"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
@@ -64,7 +66,6 @@
 
     </ScrollView>
 
-
     <TextView
         android:id="@+id/text_copyright"
         android:layout_width="wrap_content"
@@ -76,9 +77,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/right_menu"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView"
         app:layout_constraintVertical_bias="0.0" />
-
 
     <TextView
         android:id="@+id/text_rights_reserved"
@@ -119,20 +119,5 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
