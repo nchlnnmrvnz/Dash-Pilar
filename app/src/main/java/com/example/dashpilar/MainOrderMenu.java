@@ -86,6 +86,9 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
 
             // Add the verticalLayout to the itemLayout
             itemLayout.addView(verticalLayout);
+
+            // Start the activity_add_item when the itemTextView is clicked
+            itemTextView.setOnClickListener(view -> startActivity(new Intent(this, AddItem.class)));
         }
     }
 
