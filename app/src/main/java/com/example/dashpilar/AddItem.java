@@ -50,9 +50,9 @@ public class AddItem extends AppCompatActivity {
 
         if (Constants.allItemsCollection.containsKey(selectedItemName)) {
             float selectedPrice = Constants.allItemsCollection.get(selectedItemName);
-            itemPrice.setText("₱" + selectedPrice);
+            itemPrice.setText(getString(R.string.item_price_format, selectedPrice));
         } else
-            itemPrice.setText("Item price not found");
+            itemPrice.setText(getString(R.string.item_price_not_found));
         linearLayout.addView(itemPrice);
 
         // Create and add a divider View with top and bottom margins of 16dp
@@ -67,7 +67,7 @@ public class AddItem extends AppCompatActivity {
         linearLayout.addView(dividerView);
 
         TextView addOnsText = new TextView(this);
-        addOnsText.setText("Add ons");
+        addOnsText.setText(getString(R.string.add_ons));
         addOnsText.setTextSize(20);
         addOnsText.setTextColor(getResources().getColor(R.color.black));
         linearLayout.addView(addOnsText);
@@ -76,7 +76,7 @@ public class AddItem extends AppCompatActivity {
         for (Map.Entry<String, Float> entry : Constants.addOnsCollection.entrySet()) {
             String addOnName = entry.getKey();
             float addOnPrice = entry.getValue();
-            addCheckBox(linearLayout, addOnName, "+ ₱" + addOnPrice);
+            addCheckBox(linearLayout, addOnName, getString(R.string.addon_price_format, addOnPrice));
         }
 
         // Handle the back button press when imageView_back is clicked
