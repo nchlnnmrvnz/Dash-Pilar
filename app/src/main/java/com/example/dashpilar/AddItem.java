@@ -1,14 +1,16 @@
 package com.example.dashpilar;
 
 import android.os.Bundle;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.view.View;
-import android.widget.CheckBox;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Map;
 
 public class AddItem extends AppCompatActivity {
 
@@ -24,13 +26,13 @@ public class AddItem extends AppCompatActivity {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        // Create a horizontal LinearLayout for the item name and price
-        LinearLayout itemLayout = new LinearLayout(this);
-        itemLayout.setOrientation(LinearLayout.HORIZONTAL);
+        // Retrieve the selected item name from the Intent's extras
+        String selectedItemName = getIntent().getStringExtra("selectedItemName");
+        Log.d("SelectedItemName", selectedItemName);
 
-        // Create and add a TextView for item name
+        // Create and add a TextView for item name dynamically based on the selected item
         TextView itemName = new TextView(this);
-        itemName.setText("Tokyo");
+        itemName.setText(selectedItemName); // Set the selected item name
         itemName.setTextSize(30);
         itemName.setTextColor(getResources().getColor(R.color.green));
         itemName.setLayoutParams(new LinearLayout.LayoutParams(
@@ -38,26 +40,20 @@ public class AddItem extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f
         ));
-        itemLayout.addView(itemName);
+        linearLayout.addView(itemName);
 
-        // Create and add a TextView for item price
+        // Create and add a TextView for item price based on the selected item
         TextView itemPrice = new TextView(this);
-        itemPrice.setText("from PHP 39.00");
         itemPrice.setTextSize(15);
         itemPrice.setTextColor(getResources().getColor(R.color.black));
-        itemPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-        itemLayout.addView(itemPrice);
+        itemPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 
-        // Add the itemLayout to the main content layout
-        linearLayout.addView(itemLayout);
-
-        // Create and add a TextView for item description
-        TextView itemDescription = new TextView(this);
-        itemDescription.setText("Roasted brown sugar milktea flavor. It comes with pearls.");
-        itemDescription.setTextSize(15);
-        itemDescription.setTextColor(getResources().getColor(R.color.black));
-        itemLayout.setPadding(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.divider_height));
-        linearLayout.addView(itemDescription);
+        if (Constants.allItemsCollection.containsKey(selectedItemName)) {
+            float selectedPrice = Constants.allItemsCollection.get(selectedItemName);
+            itemPrice.setText("₱" + selectedPrice);
+        } else
+            itemPrice.setText("Item price not found");
+        linearLayout.addView(itemPrice);
 
         // Create and add a divider View with top and bottom margins of 16dp
         View dividerView = new View(this);
@@ -73,14 +69,15 @@ public class AddItem extends AppCompatActivity {
         TextView addOnsText = new TextView(this);
         addOnsText.setText("Add ons");
         addOnsText.setTextSize(20);
-        addOnsText.setTextColor(getResources().getColor(R.color.green));
+        addOnsText.setTextColor(getResources().getColor(R.color.black));
         linearLayout.addView(addOnsText);
 
-        // Create and add checkboxes with their text and prices
-        addCheckBox(linearLayout, "Pearls", "+ PHP 9.00");
-        addCheckBox(linearLayout, "Salty Cream", "+ PHP 9.00");
-        addCheckBox(linearLayout, "Crushed Oreo", "+ PHP 9.00");
-        addCheckBox(linearLayout, "Coffee Shot", "+ PHP 9.00");
+        // Create and add checkboxes with their text and prices from the addOnsCollection
+        for (Map.Entry<String, Float> entry : Constants.addOnsCollection.entrySet()) {
+            String addOnName = entry.getKey();
+            float addOnPrice = entry.getValue();
+            addCheckBox(linearLayout, addOnName, "+ ₱" + addOnPrice);
+        }
 
         // Handle the back button press when imageView_back is clicked
         ImageView imageViewBack = findViewById(R.id.imageView_back);

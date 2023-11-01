@@ -64,7 +64,7 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
 
             // Create the price TextView with the fetched price
             TextView priceTextView = new TextView(this);
-            priceTextView.setText(getString(R.string.price_format, price));
+            priceTextView.setText(getString(R.string.item_price_format, price));
             priceTextView.setTextSize(15);
             priceTextView.setTextColor(getResources().getColor(R.color.black));
             priceTextView.setPadding(24, 0, 24, 0);
@@ -88,7 +88,12 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
             itemLayout.addView(verticalLayout);
 
             // Start the activity_add_item when the itemTextView is clicked
-            itemTextView.setOnClickListener(view -> startActivity(new Intent(this, AddItem.class)));
+            itemTextView.setOnClickListener(view -> {
+                Intent addItemIntent = new Intent(this, AddItem.class);
+                addItemIntent.putExtra("selectedItemName", item);
+                addItemIntent.putExtra("selectedItemPrice", price);
+                startActivity(addItemIntent);
+            });
         }
     }
 
@@ -122,7 +127,8 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-        showScrollViewForCategory(menuItem.getTitle().toString());
+        String category = menuItem.getTitle().toString();
+        showScrollViewForCategory(category);
         return true;
     }
 }

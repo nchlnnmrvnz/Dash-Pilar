@@ -9,7 +9,8 @@
     <string name="hamburger_icon">Hamburger Icon</string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="choose_category">Choose Category</string>
-    <string name="price_format">from ₱%.2f</string>
+    <string name="item_price_format">from ₱%.2f</string>
+    <string name="addon_price_format">+ ₱%.2f</string>
     <string name="menu_options_available_per_category">Menu Options Available per Category</string>
     <string name="order_summary">Order Summary</string>
     <string name="ordered_items">Ordered Items</string>

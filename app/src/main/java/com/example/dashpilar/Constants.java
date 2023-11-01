@@ -1,7 +1,6 @@
 package com.example.dashpilar;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class Constants {
     public static LinkedHashMap<String, Float> coffeeCollection = new LinkedHashMap<>();
@@ -10,6 +9,7 @@ public class Constants {
     public static LinkedHashMap<String, Float> frappeCollection = new LinkedHashMap<>();
     public static LinkedHashMap<String, Float> hotDrinksCollection = new LinkedHashMap<>();
     public static LinkedHashMap<String, Float> allItemsCollection = new LinkedHashMap<>();
+    public static LinkedHashMap<String, Float> addOnsCollection = new LinkedHashMap<>();
 
     static {
         coffeeCollection.put("Dash Latte Coffee", 39.00f);
@@ -42,7 +42,6 @@ public class Constants {
         frappeCollection.put("Oreo Cream Frappe", 59.00f);
         frappeCollection.put("Nutty Choco Frappe", 59.00f);
 
-
         hotDrinksCollection.put("Hot Dash Latte", 49.00f);
         hotDrinksCollection.put("Hot Spanish Latte", 49.00f);
         hotDrinksCollection.put("Hot Caramel Macchiato", 49.00f);
@@ -50,6 +49,10 @@ public class Constants {
         hotDrinksCollection.put("Hot Dark Chocolate", 49.00f);
         hotDrinksCollection.put("Hot Hazelnut", 49.00f);
 
+        addOnsCollection.put("Pearls", 9.00f);
+        addOnsCollection.put("Salty Cream", 9.00f);
+        addOnsCollection.put("Crushed Oreo", 9.00f);
+        addOnsCollection.put("Coffee Shot", 9.00f);
 
         allItemsCollection.putAll(coffeeCollection);
         allItemsCollection.putAll(milkteaCollection);
