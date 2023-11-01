@@ -8,21 +8,7 @@
     <string name="search">Search</string>
     <string name="hamburger_icon">Hamburger Icon</string>
     <string name="shopping_cart">Shopping Cart</string>
-    <string name="food">Food</string>
-    <string name="drinks">Drinks</string>
-    <string name="coffee">Coffee</string>
-    <string name="milktea">Milktea</string>
-    <string name="frappe">Frappe</string>
-    <string name="dessert">Dessert</string>
-    <string name="croffles">Croffles</string>
-    <string name="dash_latte">Dash Latte</string>
-    <string name="cloud_latte">Cloud Latte</string>
-    <string name="cloud_seasalt">Cloud Seasalt</string>
-    <string name="spanish_latte">Spanish Latte</string>
-    <string name="macchiato_coffee">Macchiato Coffee</string>
-    <string name="sweet_americano">Sweet Americano</string>
-    <string name="dark_mocha">Dark Mocha</string>
     <string name="choose_category">Choose Category</string>
-    <string name="from_39_00">from ₱39.00</string>
+    <string name="price_format">from ₱%.2f</string>
     <string name="menu_options_available_per_category">Menu Options Available per Category</string>
 </resources>

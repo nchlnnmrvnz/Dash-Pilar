@@ -1,13 +1,19 @@
 package com.example.dashpilar;
 
+import android.graphics.drawable.Drawable;
+import androidx.core.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.LinkedHashMap;
 
 public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -19,93 +25,92 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
         setContentView(R.layout.activity_main_order_menu);
 
         dropDownMenu = findViewById(R.id.dropDownMenu);
-        findViewById(R.id.right_menu);
 
         dropDownMenu.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(MainOrderMenu.this, v);
-            popup.setOnMenuItemClickListener(MainOrderMenu.this);
+            popup.setOnMenuItemClickListener(this);
             popup.getMenu().add("All");
-            popup.getMenu().add("Coffee");
-            popup.getMenu().add("Milktea");
-            popup.getMenu().add("Dessert");
-            popup.getMenu().add("Frappe");
+            popup.getMenu().add("Specialty Coffee");
+            popup.getMenu().add("Milktea with Pearls");
+            popup.getMenu().add("Dessert with Salty Cream");
+            popup.getMenu().add("Blended Frappe");
             popup.getMenu().add("Hot Drinks");
-            popup.getMenu().add("Croffles");
             popup.show();
         });
     }
 
-    private void createScrollViewForCategory(String[] items) {
+    private void createScrollViewForCategory(String[] items, LinkedHashMap<String, Float> prices) {
         LinearLayout itemLayout = findViewById(R.id.itemLayout);
-
-        // Clear the itemLayout to remove previous items
         itemLayout.removeAllViews();
 
         for (String item : items) {
+            // Create the main item TextView
             TextView itemTextView = new TextView(this);
             itemTextView.setText(item);
-            itemTextView.setTextSize(16);
-            itemTextView.setPadding(16, 8, 16, 8);
-            // Customize the TextView as needed
-            itemLayout.addView(itemTextView);
+            itemTextView.setTextSize(20);
+            itemTextView.setTextColor(getResources().getColor(R.color.black));
+            itemTextView.setPadding(8, 0, 8, 0);
+
+            // Add a drawable to the TextView
+            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.add_item, null);
+            itemTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+
+            // Get the price for the current item
+            Float price = prices.get(item);
+
+            // Create the price TextView with the fetched price
+            TextView priceTextView = new TextView(this);
+            priceTextView.setText(getString(R.string.price_format, price));
+            priceTextView.setTextSize(15);
+            priceTextView.setTextColor(getResources().getColor(R.color.black));
+            priceTextView.setPadding(24, 0, 24, 0);
+
+            // Create the divider View with a fixed height in pixels
+            View dividerView = new View(this);
+            dividerView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    getResources().getDimensionPixelSize(R.dimen.divider_height)
+            ));
+            dividerView.setBackgroundColor(getResources().getColor(R.color.green));
+
+            // Add the main item TextView, price TextView, and the divider View to a new LinearLayout (vertical arrangement)
+            LinearLayout verticalLayout = new LinearLayout(this);
+            verticalLayout.setOrientation(LinearLayout.VERTICAL);
+            verticalLayout.addView(itemTextView);
+            verticalLayout.addView(priceTextView);
+            verticalLayout.addView(dividerView);
+
+            // Add the verticalLayout to the itemLayout
+            itemLayout.addView(verticalLayout);
         }
     }
 
     private void showScrollViewForCategory(String category) {
-        // Define your items for different categories
-        String[] coffeeItems = {"Dash Latte", "Cloud Latte", "Cloud Seasalt", "Spanish Latte", "Macchiato Coffee", "Sweet Americano", "Dark Mocha"};
-        String[] milkteaItems = {"Tokyo", "Sapporo", "Hokkaido", "Okinawa", "Nagoya", "Kyoto", "Osaka"};
-        String[] dessertItems = {"Forrest Cake", "Matcha Cream", "Choco Nutty", "Mango Dream", "Dark Chocolate", "Velvet Cake"};
-        String[] frappeItems = {"Dark Forrest", "Taro Cream", "Red Chocolate", "Vanilla Bean", "Oreo Cream", "Nutty Choco"};
-        String[] hotDrinkItems = {"Dash Latte", "Spanish Latte", "Caramel Macchiato", "Matcha Latte", "Dark Chocolate", "Hazelnut"};
-        String[] croffleItems = {"Sugar", "Chocolate", "Biscoff"};
-        String[] allItems = mergeArrays(coffeeItems, milkteaItems, dessertItems, frappeItems, hotDrinkItems, croffleItems);
-
-        // Decide which items to show based on the category
-        String[] itemsToDisplay;
+        LinkedHashMap<String, Float> itemsToDisplay;
 
         switch (category) {
-            case "Coffee":
-                itemsToDisplay = coffeeItems;
+            case "Specialty Coffee":
+                itemsToDisplay = Constants.coffeeCollection;
                 break;
-            case "Milktea":
-                itemsToDisplay = milkteaItems;
+            case "Milktea with Pearls":
+                itemsToDisplay = Constants.milkteaCollection;
                 break;
-            case "Dessert":
-                itemsToDisplay = dessertItems;
+            case "Dessert with Salty Cream":
+                itemsToDisplay = Constants.dessertCollection;
                 break;
-            case "Frappe":
-                itemsToDisplay = frappeItems;
+            case "Blended Frappe":
+                itemsToDisplay = Constants.frappeCollection;
                 break;
             case "Hot Drinks":
-                itemsToDisplay = hotDrinkItems;
-                break;
-            case "Croffles":
-                itemsToDisplay = croffleItems;
+                itemsToDisplay = Constants.hotDrinksCollection;
                 break;
             default:
-                itemsToDisplay = allItems;
+                itemsToDisplay = Constants.allItemsCollection;
                 break;
         }
 
-        createScrollViewForCategory(itemsToDisplay);
+        createScrollViewForCategory(itemsToDisplay.keySet().toArray(new String[0]), itemsToDisplay);
         dropDownMenu.setText(category);
-    }
-
-    private String[] mergeArrays(String[]... arrays) {
-        int totalLength = 0;
-        for (String[] array : arrays) {
-            totalLength += array.length;
-        }
-
-        String[] merged = new String[totalLength];
-        int destPos = 0;
-        for (String[] array : arrays) {
-            System.arraycopy(array, 0, merged, destPos, array.length);
-            destPos += array.length;
-        }
-
-        return merged;
     }
 
     @Override
