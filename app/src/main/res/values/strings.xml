@@ -11,4 +11,8 @@
     <string name="choose_category">Choose Category</string>
     <string name="price_format">from ₱%.2f</string>
     <string name="menu_options_available_per_category">Menu Options Available per Category</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="ordered_items">Ordered Items</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="total">Total:</string>
 </resources>

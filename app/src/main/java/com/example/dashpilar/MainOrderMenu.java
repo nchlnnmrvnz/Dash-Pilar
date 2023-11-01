@@ -1,5 +1,6 @@
 package com.example.dashpilar;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import androidx.core.content.res.ResourcesCompat;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -25,7 +27,6 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
         setContentView(R.layout.activity_main_order_menu);
 
         dropDownMenu = findViewById(R.id.dropDownMenu);
-
         dropDownMenu.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(MainOrderMenu.this, v);
             popup.setOnMenuItemClickListener(this);
@@ -37,6 +38,9 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
             popup.getMenu().add("Hot Drinks");
             popup.show();
         });
+
+        ImageView cart = findViewById(R.id.imageView_cart);
+        cart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
     }
 
     private void createScrollViewForCategory(String[] items, LinkedHashMap<String, Float> prices) {
