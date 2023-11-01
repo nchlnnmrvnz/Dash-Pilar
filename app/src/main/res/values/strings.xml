@@ -20,4 +20,5 @@
     <string name="add_quantity">Add quantity</string>
     <string name="subtract_quantity">Subtract quantity</string>
     <string name="add_order">ADD ORDER</string>
+    <string name="php_9_00">+ PHP 9.00</string>
 </resources>
