@@ -23,4 +23,5 @@
     <string name="subtract_quantity">Subtract quantity</string>
     <string name="add_order">ADD ORDER</string>
     <string name="item_price_not_found">Item price not found</string>
+    <string name="_0_00">₱0.00</string>
 </resources>
