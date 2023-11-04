@@ -12,6 +12,7 @@ import android.view.Gravity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class Cart extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class Cart extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         ImageView goBack = findViewById(R.id.imageView_back);
-        goBack.setOnClickListener(view -> onBackPressed());
+        goBack.setOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
 
         // Find the ScrollView in your XML layout
         ScrollView scrollView = findViewById(R.id.scrollView);
@@ -32,6 +33,8 @@ public class Cart extends AppCompatActivity {
         LinearLayout itemLayout = new LinearLayout(this);
         itemLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         itemLayout.setOrientation(LinearLayout.VERTICAL);
+
+        float totalPrice = 0;
 
         for (ItemOrder order : cartList) {
             // Create a LinearLayout for each item
@@ -50,8 +53,8 @@ public class Cart extends AppCompatActivity {
 
             // Create and add a TextView for the item quantity
             TextView quantityText = new TextView(this);
+            quantityText.setText(String.valueOf(order.getQuantity()));
             quantityText.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            quantityText.setText("1");
             quantityText.setTextColor(getResources().getColor(R.color.black));
             quantityText.setTextSize(20);
             itemRow.addView(quantityText);
@@ -80,32 +83,49 @@ public class Cart extends AppCompatActivity {
 
 
             // Create and add TextViews for item name and description
-                TextView itemName = new TextView(this);
-                itemName.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                itemName.setPadding(8,0,0,0);
-                itemName.setText("Dash Latte");
-                itemName.setTextColor(getResources().getColor(R.color.black));
-                itemName.setTextSize(20);
-                itemDetails.addView(itemName);
+            TextView itemName = new TextView(this);
+            itemName.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            itemName.setPadding(8,0,0,0);
+            itemName.setText(order.getName());
+            itemName.setTextColor(getResources().getColor(R.color.black));
+            itemName.setTextSize(20);
+            itemDetails.addView(itemName);
 
-                TextView itemAddOns = new TextView(this);
-                itemAddOns.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                itemAddOns.setText("coffee shot, salty cream");
-                itemAddOns.setPadding(8,0,0,0);
-                itemAddOns.setTextColor(getResources().getColor(R.color.black));
-                itemAddOns.setTextSize(15);
-                itemDetails.addView(itemAddOns);
+            TextView itemAddOns = new TextView(this);
+            itemAddOns.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+            StringBuilder addOns = new StringBuilder();
+            float addOnsPrice = 0;
+            for(Map.Entry<String, Float> addOn : order.getAddOns().entrySet()) {
+                addOns.append(addOn.getKey()).append(", ");
+                addOnsPrice += addOn.getValue();
+            }
+
+            if (addOns.length() >= 2)
+                addOns = new StringBuilder(addOns.substring(0, addOns.length() - 2));
+            else if(addOns.toString().equals(""))
+                addOns = new StringBuilder("No add ons");
+
+            itemAddOns.setText(addOns.toString());
+            itemAddOns.setPadding(8,0,0,0);
+            itemAddOns.setTextColor(getResources().getColor(R.color.black));
+            itemAddOns.setTextSize(15);
+            itemDetails.addView(itemAddOns);
 
             itemRow.addView(itemDetails);
 
+            // Computation
+            float itemPrice = (order.getPrice() + addOnsPrice) * order.getQuantity();
+            totalPrice += itemPrice;
+
             // Create and add a TextView for the item price
-            TextView itemPrice = new TextView(this);
-            itemPrice.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-            itemPrice.setText("₱39.00");
-            itemPrice.setTextSize(15);
-            itemPrice.setGravity(Gravity.CENTER);
-            itemPrice.setTextColor(getResources().getColor(R.color.black));
-            itemRow.addView(itemPrice);
+            TextView itemPriceTextView = new TextView(this);
+            itemPriceTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+            itemPriceTextView.setText(getString(R.string.regular_price_format, itemPrice));
+            itemPriceTextView.setTextSize(15);
+            itemPriceTextView.setGravity(Gravity.CENTER);
+            itemPriceTextView.setTextColor(getResources().getColor(R.color.black));
+            itemRow.addView(itemPriceTextView);
 
             // Add the itemRow to itemLayout
             itemLayout.addView(itemRow);
@@ -116,6 +136,9 @@ public class Cart extends AppCompatActivity {
             divider.setBackgroundColor(getResources().getColor(R.color.green));
             itemLayout.addView(divider);
         }
+
+        TextView totalTextView = findViewById(R.id.textView);
+        totalTextView.setText(getString(R.string.regular_price_format, totalPrice));
 
         // Add itemLayout to the ScrollView
         scrollView.addView(itemLayout);

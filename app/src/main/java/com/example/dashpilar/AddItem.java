@@ -30,9 +30,11 @@ public class AddItem extends AppCompatActivity {
         ScrollView scrollView = findViewById(R.id.scrollView);
 
         checkBoxes = new ArrayList<>();
+
         TextView quantity = findViewById(R.id.textView_quantity);
+        quantity.setTextColor(getResources().getColor(R.color.black));
         AtomicInteger quan = new AtomicInteger(1);
-        quantity.setText(String.valueOf(quan.get())); // Set initial value as a String
+        quantity.setText(String.valueOf(quan.get()));
 
         ImageView incrementQuantity = findViewById(R.id.imageView2);
         incrementQuantity.setOnClickListener(view -> quantity.setText(String.valueOf(quan.incrementAndGet())));
@@ -51,6 +53,7 @@ public class AddItem extends AppCompatActivity {
                     quan.get(), addOns);
             Cart.cartList.add(order);
             createToast("Successfully added order!");
+            getOnBackPressedDispatcher().onBackPressed();
         });
 
         ImageView decrementQuantity = findViewById(R.id.imageView);
@@ -113,7 +116,7 @@ public class AddItem extends AppCompatActivity {
 
         // Handle the back button press when imageView_back is clicked
         ImageView imageViewBack = findViewById(R.id.imageView_back);
-        imageViewBack.setOnClickListener(v -> onBackPressed());
+        imageViewBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         // Add the main content layout to the ScrollView
         scrollView.addView(linearLayout);
