@@ -1,63 +1,64 @@
 package com.example.dashpilar;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Constants {
-    public static LinkedHashMap<String, Float> coffeeCollection = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> milkteaCollection = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> dessertCollection = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> frappeCollection = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> hotDrinksCollection = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> allItemsCollection = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> addOnsCollection = new LinkedHashMap<>();
+    public static ArrayList<Item> coffeeCollection = new ArrayList<>();
+    public static ArrayList<Item> milkteaCollection = new ArrayList<>();
+    public static ArrayList<Item> dessertCollection = new ArrayList<>();
+    public static ArrayList<Item> frappeCollection = new ArrayList<>();
+    public static ArrayList<Item> hotDrinksCollection = new ArrayList<>();
+    public static ArrayList<Item> allItemsCollection = new ArrayList<>();
+    public static LinkedHashMap<String, Float> drinkAddOnsCollection = new LinkedHashMap<>();
 
     static {
-        coffeeCollection.put("Dash Latte Coffee", 39.00f);
-        coffeeCollection.put("Cloud Latte Coffee", 39.00f);
-        coffeeCollection.put("Cloud Seasalt Coffee", 39.00f);
-        coffeeCollection.put("Spanish Latte Coffee", 39.00f);
-        coffeeCollection.put("Macchiato Coffee", 39.00f);
-        coffeeCollection.put("Sweet Americano Coffee", 39.00f);
-        coffeeCollection.put("Dark Mocha Coffee", 39.00f);
+        drinkAddOnsCollection.put("Pearls", 9.00f);
+        drinkAddOnsCollection.put("Salty Cream", 9.00f);
+        drinkAddOnsCollection.put("Crushed Oreo", 9.00f);
+        drinkAddOnsCollection.put("Coffee Shot", 9.00f);
 
-        milkteaCollection.put("Tokyo Milktea", 39.00f);
-        milkteaCollection.put("Sapporo Milktea", 39.00f);
-        milkteaCollection.put("Hokkaido Milktea", 39.00f);
-        milkteaCollection.put("Okinawa Milktea", 39.00f);
-        milkteaCollection.put("Nagoya Milktea", 39.00f);
-        milkteaCollection.put("Kyoto Milktea", 39.00f);
-        milkteaCollection.put("Osaka Milktea", 39.00f);
+        coffeeCollection.add(new Item("Dash Latte Coffee", 39.00f, drinkAddOnsCollection));
+        coffeeCollection.add(new Item("Cloud Latte Coffee", 39.00f, drinkAddOnsCollection));
+        coffeeCollection.add(new Item("Cloud Seasalt Coffee", 39.00f, drinkAddOnsCollection));
+        coffeeCollection.add(new Item("Spanish Latte Coffee", 39.00f, drinkAddOnsCollection));
+        coffeeCollection.add(new Item("Macchiato Coffee", 39.00f, drinkAddOnsCollection));
+        coffeeCollection.add(new Item("Sweet Americano Coffee", 39.00f, drinkAddOnsCollection));
+        coffeeCollection.add(new Item("Dark Mocha Coffee", 39.00f, drinkAddOnsCollection));
 
-        dessertCollection.put("Forrest Cake Dessert", 49.00f);
-        dessertCollection.put("Matcha Cream Dessert", 49.00f);
-        dessertCollection.put("Choco Nutty Dessert", 49.00f);
-        dessertCollection.put("Mango Dream Dessert", 49.00f);
-        dessertCollection.put("Dark Chocolate Dessert", 49.00f);
-        dessertCollection.put("Velvet Cake Dessert", 49.00f);
+        milkteaCollection.add(new Item("Tokyo Milktea", 39.00f, drinkAddOnsCollection));
+        milkteaCollection.add(new Item("Sapporo Milktea", 39.00f, drinkAddOnsCollection));
+        milkteaCollection.add(new Item("Hokkaido Milktea", 39.00f, drinkAddOnsCollection));
+        milkteaCollection.add(new Item("Okinawa Milktea", 39.00f, drinkAddOnsCollection));
+        milkteaCollection.add(new Item("Nagoya Milktea", 39.00f, drinkAddOnsCollection));
+        milkteaCollection.add(new Item("Kyoto Milktea", 39.00f, drinkAddOnsCollection));
+        milkteaCollection.add(new Item("Osaka Milktea", 39.00f, drinkAddOnsCollection));
 
-        frappeCollection.put("Dark Forrest Frappe", 59.00f);
-        frappeCollection.put("Taro Cream Frappe", 59.00f);
-        frappeCollection.put("Red Chocolate Frappe", 59.00f);
-        frappeCollection.put("Vanilla Bean Frappe", 59.00f);
-        frappeCollection.put("Oreo Cream Frappe", 59.00f);
-        frappeCollection.put("Nutty Choco Frappe", 59.00f);
+        dessertCollection.add(new Item("Forrest Cake Dessert", 49.00f, drinkAddOnsCollection));
+        dessertCollection.add(new Item("Matcha Cream Dessert", 49.00f, drinkAddOnsCollection));
+        dessertCollection.add(new Item("Choco Nutty Dessert", 49.00f, drinkAddOnsCollection));
+        dessertCollection.add(new Item("Mango Dream Dessert", 49.00f, drinkAddOnsCollection));
+        dessertCollection.add(new Item("Dark Chocolate Dessert", 49.00f, drinkAddOnsCollection));
+        dessertCollection.add(new Item("Velvet Cake Dessert", 49.00f, drinkAddOnsCollection));
 
-        hotDrinksCollection.put("Hot Dash Latte", 49.00f);
-        hotDrinksCollection.put("Hot Spanish Latte", 49.00f);
-        hotDrinksCollection.put("Hot Caramel Macchiato", 49.00f);
-        hotDrinksCollection.put("Hot Matcha Latte", 49.00f);
-        hotDrinksCollection.put("Hot Dark Chocolate", 49.00f);
-        hotDrinksCollection.put("Hot Hazelnut", 49.00f);
+        frappeCollection.add(new Item("Dark Forrest Frappe", 59.00f, drinkAddOnsCollection));
+        frappeCollection.add(new Item("Taro Cream Frappe", 59.00f, drinkAddOnsCollection));
+        frappeCollection.add(new Item("Red Chocolate Frappe", 59.00f, drinkAddOnsCollection));
+        frappeCollection.add(new Item("Vanilla Bean Frappe", 59.00f, drinkAddOnsCollection));
+        frappeCollection.add(new Item("Oreo Cream Frappe", 59.00f, drinkAddOnsCollection));
+        frappeCollection.add(new Item("Nutty Choco Frappe", 59.00f, drinkAddOnsCollection));
 
-        addOnsCollection.put("Pearls", 9.00f);
-        addOnsCollection.put("Salty Cream", 9.00f);
-        addOnsCollection.put("Crushed Oreo", 9.00f);
-        addOnsCollection.put("Coffee Shot", 9.00f);
+        hotDrinksCollection.add(new Item("Hot Dash Latte", 49.00f, drinkAddOnsCollection));
+        hotDrinksCollection.add(new Item("Hot Spanish Latte", 49.00f, drinkAddOnsCollection));
+        hotDrinksCollection.add(new Item("Hot Caramel Macchiato", 49.00f, drinkAddOnsCollection));
+        hotDrinksCollection.add(new Item("Hot Matcha Latte", 49.00f, drinkAddOnsCollection));
+        hotDrinksCollection.add(new Item("Hot Dark Chocolate", 49.00f, drinkAddOnsCollection));
+        hotDrinksCollection.add(new Item("Hot Hazelnut", 49.00f, drinkAddOnsCollection));
 
-        allItemsCollection.putAll(coffeeCollection);
-        allItemsCollection.putAll(milkteaCollection);
-        allItemsCollection.putAll(dessertCollection);
-        allItemsCollection.putAll(frappeCollection);
-        allItemsCollection.putAll(hotDrinksCollection);
+        allItemsCollection.addAll(coffeeCollection);
+        allItemsCollection.addAll(milkteaCollection);
+        allItemsCollection.addAll(dessertCollection);
+        allItemsCollection.addAll(frappeCollection);
+        allItemsCollection.addAll(hotDrinksCollection);
     }
 }

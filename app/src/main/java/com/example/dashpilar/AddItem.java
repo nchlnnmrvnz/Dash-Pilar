@@ -1,19 +1,26 @@
 package com.example.dashpilar;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddItem extends AppCompatActivity {
-
+    static Item selectedItem;
+    static ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+    private Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,17 +29,45 @@ public class AddItem extends AppCompatActivity {
         // Find the ScrollView in your layout
         ScrollView scrollView = findViewById(R.id.scrollView);
 
+        checkBoxes = new ArrayList<>();
+        TextView quantity = findViewById(R.id.textView_quantity);
+        AtomicInteger quan = new AtomicInteger(1);
+        quantity.setText(String.valueOf(quan.get())); // Set initial value as a String
+
+        ImageView incrementQuantity = findViewById(R.id.imageView2);
+        incrementQuantity.setOnClickListener(view -> quantity.setText(String.valueOf(quan.incrementAndGet())));
+
+        Button addOrderButton = findViewById(R.id.btn_addOrder);
+        addOrderButton.setOnClickListener(view -> {
+            LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
+            for(CheckBox checkBox : checkBoxes) {
+                if(checkBox.isChecked()) {
+                    String addOnName = checkBox.getText().toString();
+                    float price = selectedItem.getAddOns().get(addOnName);
+                    addOns.put(addOnName, price);
+                }
+            }
+            ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
+                    quan.get(), addOns);
+            Cart.cartList.add(order);
+            createToast("Successfully added order!");
+        });
+
+        ImageView decrementQuantity = findViewById(R.id.imageView);
+        decrementQuantity.setOnClickListener(view -> {
+            if(quan.get() > 1)
+                quantity.setText(String.valueOf(quan.decrementAndGet()));
+            else
+                createToast("Quantity cannot be less than 1");
+        });
+
         // Create a LinearLayout to hold the content vertically
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        // Retrieve the selected item name from the Intent's extras
-        String selectedItemName = getIntent().getStringExtra("selectedItemName");
-        Log.d("SelectedItemName", selectedItemName);
-
         // Create and add a TextView for item name dynamically based on the selected item
         TextView itemName = new TextView(this);
-        itemName.setText(selectedItemName); // Set the selected item name
+        itemName.setText(selectedItem.getName()); // Set the selected item name
         itemName.setTextSize(30);
         itemName.setTextColor(getResources().getColor(R.color.green));
         itemName.setLayoutParams(new LinearLayout.LayoutParams(
@@ -48,11 +83,8 @@ public class AddItem extends AppCompatActivity {
         itemPrice.setTextColor(getResources().getColor(R.color.black));
         itemPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 
-        if (Constants.allItemsCollection.containsKey(selectedItemName)) {
-            float selectedPrice = Constants.allItemsCollection.get(selectedItemName);
-            itemPrice.setText(getString(R.string.item_price_format, selectedPrice));
-        } else
-            itemPrice.setText(getString(R.string.item_price_not_found));
+        float selectedPrice = selectedItem.getPrice();
+        itemPrice.setText(getString(R.string.item_price_format, selectedPrice));
         linearLayout.addView(itemPrice);
 
         // Create and add a divider View with top and bottom margins of 16dp
@@ -73,7 +105,7 @@ public class AddItem extends AppCompatActivity {
         linearLayout.addView(addOnsText);
 
         // Create and add checkboxes with their text and prices from the addOnsCollection
-        for (Map.Entry<String, Float> entry : Constants.addOnsCollection.entrySet()) {
+        for (Map.Entry<String, Float> entry : selectedItem.getAddOns().entrySet()) {
             String addOnName = entry.getKey();
             float addOnPrice = entry.getValue();
             addCheckBox(linearLayout, addOnName, getString(R.string.addon_price_format, addOnPrice));
@@ -100,6 +132,7 @@ public class AddItem extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f
         ));
+        checkBoxes.add(checkBox);
         checkBoxLayout.addView(checkBox);
 
         TextView priceTextView = new TextView(this);
@@ -110,5 +143,14 @@ public class AddItem extends AppCompatActivity {
         checkBoxLayout.addView(priceTextView);
 
         layout.addView(checkBoxLayout);
+    }
+
+    void createToast(String message) {
+        if (toast != null) {
+            toast.cancel(); // Cancel the previous toast if it exists
+        }
+
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT); // Create a new Toast
+        toast.show(); // Show the new Toast
     }
 }

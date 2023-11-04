@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
@@ -43,14 +44,14 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
         cart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
     }
 
-    private void createScrollViewForCategory(String[] items, LinkedHashMap<String, Float> prices) {
+    private void createScrollViewForCategory(ArrayList<Item> items) {
         LinearLayout itemLayout = findViewById(R.id.itemLayout);
         itemLayout.removeAllViews();
 
-        for (String item : items) {
+        for (Item item : items) {
             // Create the main item TextView
             TextView itemTextView = new TextView(this);
-            itemTextView.setText(item);
+            itemTextView.setText(item.getName());
             itemTextView.setTextSize(20);
             itemTextView.setTextColor(getResources().getColor(R.color.black));
             itemTextView.setPadding(8, 0, 8, 0);
@@ -60,7 +61,7 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
             itemTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
 
             // Get the price for the current item
-            Float price = prices.get(item);
+            Float price = item.getPrice();
 
             // Create the price TextView with the fetched price
             TextView priceTextView = new TextView(this);
@@ -89,16 +90,15 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
 
             // Start the activity_add_item when the itemTextView is clicked
             itemTextView.setOnClickListener(view -> {
+                AddItem.selectedItem = item;
                 Intent addItemIntent = new Intent(this, AddItem.class);
-                addItemIntent.putExtra("selectedItemName", item);
-                addItemIntent.putExtra("selectedItemPrice", price);
                 startActivity(addItemIntent);
             });
         }
     }
 
     private void showScrollViewForCategory(String category) {
-        LinkedHashMap<String, Float> itemsToDisplay;
+        ArrayList<Item> itemsToDisplay;
 
         switch (category) {
             case "Specialty Coffee":
@@ -121,7 +121,7 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
                 break;
         }
 
-        createScrollViewForCategory(itemsToDisplay.keySet().toArray(new String[0]), itemsToDisplay);
+        createScrollViewForCategory(itemsToDisplay);
         dropDownMenu.setText(category);
     }
 
