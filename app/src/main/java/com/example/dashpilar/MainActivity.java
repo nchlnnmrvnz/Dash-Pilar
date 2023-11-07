@@ -7,18 +7,15 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnDineIn, btnTakeOut;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnDineIn = findViewById(R.id.btnDineIn);
-        btnTakeOut = findViewById(R.id.btnTakeOut);
+        button = findViewById(R.id.button);
 
-        btnDineIn.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MainOrderMenu.class)));
-
-        btnTakeOut.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MainOrderMenu.class)));
+        button.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MainOrderMenu.class)));
     }
 }

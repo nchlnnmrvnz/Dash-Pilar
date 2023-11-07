@@ -25,4 +25,8 @@
     <string name="add_order">ADD ORDER</string>
     <string name="item_price_not_found">Item price not found</string>
     <string name="_0_00">₱0.00</string>
+    <string name="welcome_kabarkadash">Welcome, Kabarkadash!</string>
+    <string name="order_now">Order now</string>
+    <string name="enjoy">Enjoy a cup of coffee</string>
+    <string name="background_picture">background picture</string>
 </resources>
