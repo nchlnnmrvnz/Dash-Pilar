@@ -3,10 +3,7 @@
     <string name="dine_in">Dine In</string>
     <string name="take_out">Take Out</string>
     <string name="business_logo">Business Logo</string>
-    <string name="copyright">© Dash Coffee - Pilar, Las Piñas</string>
-    <string name="all_rights_reserved">All rights reserved</string>
     <string name="search">Search</string>
-    <string name="hamburger_icon">Hamburger Icon</string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="choose_category">Choose Category</string>
     <string name="item_price_format">from ₱%.2f</string>
@@ -29,4 +26,5 @@
     <string name="order_now">Order now</string>
     <string name="enjoy">Enjoy a cup of coffee</string>
     <string name="background_picture">background picture</string>
+    <string name="back">Back</string>
 </resources>

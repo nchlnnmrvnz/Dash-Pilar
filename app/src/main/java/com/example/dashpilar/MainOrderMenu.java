@@ -40,7 +40,7 @@ public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenu
             popup.show();
         });
 
-        ImageView cart = findViewById(R.id.imageView_cart);
+        ImageView cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
     }
 
