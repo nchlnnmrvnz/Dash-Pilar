@@ -1,134 +1,163 @@
 package com.example.dashpilar;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import androidx.core.content.res.ResourcesCompat;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
-public class MainOrderMenu extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
-
-    private Button dropDownMenu;
+public class MainOrderMenu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_order_menu);
 
-        dropDownMenu = findViewById(R.id.dropDownMenu);
-        dropDownMenu.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(MainOrderMenu.this, v);
-            popup.setOnMenuItemClickListener(this);
-            popup.getMenu().add("All");
-            popup.getMenu().add("Specialty Coffee");
-            popup.getMenu().add("Milktea with Pearls");
-            popup.getMenu().add("Dessert with Salty Cream");
-            popup.getMenu().add("Blended Frappe");
-            popup.getMenu().add("Hot Drinks");
-            popup.show();
-        });
+        createScrollViewForCategory("Specialty Coffee", Constants.coffeeCollection);
+        createScrollViewForCategory("Milktea with Pearls", Constants.milkteaCollection);
+        createScrollViewForCategory("Dessert with Salty Cream", Constants.dessertCollection);
+        createScrollViewForCategory("Blended Frappe", Constants.frappeCollection);
+        createScrollViewForCategory("Hot Drinks", Constants.hotDrinksCollection);
 
-        ImageView cart = findViewById(R.id.cart);
+        FloatingActionButton cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
+
+        ImageView back = findViewById(R.id.back);
+        back.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
     }
 
-    private void createScrollViewForCategory(ArrayList<Item> items) {
-        LinearLayout itemLayout = findViewById(R.id.itemLayout);
-        itemLayout.removeAllViews();
+    private void createScrollViewForCategory(String category, ArrayList<Item> items) {
+        ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
+        TextView textView = new TextView(this);
+        {
+            // Create a new TextView
+            textView.setId(View.generateViewId());
 
-        for (Item item : items) {
-            // Create the main item TextView
-            TextView itemTextView = new TextView(this);
-            itemTextView.setText(item.getName());
-            itemTextView.setTextSize(20);
-            itemTextView.setTextColor(getResources().getColor(R.color.black));
-            itemTextView.setPadding(8, 0, 8, 0);
-
-            // Add a drawable to the TextView
-            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.add_item, null);
-            itemTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
-
-            // Get the price for the current item
-            Float price = item.getPrice();
-
-            // Create the price TextView with the fetched price
-            TextView priceTextView = new TextView(this);
-            priceTextView.setText(getString(R.string.item_price_format, price));
-            priceTextView.setTextSize(15);
-            priceTextView.setTextColor(getResources().getColor(R.color.black));
-            priceTextView.setPadding(24, 0, 24, 0);
-
-            // Create the divider View with a fixed height in pixels
-            View dividerView = new View(this);
-            dividerView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    getResources().getDimensionPixelSize(R.dimen.divider_height)
+            // Set TextView properties
+            textView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
             ));
-            dividerView.setBackgroundColor(getResources().getColor(R.color.green));
+            textView.setTextSize(25);
+            textView.setText(category);
 
-            // Add the main item TextView, price TextView, and the divider View to a new LinearLayout (vertical arrangement)
-            LinearLayout verticalLayout = new LinearLayout(this);
-            verticalLayout.setOrientation(LinearLayout.VERTICAL);
-            verticalLayout.addView(itemTextView);
-            verticalLayout.addView(priceTextView);
-            verticalLayout.addView(dividerView);
+            // Set Constraints using ConstraintSet
+            constraintLayout.addView(textView);
 
-            // Add the verticalLayout to the itemLayout
-            itemLayout.addView(verticalLayout);
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
 
-            // Start the activity_add_item when the itemTextView is clicked
-            itemTextView.setOnClickListener(view -> {
-                AddItem.selectedItem = item;
-                Intent addItemIntent = new Intent(this, AddItem.class);
-                startActivity(addItemIntent);
-            });
-        }
-    }
+            // Set constraints programmatically
+            constraintSet.connect(textView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+            constraintSet.connect(textView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
 
-    private void showScrollViewForCategory(String category) {
-        ArrayList<Item> itemsToDisplay;
-
-        switch (category) {
-            case "Specialty Coffee":
-                itemsToDisplay = Constants.coffeeCollection;
-                break;
-            case "Milktea with Pearls":
-                itemsToDisplay = Constants.milkteaCollection;
-                break;
-            case "Dessert with Salty Cream":
-                itemsToDisplay = Constants.dessertCollection;
-                break;
-            case "Blended Frappe":
-                itemsToDisplay = Constants.frappeCollection;
-                break;
-            case "Hot Drinks":
-                itemsToDisplay = Constants.hotDrinksCollection;
-                break;
-            default:
-                itemsToDisplay = Constants.allItemsCollection;
-                break;
+            constraintSet.applyTo(constraintLayout);
         }
 
-        createScrollViewForCategory(itemsToDisplay);
-        dropDownMenu.setText(category);
-    }
+        ArrayList<CardView> cardViewArrayList = new ArrayList<>();
+        for (Item item : items) {
+            // Create a new CardView for each item
+            CardView cardView = new CardView(this);
+            cardView.setId(View.generateViewId());
 
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        String category = menuItem.getTitle().toString();
-        showScrollViewForCategory(category);
-        return true;
+            // Set CardView properties
+            cardView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                    0,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+            ));
+            cardView.setCardElevation(4);
+            cardView.setUseCompatPadding(true);
+
+            // Add the CardView to the list
+            cardViewArrayList.add(cardView);
+
+            // Add cardView to the constraintLayout
+            constraintLayout.addView(cardView);
+        }
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+
+        for (int i = 0; i < cardViewArrayList.size(); i++) {
+            CardView cardView = cardViewArrayList.get(i);
+
+            int rowNumber = i / 3;
+            int columnNumber = i % 3;
+
+            constraintSet.connect(cardView.getId(), ConstraintSet.TOP,
+                    rowNumber == 0 ? textView.getId() : cardViewArrayList.get(i - 3).getId(), rowNumber == 0 ? ConstraintSet.BOTTOM : ConstraintSet.TOP);
+
+            if (columnNumber == 0) {
+                constraintSet.connect(cardView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+                if (i < cardViewArrayList.size() - 1) {
+                    constraintSet.connect(cardView.getId(), ConstraintSet.END, cardViewArrayList.get(i + 1).getId(), ConstraintSet.START);
+                    constraintSet.setHorizontalChainStyle(cardView.getId(), ConstraintSet.CHAIN_PACKED);
+                }
+            } else {
+                constraintSet.connect(cardView.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+                constraintSet.connect(cardView.getId(), ConstraintSet.START, cardViewArrayList.get(i - 1).getId(), ConstraintSet.END);
+            }
+
+            if (rowNumber > 0) {
+                constraintSet.connect(cardView.getId(), ConstraintSet.TOP, cardViewArrayList.get(i - 3).getId(), ConstraintSet.BOTTOM);
+            }
+
+            constraintSet.constrainWidth(cardView.getId(), ConstraintSet.MATCH_CONSTRAINT);
+            constraintSet.setMargin(cardView.getId(), ConstraintSet.TOP, 1);
+        }
+
+        constraintSet.applyTo(constraintLayout);
+
+        // Populate the CardViews with content
+        for (int i = 0; i < items.size(); i++) {
+            CardView currentCardView = cardViewArrayList.get(i);
+            Item item = items.get(i);
+
+            // Create a LinearLayout to hold the contents within the CardView
+            LinearLayout cardLayout = new LinearLayout(this);
+            cardLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            cardLayout.setOrientation(LinearLayout.VERTICAL);
+
+            // Create an ImageView and set the image
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 1
+            ));
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageView.setMaxWidth(100);
+            imageView.setImageResource(item.getImageResource());
+
+            // Create TextViews for item name and price
+            TextView itemNameTextView = new TextView(this);
+            itemNameTextView.setText(item.getName());
+            itemNameTextView.setTextSize(20);
+
+            TextView itemPriceTextView = new TextView(this);
+            itemPriceTextView.setText(getString(R.string.item_price_format, item.getPrice()));
+            itemPriceTextView.setTextSize(15);
+
+            // Add the views to the cardLayout
+            cardLayout.addView(imageView);
+            cardLayout.addView(itemNameTextView);
+            cardLayout.addView(itemPriceTextView);
+
+            // Add cardLayout to the CardView
+            currentCardView.addView(cardLayout);
+        }
     }
 }

@@ -44,16 +44,16 @@
         android:id="@+id/listView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="List View"
-        android:background="@drawable/round_button_with_border"
-        android:textAllCaps="false"
         android:layout_margin="8dp"
-        android:textSize="20sp"
+        android:background="@drawable/round_button_with_border"
+        android:text="List View"
+        android:textAllCaps="false"
         android:textColor="@color/green"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical50"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/rectangleView"
-        app:layout_constraintWidth_max="320dp"/>
+        app:layout_constraintWidth_max="320dp" />
 
     <Button
         android:id="@+id/cardView"
@@ -71,26 +71,36 @@
         app:layout_constraintTop_toTopOf="@+id/listView"
         app:layout_constraintWidth_max="320dp" />
 
+
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/menu_options_available_per_category"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/listView" />
+        app:layout_constraintTop_toBottomOf="@+id/listView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        app:backgroundTint="@color/green"
         app:elevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:srcCompat="@drawable/cart"
-        app:backgroundTint="@color/green" />
+        app:srcCompat="@drawable/cart" />
 
 
     <androidx.constraintlayout.widget.Guideline
