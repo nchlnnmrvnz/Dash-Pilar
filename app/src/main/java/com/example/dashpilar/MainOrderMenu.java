@@ -139,7 +139,7 @@ public class MainOrderMenu extends AppCompatActivity {
             ));
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageView.setMaxWidth(100);
+            imageView.setMaxWidth(50);
             imageView.setImageResource(item.getImageResource());
 
             // Create TextViews for item name and price
