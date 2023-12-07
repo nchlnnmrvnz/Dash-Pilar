@@ -1,6 +1,7 @@
 package com.example.dashpilar;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -45,13 +46,16 @@ public class MainOrderMenu extends AppCompatActivity {
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
         ));
-        textView.setTextSize(25);
+        textView.setTextSize(40);
+        textView.setAllCaps(true);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setPadding(0, 16, 0, 0);
+        textView.setTextColor(getResources().getColor(R.color.green));
         textView.setText(category);
 
         RecyclerView recyclerView = new RecyclerView(getApplicationContext());
         recyclerView.setId(View.generateViewId());
-        int numberOfColumns = 3;
-        GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new ItemAdapter(getApplicationContext(), items));
 

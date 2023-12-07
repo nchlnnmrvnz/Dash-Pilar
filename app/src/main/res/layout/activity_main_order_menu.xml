@@ -40,45 +40,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white_back" />
 
-    <Button
-        android:id="@+id/listView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/round_button_with_border"
-        android:text="List View"
-        android:textAllCaps="false"
-        android:textColor="@color/green"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical50"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/rectangleView"
-        app:layout_constraintWidth_max="320dp" />
-
-    <Button
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/round_button"
-        android:text="Card View"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/listView"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical50"
-        app:layout_constraintTop_toTopOf="@+id/listView"
-        app:layout_constraintWidth_max="320dp" />
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/listView">
+        app:layout_constraintTop_toBottomOf="@+id/guideline_top">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutForRecyclerView"
