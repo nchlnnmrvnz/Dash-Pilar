@@ -57,7 +57,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top2"
-        app:layout_constraintStart_toStartOf="@+id/dropDownMenu"
+        app:layout_constraintStart_toStartOf="@+id/confirm_order"
         app:layout_constraintTop_toTopOf="@+id/guideline_top3" />
 
     <TextView
@@ -72,11 +72,11 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top2"
-        app:layout_constraintEnd_toEndOf="@+id/dropDownMenu"
+        app:layout_constraintEnd_toEndOf="@+id/confirm_order"
         app:layout_constraintTop_toTopOf="@+id/guideline_top3" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/dropDownMenu"
+        android:id="@+id/confirm_order"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:background="@drawable/round_button"
@@ -88,7 +88,9 @@
         app:drawableEndCompat="@drawable/forward"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top2" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top2"
+        app:layout_constraintVertical_bias="0.363" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"

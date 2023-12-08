@@ -6,128 +6,442 @@
     android:layout_height="match_parent"
     tools:context=".AddItem">
 
-    <ImageView
-        android:id="@+id/imageView_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:contentDescription="TODO"
+    <!--Top Navigation Bar-->
+    <View
+        android:id="@+id/rectangleView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/green"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/green_back" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/page_label"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ubuntu_bold"
         android:paddingHorizontal="8dp"
         android:text="@string/customize_order"
         android:textAlignment="textStart"
-        android:textAllCaps="true"
-        android:textColor="@color/green"
-        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toTopOf="@+id/back" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/back"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/white_back" />
 
+    <!--Item Rectangle View-->
+    <View
+        android:id="@+id/itemInfoRectangleView"
+        android:layout_width="0dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/round_button_with_border"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="120dp"
+        android:src="@drawable/dash_latte"
+        app:layout_constraintBottom_toBottomOf="@+id/itemInfoRectangleView"
+        app:layout_constraintStart_toStartOf="@+id/itemInfoRectangleView"
+        app:layout_constraintTop_toTopOf="@+id/itemInfoRectangleView"
+        app:layout_constraintVertical_bias="0.175"
+        android:contentDescription="@string/item_picture" />
+
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/dash_latte"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/itemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/starts_at_39_00"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/itemName"
+        app:layout_constraintTop_toBottomOf="@+id/itemName" />
+
+    <TextView
+        android:id="@+id/itemDescription"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="16dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/itemInfoRectangleView"
+        app:layout_constraintStart_toStartOf="@+id/itemPrice"
+        app:layout_constraintTop_toBottomOf="@+id/itemPrice" />
+
+    <!--ScrollView for Item Customization-->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="@string/ordered_items"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_top2"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomRectangleView"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/itemInfoRectangleView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Sugar Level Rectangle View-->
+            <View
+                android:id="@+id/sugarLevelRectangleView"
+                android:layout_width="0dp"
+                android:layout_height="230dp"
+                android:background="@drawable/round_button_with_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sugarLevel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="16dp"
+                android:text="@string/sugar_level"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/sugarLevelRectangleView"
+                app:layout_constraintTop_toTopOf="@+id/sugarLevelRectangleView" />
+
+            <TextView
+                android:id="@+id/required"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="16dp"
+                android:text="@string/required"
+                android:textColor="@color/red"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/sugarLevel"
+                app:layout_constraintEnd_toEndOf="@+id/sugarLevelRectangleView"
+                app:layout_constraintTop_toTopOf="@+id/sugarLevel" />
+
+            <!--Sugar Level Options-->
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="@id/sugarLevel"
+                app:layout_constraintTop_toBottomOf="@+id/sugarLevel">
+
+                <RadioButton
+                    android:id="@+id/noSugarOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="@string/_0_no_sugar"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/halfSugarOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="@string/_50"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/normalSugarOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="@string/_100_normal_sugar"
+                    android:textSize="15sp" />
+
+            </RadioGroup>
+
+            <!--Sugar Level Add On Fees-->
+            <TextView
+                android:id="@+id/noSugarAddOnFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_0_00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/halfSugarAddOnFee"
+                app:layout_constraintEnd_toEndOf="@+id/required"
+                app:layout_constraintTop_toTopOf="@+id/radioGroup" />
+
+            <TextView
+                android:id="@+id/halfSugarAddOnFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_0_00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/normalSugarAddOnFee"
+                app:layout_constraintEnd_toEndOf="@+id/noSugarAddOnFee"
+                app:layout_constraintTop_toBottomOf="@+id/noSugarAddOnFee" />
+
+            <TextView
+                android:id="@+id/normalSugarAddOnFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_0_00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/radioGroup"
+                app:layout_constraintEnd_toEndOf="@+id/halfSugarAddOnFee"
+                app:layout_constraintTop_toBottomOf="@+id/halfSugarAddOnFee" />
+
+            <!--Add Ons Rectangle View-->
+            <View
+                android:id="@+id/addOnsRectangleView"
+                android:layout_width="0dp"
+                android:layout_height="270dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/round_button_with_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sugarLevelRectangleView" />
+
+            <TextView
+                android:id="@+id/AddOns"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="16dp"
+                android:text="@string/add_ons"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/addOnsRectangleView"
+                app:layout_constraintTop_toTopOf="@+id/addOnsRectangleView" />
+
+            <TextView
+                android:id="@+id/optional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="16dp"
+                android:text="@string/optional"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/AddOns"
+                app:layout_constraintEnd_toEndOf="@+id/addOnsRectangleView"
+                app:layout_constraintTop_toTopOf="@+id/AddOns" />
+
+            <!--Add Ons Check Boxes-->
+            <CheckBox
+                android:id="@+id/addOnPearlsOption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/pearls"
+                android:textSize="15sp"
+                app:layout_constraintHeight_min="48dp"
+                app:layout_constraintStart_toStartOf="@+id/AddOns"
+                app:layout_constraintTop_toBottomOf="@+id/AddOns" />
+
+            <CheckBox
+                android:id="@+id/addOnSaltyCreamOption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/salty_cream"
+                android:textSize="15sp"
+                app:layout_constraintHeight_min="48dp"
+                app:layout_constraintStart_toStartOf="@+id/addOnPearlsOption"
+                app:layout_constraintTop_toBottomOf="@+id/addOnPearlsOption" />
+
+            <CheckBox
+                android:id="@+id/addOnCrushedOreoOption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crushed_oreo"
+                android:textSize="15sp"
+                app:layout_constraintHeight_min="48dp"
+                app:layout_constraintStart_toStartOf="@+id/addOnSaltyCreamOption"
+                app:layout_constraintTop_toBottomOf="@+id/addOnSaltyCreamOption" />
+
+            <CheckBox
+                android:id="@+id/addOnCoffeeShotOption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/coffee_shot"
+                android:textSize="15sp"
+                app:layout_constraintHeight_min="48dp"
+                app:layout_constraintStart_toStartOf="@+id/addOnCrushedOreoOption"
+                app:layout_constraintTop_toBottomOf="@+id/addOnCrushedOreoOption" />
+
+            <!--Add Ons Check Boxes Price-->
+            <TextView
+                android:id="@+id/pearlsAddOnFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_9_00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/saltyCreamAddOnFee"
+                app:layout_constraintEnd_toEndOf="@+id/optional"
+                app:layout_constraintTop_toTopOf="@+id/addOnPearlsOption" />
+
+            <TextView
+                android:id="@+id/saltyCreamAddOnFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_9_00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/crushedOreoAddOnFee"
+                app:layout_constraintEnd_toEndOf="@+id/pearlsAddOnFee"
+                app:layout_constraintTop_toBottomOf="@+id/pearlsAddOnFee" />
+
+            <TextView
+                android:id="@+id/crushedOreoAddOnFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_9_00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/coffeeShotAddOnFee"
+                app:layout_constraintEnd_toEndOf="@+id/saltyCreamAddOnFee"
+                app:layout_constraintTop_toBottomOf="@+id/saltyCreamAddOnFee" />
+
+            <TextView
+                android:id="@+id/coffeeShotAddOnFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_9_00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/addOnCoffeeShotOption"
+                app:layout_constraintEnd_toEndOf="@+id/crushedOreoAddOnFee"
+                app:layout_constraintTop_toBottomOf="@+id/crushedOreoAddOnFee" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
+    <!--Bottom Navigation Bar-->
+    <View
+        android:id="@+id/bottomRectangleView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_bottom" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/minusQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:contentDescription="@string/add_quantity"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
-        app:layout_constraintStart_toEndOf="@+id/textView_quantity"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top2"
-        app:srcCompat="@drawable/add" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:contentDescription="@string/subtract_quantity"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+        android:src="@drawable/minus"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top2"
-        app:srcCompat="@drawable/minus" />
+        app:layout_constraintTop_toTopOf="@+id/editText"
+        android:contentDescription="@string/icon_to_decrement_quantity" />
 
-    <TextView
-        android:id="@+id/textView_quantity"
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/round_edit_text"
+        android:gravity="center"
+        android:inputType="number"
+        android:padding="4dp"
+        android:text="@string/_1"
+        android:hint="@string/item_quantity"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomRectangleView"
+        app:layout_constraintHeight_min="48dp"
+        app:layout_constraintStart_toEndOf="@+id/minusQuantity"
+        app:layout_constraintTop_toTopOf="@+id/bottomRectangleView"
+        android:autofillHints="" />
+
+    <ImageView
+        android:id="@+id/addQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/_0"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        android:layout_marginStart="16dp"
+        android:src="@drawable/add"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="@+id/editText"
+        android:contentDescription="@string/plus_icon_to_increment_quantity" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_addOrder"
-        android:layout_width="0dp"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/round_button"
-        android:text="@string/add_order"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top2"
-        app:layout_constraintWidth_max="320dp" />
+        android:layout_marginEnd="30dp"
+        android:text="@string/add_to_cart_0_00"
+        android:paddingHorizontal="16dp"
+        android:textColor="@color/green"
+        android:background="@drawable/round_edit_text"
+        app:layout_constraintHeight_min="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomRectangleView"
+        app:layout_constraintEnd_toEndOf="@+id/bottomRectangleView"
+        app:layout_constraintTop_toTopOf="@+id/bottomRectangleView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_top2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90" />
+        app:layout_constraintGuide_percent="0.95" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10" />
+        app:layout_constraintGuide_percent="0.07" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.93" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

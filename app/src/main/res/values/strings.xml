@@ -27,4 +27,23 @@
     <string name="enjoy">Enjoy a cup of coffee</string>
     <string name="background_picture">background picture</string>
     <string name="back">Back</string>
+    <string name="add_to_cart_0_00">Add to Cart — ₱0.00</string>
+    <string name="coffee_shot">Coffee Shot</string>
+    <string name="crushed_oreo">Crushed Oreo</string>
+    <string name="pearls">Pearls</string>
+    <string name="salty_cream">Salty Cream</string>
+    <string name="plus_icon_to_increment_quantity">plus icon to increment quantity</string>
+    <string name="_9_00">+ ₱9.00</string>
+    <string name="_1">1</string>
+    <string name="item_quantity">Item quantity</string>
+    <string name="_50">50%</string>
+    <string name="item_picture">item picture</string>
+    <string name="dash_latte">Dash Latte</string>
+    <string name="starts_at_39_00">starts at ₱39.00</string>
+    <string name="icon_to_decrement_quantity">icon to decrement quantity</string>
+    <string name="_0_no_sugar">0% (No sugar)</string>
+    <string name="_100_normal_sugar">100% (Normal sugar)</string>
+    <string name="optional">OPTIONAL</string>
+    <string name="required">REQUIRED</string>
+    <string name="sugar_level">Sugar Level</string>
 </resources>
