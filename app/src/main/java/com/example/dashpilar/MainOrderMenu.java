@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +29,10 @@ public class MainOrderMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_order_menu);
 
         createScrollViewForCategory("Specialty Coffee", Constants.coffeeCollection);
-        loadDataAndCreateViews();
+        createScrollViewForCategory("Milktea with Pearls", Constants.milkteaCollection);
+        createScrollViewForCategory("Dessert with Salty Cream", Constants.dessertCollection);
+        createScrollViewForCategory("Blended Frappe", Constants.frappeCollection);
+        createScrollViewForCategory("Hot Drinks", Constants.hotDrinksCollection);
 
         FloatingActionButton cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
@@ -39,6 +43,7 @@ public class MainOrderMenu extends AppCompatActivity {
 
     private void createScrollViewForCategory(String category, ArrayList<Item> items) {
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutForRecyclerView);
+        NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
 
         TextView textView = new TextView(this);
         textView.setId(View.generateViewId());
@@ -54,6 +59,10 @@ public class MainOrderMenu extends AppCompatActivity {
         textView.setText(category);
 
         RecyclerView recyclerView = new RecyclerView(getApplicationContext());
+        recyclerView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ));
         recyclerView.setId(View.generateViewId());
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -72,35 +81,14 @@ public class MainOrderMenu extends AppCompatActivity {
         }
 
         constraintSet.connect(recyclerView.getId(), ConstraintSet.TOP, textView.getId(), ConstraintSet.BOTTOM);
+        constraintSet.connect(recyclerView.getId(), ConstraintSet.START, scrollView.getId(), ConstraintSet.START);
+        constraintSet.connect(recyclerView.getId(), ConstraintSet.END, scrollView.getId(), ConstraintSet.END);
 
         lastTextView = textView;
         lastRecyclerView = recyclerView;
 
         constraintSet.applyTo(constraintLayout);
 
-        NestedScrollView nestedScrollView = findViewById(R.id.nestedScrollView);
-        nestedScrollView.post(() -> nestedScrollView.smoothScrollTo(0, 0));
-    }
-
-    private class LoadDataAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            createScrollViewForCategory("Milktea with Pearls", Constants.milkteaCollection);
-            createScrollViewForCategory("Dessert with Salty Cream", Constants.dessertCollection);
-            createScrollViewForCategory("Blended Frappe", Constants.frappeCollection);
-            createScrollViewForCategory("Hot Drinks", Constants.hotDrinksCollection);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            // Update UI if needed
-        }
-    }
-
-    // Call this method in your onCreate
-    private void loadDataAndCreateViews() {
-        new LoadDataAsyncTask().execute();
+        scrollView.post(() -> scrollView.smoothScrollTo(0, 0));
     }
 }

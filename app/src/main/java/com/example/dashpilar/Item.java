@@ -5,12 +5,14 @@ import java.util.LinkedHashMap;
 public class Item {
     private String name;
     private float price;
+    private String description;
     private int imageResource;
     private LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
 
-    public Item (String name, float price, int imageResource, LinkedHashMap<String, Float> addOns) {
+    public Item (String name, float price, String description, int imageResource, LinkedHashMap<String, Float> addOns) {
         this.setName(name);
         this.setPrice(price);
+        this.setDescription(description);
         this.setImageResource(imageResource);
         this.setAddOns(addOns);
     }
@@ -29,6 +31,14 @@ public class Item {
 
     private void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    private void setDescription(String description) {
+        this.description = description;
     }
 
     public LinkedHashMap<String, Float> getAddOns() {

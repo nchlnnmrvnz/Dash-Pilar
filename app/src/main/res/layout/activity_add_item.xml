@@ -404,6 +404,7 @@
         android:contentDescription="@string/plus_icon_to_increment_quantity" />
 
     <Button
+        android:id="@+id/addOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"

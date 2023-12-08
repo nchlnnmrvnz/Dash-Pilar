@@ -1,6 +1,9 @@
 package com.example.dashpilar;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -29,6 +32,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
         holder.image.setImageResource(items.get(position).getImageResource());
         holder.name.setText(items.get(position).getName());
         holder.price.setText(String.format("₱%.2f", items.get(position).getPrice()));
+        holder.materialCardView.setOnClickListener(v -> {
+            AddItem.selectedItem = items.get(position);
+            context.startActivity(new Intent(context, AddItem.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        });
     }
 
     @Override
