@@ -1,6 +1,5 @@
 package com.example.dashpilar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -144,7 +143,7 @@ public class Cart extends AppCompatActivity {
             itemLayout.addView(divider);
         }
 
-        TextView totalTextView = findViewById(R.id.textView);
+        TextView totalTextView = findViewById(R.id.serviceMode);
         totalTextView.setText(getString(R.string.regular_price_format, totalPrice));
 
         // Add itemLayout to the ScrollView

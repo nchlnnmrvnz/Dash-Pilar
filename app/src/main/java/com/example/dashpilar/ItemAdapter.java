@@ -1,7 +1,5 @@
 package com.example.dashpilar;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -24,7 +22,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ItemHolder(LayoutInflater.from(context).inflate(R.layout.item_view, parent, false));
+        return new ItemHolder(LayoutInflater.from(context).inflate(R.layout.menu_item_rv, parent, false));
     }
 
     @Override
