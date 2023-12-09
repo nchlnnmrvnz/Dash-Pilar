@@ -1,16 +1,16 @@
 package com.example.dashpilar;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.view.ViewGroup.LayoutParams;
-import android.view.View;
-import android.view.Gravity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,22 +18,22 @@ import java.util.Map;
 
 public class Cart extends AppCompatActivity {
     static ArrayList<ItemOrder> cartList = new ArrayList<>();
-    Button confirm_order;
+    Button place_order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        confirm_order = findViewById(R.id.confirm_order);
-        confirm_order.setOnClickListener(v -> {
+        place_order = findViewById(R.id.placeOrder);
+        place_order.setOnClickListener(v -> {
             // logic for printing
         });
 
-        ImageView goBack = findViewById(R.id.imageView_back);
+        ImageView goBack = findViewById(R.id.back);
         goBack.setOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
 
         // Find the ScrollView in your XML layout
-        ScrollView scrollView = findViewById(R.id.scrollView);
+        NestedScrollView nestedScrollView = findViewById(R.id.nestedScrollView);
 
         // Create a LinearLayout to hold the dynamic content
         LinearLayout itemLayout = new LinearLayout(this);
@@ -147,6 +147,6 @@ public class Cart extends AppCompatActivity {
         totalTextView.setText(getString(R.string.regular_price_format, totalPrice));
 
         // Add itemLayout to the ScrollView
-        scrollView.addView(itemLayout);
+        // nestedScrollView.addView(itemLayout);
     }
 }
