@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="@+id/confirm_order"
         app:layout_constraintTop_toTopOf="@+id/guideline_top3" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/confirm_order"
         android:layout_width="320dp"
         android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.example.dashpilar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,14 +19,15 @@ import java.util.Map;
 
 public class Cart extends AppCompatActivity {
     static ArrayList<ItemOrder> cartList = new ArrayList<>();
-    Button confirm_order = findViewById(R.id.confirm_order);
+    Button confirm_order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        confirm_order = findViewById(R.id.confirm_order);
         confirm_order.setOnClickListener(v -> {
-
+            // logic for printing
         });
 
         ImageView goBack = findViewById(R.id.imageView_back);
