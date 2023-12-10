@@ -1,13 +1,10 @@
 package com.example.dashpilar;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddItem extends AppCompatActivity {
@@ -79,7 +75,7 @@ public class AddItem extends AppCompatActivity {
                     }
                 }
                 ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
-                        quan.get(), addOns);
+                        selectedItem.getDescription(), selectedItem.getImageResource(), addOns, quan.get());
                 Cart.cartList.add(order);
                 createToast("Successfully added order!");
                 getOnBackPressedDispatcher().onBackPressed();

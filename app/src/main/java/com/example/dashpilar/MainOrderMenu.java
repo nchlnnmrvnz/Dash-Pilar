@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class MainOrderMenu extends AppCompatActivity {
     RecyclerView lastRecyclerView = null;
     TextView lastTextView = null;
+    private Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +33,13 @@ public class MainOrderMenu extends AppCompatActivity {
         createScrollViewForCategory("Blended Frappe", Constants.frappeCollection);
         createScrollViewForCategory("Hot Drinks", Constants.hotDrinksCollection);
 
-        Button cart = findViewById(R.id.cart);
-        cart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
+        FrameLayout cart = findViewById(R.id.cart);
+        cart.setOnClickListener(v -> {
+            if(Cart.cartList.size() == 0)
+                createToast("Cart is empty!");
+
+            startActivity(new Intent(this, Cart.class));
+        });
 
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -87,5 +94,14 @@ public class MainOrderMenu extends AppCompatActivity {
         constraintSet.applyTo(constraintLayout);
 
         scrollView.post(() -> scrollView.smoothScrollTo(0, 0));
+    }
+
+    void createToast(String message) {
+        if (toast != null) {
+            toast.cancel();
+        }
+
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

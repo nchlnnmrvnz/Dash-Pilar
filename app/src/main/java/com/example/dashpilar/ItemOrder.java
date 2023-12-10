@@ -1,49 +1,32 @@
 package com.example.dashpilar;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class ItemOrder {
-    private String name;
-    private float price;
+public class ItemOrder extends Item {
     private int quantity;
-    private LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
 
-    public ItemOrder (String name, float price, int quantity, LinkedHashMap<String, Float> addOns) {
-        this.setName(name);
-        this.setPrice(price);
+    public ItemOrder (String name, float price, String description, int imageResource, LinkedHashMap<String, Float> addOns, int quantity) {
+        super(name, price, description, imageResource, addOns);
         this.setQuantity(quantity);
-        this.setAddOns(addOns);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    private void setName(String name) {
-        this.name = name;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    private void setPrice(float price) {
-        this.price = price;
-    }
-
-    public LinkedHashMap<String, Float> getAddOns() {
-        return addOns;
-    }
-
-    private void setAddOns(LinkedHashMap<String, Float> addOns) {
-        this.addOns = addOns;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    private void setQuantity(int quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public float calculatePrice() {
+        float price = this.getPrice();
+
+        for(Map.Entry<String, Float> addOn : this.getAddOns().entrySet()) {
+            price += addOn.getValue();
+        }
+        price *= this.getQuantity();
+
+        return price;
     }
 }

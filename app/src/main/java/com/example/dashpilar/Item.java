@@ -1,6 +1,7 @@
 package com.example.dashpilar;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Item {
     private String name;
@@ -21,7 +22,7 @@ public class Item {
         return name;
     }
 
-    private void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -29,7 +30,7 @@ public class Item {
         return price;
     }
 
-    private void setPrice(float price) {
+    void setPrice(float price) {
         this.price = price;
     }
 
@@ -37,7 +38,7 @@ public class Item {
         return description;
     }
 
-    private void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 
@@ -45,7 +46,22 @@ public class Item {
         return addOns;
     }
 
-    private void setAddOns(LinkedHashMap<String, Float> addOns) {
+    public String getAddOnString() {
+        StringBuilder str = new StringBuilder();
+
+        for(Map.Entry<String, Float> addOn : addOns.entrySet()) {
+            str.append(addOn.getKey()).append(", ");
+        }
+
+        if (str.length() >= 2)
+            str = new StringBuilder(str.substring(0, str.length() - 2));
+        else if(str.toString().equals(""))
+            str = new StringBuilder("No add ons");
+
+        return str.toString();
+    }
+
+    void setAddOns(LinkedHashMap<String, Float> addOns) {
         this.addOns = addOns;
     }
 
