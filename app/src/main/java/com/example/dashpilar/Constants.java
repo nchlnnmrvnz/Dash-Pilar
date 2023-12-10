@@ -41,25 +41,25 @@ public class Constants {
                 R.drawable.dark_mocha, drinkAddOnsCollection));
 
         milkteaCollection.add(new Item("Tokyo Milktea", 39.00f,
-                "",
+                "Roasted brown sugar milktea drink with pearls",
                 R.drawable.tokyo, drinkAddOnsCollection));
         milkteaCollection.add(new Item("Sapporo Milktea", 39.00f,
-                "",
+                "Wintermelon milktea drink with pearls",
                 R.drawable.saporro, drinkAddOnsCollection));
         milkteaCollection.add(new Item("Hokkaido Milktea", 39.00f,
-                "",
+                "Oreo milktea drink with pearls",
                 R.drawable.hokkaido, drinkAddOnsCollection));
         milkteaCollection.add(new Item("Okinawa Milktea", 39.00f,
-                "",
+                "Caramel milktea drink with pearls",
                 R.drawable.okinawa, drinkAddOnsCollection));
         milkteaCollection.add(new Item("Nagoya Milktea", 39.00f,
-                "",
+                "Chocolate milktea drink with pearls",
                 R.drawable.nagoya, drinkAddOnsCollection));
         milkteaCollection.add(new Item("Kyoto Milktea", 39.00f,
-                "",
+                "Matcha milktea drink with pearls",
                 R.drawable.kyoto, drinkAddOnsCollection));
         milkteaCollection.add(new Item("Osaka Milktea", 39.00f,
-                "",
+                "Thai milktea drink with pearls",
                 R.drawable.osaka, drinkAddOnsCollection));
 
         dessertCollection.add(new Item("Forrest Cake Dessert", 49.00f,

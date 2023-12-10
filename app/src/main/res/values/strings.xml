@@ -3,17 +3,9 @@
     <string name="dine_in">Dine In</string>
     <string name="take_out">Take Out</string>
     <string name="business_logo">Business Logo</string>
-    <string name="search">Search</string>
-    <string name="shopping_cart">Shopping Cart</string>
-    <string name="choose_category">Choose Category</string>
-    <string name="item_price_format">from ₱%.2f</string>
     <string name="addon_price_format">+ ₱%.2f</string>
     <string name="regular_price_format">₱%.2f</string>
-    <string name="menu_options_available_per_category">Menu Options Available per Category</string>
     <string name="order_summary">Order Summary</string>
-    <string name="ordered_items">Ordered Items</string>
-    <string name="confirm_order">Confirm Order</string>
-    <string name="total">Total:</string>
     <string name="customize_order">Customize Order</string>
     <string name="_0">0</string>
     <string name="add_ons">Add ons</string>
@@ -48,5 +40,4 @@
     <string name="sugar_level">Sugar Level</string>
     <string name="no_add_ons">No add ons</string>
     <string name="icon_to_edit_details">icon to edit details</string>
-    <string name="macchiato_coffee">Macchiato Coffee</string>
 </resources>
