@@ -18,14 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MainOrderMenu extends AppCompatActivity {
+public class MainOrderMenu extends AppCompatActivity implements CartUpdateListener {
     RecyclerView lastRecyclerView = null;
     TextView lastTextView = null;
     private Toast toast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_order_menu);
+
+        AddItem addItem = new AddItem();
+        addItem.setCartUpdateListener(this);
+        onCartUpdate();
 
         createScrollViewForCategory("Specialty Coffee", Constants.coffeeCollection);
         createScrollViewForCategory("Milktea with Pearls", Constants.milkteaCollection);
@@ -36,7 +41,7 @@ public class MainOrderMenu extends AppCompatActivity {
         FrameLayout cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> {
             if(Cart.cartList.size() == 0)
-                createToast("Cart is empty!");
+                createToast();
 
             startActivity(new Intent(this, Cart.class));
         });
@@ -96,12 +101,18 @@ public class MainOrderMenu extends AppCompatActivity {
         scrollView.post(() -> scrollView.smoothScrollTo(0, 0));
     }
 
-    void createToast(String message) {
+    void createToast() {
         if (toast != null) {
             toast.cancel();
         }
 
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast = Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    @Override
+    public void onCartUpdate() {
+        TextView cartQuantity = findViewById(R.id.cartQuantity);
+        cartQuantity.setText(String.valueOf(Cart.cartList.size()));
     }
 }
