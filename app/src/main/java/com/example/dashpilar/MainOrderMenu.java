@@ -2,11 +2,10 @@ package com.example.dashpilar;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +14,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -34,7 +31,7 @@ public class MainOrderMenu extends AppCompatActivity {
         createScrollViewForCategory("Blended Frappe", Constants.frappeCollection);
         createScrollViewForCategory("Hot Drinks", Constants.hotDrinksCollection);
 
-        FloatingActionButton cart = findViewById(R.id.cart);
+        Button cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
 
         ImageView back = findViewById(R.id.back);

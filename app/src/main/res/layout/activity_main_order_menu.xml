@@ -40,6 +40,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white_back" />
 
+    <include
+        android:id="@+id/cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/cart_action_item"
+        app:layout_constraintBottom_toBottomOf="@+id/page_label"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintTop_toTopOf="@+id/page_label" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
@@ -68,17 +77,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/cart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/green"
-        app:elevation="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:srcCompat="@drawable/cart"
-        android:contentDescription="@string/cart_items" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"

@@ -143,8 +143,8 @@ public class Cart extends AppCompatActivity {
             itemLayout.addView(divider);
         }
 
-        TextView totalTextView = findViewById(R.id.serviceMode);
-        totalTextView.setText(getString(R.string.regular_price_format, totalPrice));
+        //TextView totalTextView = findViewById(R.id.serviceMode);
+        //totalTextView.setText(getString(R.string.regular_price_format, totalPrice));
 
         // Add itemLayout to the ScrollView
         // nestedScrollView.addView(itemLayout);
