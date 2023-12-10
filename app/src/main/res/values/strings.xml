@@ -46,4 +46,7 @@
     <string name="optional">OPTIONAL</string>
     <string name="required">REQUIRED</string>
     <string name="sugar_level">Sugar Level</string>
+    <string name="no_add_ons">No add ons</string>
+    <string name="icon_to_edit_details">icon to edit details</string>
+    <string name="macchiato_coffee">Macchiato Coffee</string>
 </resources>
