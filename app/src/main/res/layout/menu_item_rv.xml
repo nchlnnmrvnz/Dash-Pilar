@@ -12,8 +12,7 @@
     app:cardCornerRadius="10dp"
     app:strokeColor="@color/green"
     app:strokeWidth="3dp"
-    android:layout_margin="8dp"
-    >
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +28,8 @@
             android:layout_gravity="center"
             android:src="@drawable/cloud_latte"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/item_picture" />
 
         <TextView
             android:id="@+id/name"
@@ -41,7 +41,7 @@
             android:textSize="20sp"
             android:gravity="center"
             android:minLines="2"
-            android:text="Name" />
+            android:text="@string/dash_latte" />
 
         <TextView
             android:id="@+id/price"
@@ -51,6 +51,6 @@
             android:elevation="12dp"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:text="Price" />
+            android:text="@string/regular_price_format" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

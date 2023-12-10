@@ -87,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        android:text="Service Mode"
+        android:text="@string/service_mode"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:text="Dine in"
+            android:text="@string/dine_in"
             android:textSize="15sp" />
 
         <RadioButton
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="64dp"
             android:minHeight="48dp"
-            android:text="Take out"
+            android:text="@string/take_out"
             android:textSize="15sp" />
 
     </RadioGroup>
@@ -129,7 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        android:text="Payment Method"
+        android:text="@string/payment_method"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:text="Cash"
+            android:text="@string/cash"
             android:textSize="15sp" />
 
         <RadioButton
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="75dp"
             android:minHeight="48dp"
-            android:text="GCash"
+            android:text="@string/gcash"
             android:textSize="15sp" />
 
     </RadioGroup>
@@ -180,7 +180,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="Order No. 2023-01"
+        android:text="@string/order_no_2023_01"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -195,7 +195,7 @@
         android:layout_marginEnd="30dp"
         android:background="@drawable/background_white_border_green"
         android:paddingHorizontal="16dp"
-        android:text="Place Order - ₱0.00"
+        android:text="@string/place_order_0_00"
         android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="@+id/bottomRectangleView"
         app:layout_constraintEnd_toEndOf="@+id/bottomRectangleView"

@@ -69,7 +69,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/cart"
         android:layout_width="wrap_content"
@@ -78,7 +77,8 @@
         app:elevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:srcCompat="@drawable/cart" />
+        app:srcCompat="@drawable/cart"
+        android:contentDescription="@string/cart_items" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
