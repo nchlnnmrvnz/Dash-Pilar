@@ -61,22 +61,24 @@
         android:layout_height="150dp"
         android:layout_margin="16dp"
         android:layout_marginStart="120dp"
+        android:contentDescription="@string/item_picture"
         android:src="@drawable/dash_latte"
         app:layout_constraintBottom_toBottomOf="@+id/itemInfoRectangleView"
         app:layout_constraintStart_toStartOf="@+id/itemInfoRectangleView"
         app:layout_constraintTop_toTopOf="@+id/itemInfoRectangleView"
-        app:layout_constraintVertical_bias="0.175"
-        android:contentDescription="@string/item_picture" />
+        app:layout_constraintVertical_bias="0.175" />
 
     <TextView
         android:id="@+id/itemName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/dash_latte"
         android:textColor="@color/black"
         android:textSize="30sp"
+        android:layout_marginEnd="16dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/itemInfoRectangleView"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
@@ -93,16 +95,14 @@
     <TextView
         android:id="@+id/itemDescription"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="wrap_content"
         android:text=""
+        android:layout_marginEnd="16dp"
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/itemInfoRectangleView"
-        app:layout_constraintStart_toStartOf="@+id/itemPrice"
-        app:layout_constraintTop_toBottomOf="@+id/itemPrice" />
+        app:layout_constraintStart_toStartOf="@+id/itemPrice" />
 
     <!--ScrollView for Item Customization-->
     <ScrollView
@@ -371,52 +371,52 @@
         android:id="@+id/minusQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/icon_to_decrement_quantity"
         android:src="@drawable/minus"
         app:layout_constraintBottom_toBottomOf="@+id/editText"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/editText"
-        android:contentDescription="@string/icon_to_decrement_quantity" />
+        app:layout_constraintTop_toTopOf="@+id/editText" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="100dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
+        android:autofillHints=""
         android:background="@drawable/background_white_border_green"
         android:gravity="center"
+        android:hint="@string/item_quantity"
         android:inputType="number"
         android:padding="4dp"
         android:text="@string/_1"
-        android:hint="@string/item_quantity"
         app:layout_constraintBottom_toBottomOf="@+id/bottomRectangleView"
         app:layout_constraintHeight_min="48dp"
         app:layout_constraintStart_toEndOf="@+id/minusQuantity"
-        app:layout_constraintTop_toTopOf="@+id/bottomRectangleView"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="@+id/bottomRectangleView" />
 
     <ImageView
         android:id="@+id/addQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:contentDescription="@string/plus_icon_to_increment_quantity"
         android:src="@drawable/add"
         app:layout_constraintBottom_toBottomOf="@+id/editText"
         app:layout_constraintStart_toEndOf="@+id/editText"
-        app:layout_constraintTop_toTopOf="@+id/editText"
-        android:contentDescription="@string/plus_icon_to_increment_quantity" />
+        app:layout_constraintTop_toTopOf="@+id/editText" />
 
     <Button
         android:id="@+id/addOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        android:text="@string/add_to_cart_0_00"
-        android:paddingHorizontal="16dp"
-        android:textColor="@color/green"
         android:background="@drawable/background_white_border_green"
-        app:layout_constraintHeight_min="32dp"
+        android:paddingHorizontal="16dp"
+        android:text="@string/add_to_cart_0_00"
+        android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="@+id/bottomRectangleView"
         app:layout_constraintEnd_toEndOf="@+id/bottomRectangleView"
+        app:layout_constraintHeight_min="32dp"
         app:layout_constraintTop_toTopOf="@+id/bottomRectangleView" />
 
     <androidx.constraintlayout.widget.Guideline
