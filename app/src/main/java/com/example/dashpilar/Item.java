@@ -50,7 +50,15 @@ public class Item {
         StringBuilder str = new StringBuilder();
 
         for(Map.Entry<String, Float> addOn : addOns.entrySet()) {
-            str.append(addOn.getKey()).append(", ");
+            String addOnStr;
+            switch(addOn.getKey()) {
+                case "Pearls": addOnStr = "P"; break;
+                case "Salty Cream": addOnStr = "SC"; break;
+                case "Crushed Oreo": addOnStr = "CO"; break;
+                case "Coffee Shot": addOnStr = "CS"; break;
+                default: addOnStr = "";
+            }
+            str.append(addOnStr).append(", ");
         }
 
         if (str.length() >= 2)

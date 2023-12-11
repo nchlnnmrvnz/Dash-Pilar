@@ -1,9 +1,11 @@
 package com.example.dashpilar;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Button;
@@ -32,7 +34,6 @@ import java.util.Locale;
 
 public class Cart extends AppCompatActivity implements PriceUpdateListener {
     static ArrayList<ItemOrder> cartList = new ArrayList<>();
-    static String orderNumber = "";
     Button place_order;
 
     @Override
@@ -130,40 +131,66 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         float subTotal = 0.00f;
 
         for (int i = 0; i < cartList.size(); i++){
-            itemList.append("[L]").append(cartList.get(i).getName());
-            itemList.append("[R]").append(cartList.get(i).calculatePrice()).append("\n");
+            itemList.append("[L]").append(cartList.get(i).getQuantity()).append("x ").append(cartList.get(i).getName());
+            itemList.append("[R]").append(String.format(Locale.getDefault(), "%.2f\n", cartList.get(i).calculatePrice()));
+            itemList.append("[L]   -").append(cartList.get(i).getSugarLevel()).append("% sugar\n");
             itemList.append("[L]   -").append(cartList.get(i).getAddOnString()).append("\n");
             subTotal += cartList.get(i).calculatePrice();
         }
 
         float total = subTotal;
-        char pesoSign = '\u20B1';
-        char enye = '\u00F1';
 
-        return printer.addTextToPrint(
-                "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo_with_green_text, DisplayMetrics.DENSITY_MEDIUM))+"</img>\n" +
-                "[C]Dash Coffee Pilar - Las Pi" + enye + "as\n" +
+        String textToPrint = "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo_with_green_text, DisplayMetrics.DENSITY_MEDIUM))+"</img>\n" +
+                "[C]Dash Coffee Pilar - Las Pinas\n" +
                 "[C]19 St. Joseph St., Almanza Uno,\n" +
-                "[C]Las Pi" + enye + "as, 1750 Metro Manila\n" +
-            "[L]\n" +
-            "[L]Date: " + formattedDate + "\n" +
-            "[L]Time: " + formattedTime + "\n" +
-            "[L]Service Mode: Dine in\n" +
+                "[C]Las Pinas, 1750 Metro Manila\n" +
+                "[L]\n" +
+                "[L]Date: " + formattedDate + "\n" +
+                "[L]Time: " + formattedTime + "\n" +
+                "[L]Service Mode: Dine in\n" +
                 "[C]\n" +
-            "[L]Order No.: " + orderNumber + "\n" +
-            itemList +
+                "[L]Order No.: " + generateOrderNumber() + "\n" +
+                itemList +
                 "[C]\n" +
-                    String.format(Locale.getDefault(), "[R]Subtotal: [R]%c%.2f", pesoSign, subTotal) +
-                    String.format(Locale.getDefault(),"[R]TOTAL: [R]%c%.2f", pesoSign, total) +
-                    "[R]Payment Method: [R]Cash\n" +
+                String.format(Locale.getDefault(), "[R]Subtotal: [R]%.2f\n", subTotal) +
+                String.format(Locale.getDefault(),"[R]TOTAL: [R]%.2f\n", total) +
+                "[R]Payment Method: [R]Cash\n" +
                 "[C]\n" +
                 "[C]Thank you for ordering!\n" +
                 "[C]\n" +
                 "[C]This is not an official receipt" +
                 "[C]\n  " +
                 "[C]\n  " +
-                "[C]\n  "
-        );
+                "[C]\n  ";
+
+        System.out.println(textToPrint);
+        return printer.addTextToPrint(textToPrint);
+    }
+
+    public String generateOrderNumber() {
+        String orderNumber;
+
+        DateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+        String currentYear = yearFormat.format(Calendar.getInstance().getTime());
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int lastUsedNumber = sharedPreferences.getInt("last_used_order_number", 0);
+
+        int newOrderNumber;
+        String lastUsedYear = sharedPreferences.getString("last_used_year", "");
+        if (!lastUsedYear.equals(currentYear)) {
+            newOrderNumber = 1;
+        } else {
+            newOrderNumber = lastUsedNumber + 1;
+        }
+
+        orderNumber = currentYear + String.format(Locale.getDefault(), "%05d", newOrderNumber);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("last_used_order_number", newOrderNumber);
+        editor.putString("last_used_year", currentYear);
+        editor.apply();
+
+        return orderNumber;
     }
 
 

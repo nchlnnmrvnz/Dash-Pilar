@@ -68,6 +68,17 @@ public class AddItem extends AppCompatActivity {
                 createToast("Please select sugar level");
 
             else {
+                int sugarLevel = -1;
+                int checkedId = radioGroup.getCheckedRadioButtonId();
+
+                if (checkedId == R.id.noSugarOption) {
+                    sugarLevel = 0;
+                } else if (checkedId == R.id.halfSugarOption) {
+                    sugarLevel = 50;
+                } else if (checkedId == R.id.normalSugarOption) {
+                    sugarLevel = 100;
+                }
+
                 LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
                 for (CheckBox checkBox : checkBoxes) {
                     if (checkBox.isChecked()) {
@@ -77,7 +88,7 @@ public class AddItem extends AppCompatActivity {
                     }
                 }
                 ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
-                        selectedItem.getDescription(), selectedItem.getImageResource(), addOns, quan.get());
+                        selectedItem.getDescription(), selectedItem.getImageResource(), addOns, quan.get(), sugarLevel);
                 Cart.cartList.add(order);
 
                 if (cartUpdateListener != null) {
