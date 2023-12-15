@@ -113,6 +113,11 @@ public class MainOrderMenu extends AppCompatActivity implements CartUpdateListen
     @Override
     public void onCartUpdate() {
         TextView cartQuantity = findViewById(R.id.cartQuantity);
-        cartQuantity.setText(String.valueOf(Cart.cartList.size()));
+
+        int numberOfOrders = 0;
+        for(ItemOrder order : Cart.cartList)
+            numberOfOrders += order.getQuantity();
+
+        cartQuantity.setText(String.valueOf(numberOfOrders));
     }
 }

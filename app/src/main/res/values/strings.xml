@@ -8,7 +8,7 @@
     <string name="order_summary">Order Summary</string>
     <string name="customize_order">Customize Order</string>
     <string name="_0">0</string>
-    <string name="add_ons">Add ons</string>
+    <string name="add_ons">Add Ons</string>
     <string name="add_quantity">Add quantity</string>
     <string name="subtract_quantity">Subtract quantity</string>
     <string name="add_order">ADD ORDER</string>
@@ -47,4 +47,6 @@
     <string name="gcash">GCash</string>
     <string name="payment_method">Payment Method</string>
     <string name="place_order_0_00">Place Order - ₱0.00</string>
+    <string name="with">With</string>
+    <string name="without">Without</string>
 </resources>

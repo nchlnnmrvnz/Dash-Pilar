@@ -10,6 +10,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,11 +37,17 @@ import java.util.Locale;
 public class Cart extends AppCompatActivity implements PriceUpdateListener {
     static ArrayList<ItemOrder> cartList = new ArrayList<>();
     Button place_order;
+    String currentOrderNumber;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        currentOrderNumber = getCurrentOrderNumber();
+        TextView orderNumberTextView = findViewById(R.id.orderNumber);
+        orderNumberTextView.setText("Order no. " + currentOrderNumber);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -50,7 +58,16 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         recyclerView.setAdapter(adapter);
 
         place_order = findViewById(R.id.placeOrder);
-        place_order.setOnClickListener(v -> printBluetooth());
+        place_order.setOnClickListener(v -> {
+            if(!cartList.isEmpty()) {
+                printBluetooth();
+                Cart.cartList = new ArrayList<>();
+                generateNewOrderNumber();
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+            else
+                createToast();
+        });
 
         ImageView goBack = findViewById(R.id.back);
         goBack.setOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
@@ -149,7 +166,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                 "[L]Time: " + formattedTime + "\n" +
                 "[L]Service Mode: Dine in\n" +
                 "[C]\n" +
-                "[L]Order No.: " + generateOrderNumber() + "\n" +
+                "[L]Order No.: " + currentOrderNumber + "\n" +
                 itemList +
                 "[C]\n" +
                 String.format(Locale.getDefault(), "[R]Subtotal: [R]%.2f\n", subTotal) +
@@ -167,9 +184,28 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         return printer.addTextToPrint(textToPrint);
     }
 
-    public String generateOrderNumber() {
+    public String getCurrentOrderNumber() {
         String orderNumber;
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String lastUsedYear = sharedPreferences.getString("last_used_year", "");
+
+        if(lastUsedYear.equals("")) {
+            DateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+            lastUsedYear = yearFormat.format(Calendar.getInstance().getTime());
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("last_used_year", lastUsedYear);
+            editor.apply();
+        }
+
+        int currentOrderNumber = sharedPreferences.getInt("last_used_order_number", 1);
+
+        orderNumber = lastUsedYear + "-" + String.format(Locale.getDefault(), "%05d", currentOrderNumber);
+        return orderNumber;
+    }
+
+    public void generateNewOrderNumber() {
         DateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
         String currentYear = yearFormat.format(Calendar.getInstance().getTime());
 
@@ -184,13 +220,10 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
             newOrderNumber = lastUsedNumber + 1;
         }
 
-        orderNumber = currentYear + String.format(Locale.getDefault(), "%05d", newOrderNumber);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("last_used_order_number", newOrderNumber);
         editor.putString("last_used_year", currentYear);
+        editor.putInt("last_used_order_number", newOrderNumber);
         editor.apply();
-
-        return orderNumber;
     }
 
 
@@ -201,5 +234,14 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
             totalPrice += order.calculatePrice();
         }
         place_order.setText(String.format(Locale.getDefault(), "Place Order - ₱%.2f", totalPrice));
+    }
+
+    void createToast() {
+        if (toast != null) {
+            toast.cancel();
+        }
+
+        toast = Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

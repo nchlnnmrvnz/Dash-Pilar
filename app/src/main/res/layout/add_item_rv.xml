@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!--Category Rectangle View-->
+    <View
+        android:id="@+id/categoryRectangleView"
+        android:layout_width="0dp"
+        android:layout_height="170dp"
+        android:background="@drawable/round_button_with_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/categoryName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="16dp"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/categoryRectangleView"
+        app:layout_constraintTop_toTopOf="@+id/categoryRectangleView" />
+
+    <TextView
+        android:id="@+id/categoryRequired"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="16dp"
+        android:text="@string/required"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/categoryName"
+        app:layout_constraintEnd_toEndOf="@+id/categoryRectangleView"
+        app:layout_constraintTop_toTopOf="@+id/categoryName" />
+
+    <!--Category Options-->
+    <RadioGroup
+        android:id="@+id/categoryRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/categoryName"
+        app:layout_constraintTop_toBottomOf="@+id/categoryName">
+
+        <RadioButton
+            android:id="@+id/withOption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/with"
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/withoutOption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/without"
+            android:textSize="15sp" />
+    </RadioGroup>
+
+    <!--Category Option Fees-->
+    <TextView
+        android:id="@+id/withOptionFee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_0_00"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/withoutOptionFee"
+        app:layout_constraintEnd_toEndOf="@+id/categoryRequired"
+        app:layout_constraintTop_toTopOf="@+id/categoryRadioGroup" />
+
+    <TextView
+        android:id="@+id/withoutOptionFee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_0_00"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/categoryRadioGroup"
+        app:layout_constraintEnd_toEndOf="@+id/withOptionFee"
+        app:layout_constraintTop_toBottomOf="@+id/withOptionFee" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
