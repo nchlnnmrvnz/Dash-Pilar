@@ -46,7 +46,7 @@
     <string name="cash">Cash</string>
     <string name="gcash">GCash</string>
     <string name="payment_method">Payment Method</string>
-    <string name="place_order_0_00">Place Order - ₱0.00</string>
+    <string name="place_order_0_00">Place Order — ₱0.00</string>
     <string name="with">With</string>
     <string name="without">Without</string>
 </resources>

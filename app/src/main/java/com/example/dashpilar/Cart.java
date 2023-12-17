@@ -151,7 +151,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
             itemList.append("[L]").append(cartList.get(i).getQuantity()).append("x ").append(cartList.get(i).getName());
             itemList.append("[R]").append(String.format(Locale.getDefault(), "%.2f\n", cartList.get(i).calculatePrice()));
             itemList.append("[L]   -").append(cartList.get(i).getSugarLevel()).append("% sugar\n");
-            itemList.append("[L]   -").append(cartList.get(i).getAddOnString()).append("\n");
+            itemList.append("[L]   -").append(cartList.get(i).getCheckedAddOnString()).append("\n");
             subTotal += cartList.get(i).calculatePrice();
         }
 

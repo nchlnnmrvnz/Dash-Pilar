@@ -1,5 +1,6 @@
 package com.example.dashpilar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -59,38 +60,22 @@ public class AddItem extends AppCompatActivity {
             updatePrice();
         });
 
+        boolean editItem = getIntent().getBooleanExtra("edit_item", false);
+        int position = getIntent().getIntExtra("item_position", -1);
+        if(editItem)
+            initializeOrder(Cart.cartList.get(position));
+
         Button addOrderButton = findViewById(R.id.addOrder);
         addOrderButton.setOnClickListener(view -> {
-            RadioGroup radioGroup = findViewById(R.id.radioGroup);
+            ItemOrder order = getOrder(quan);
 
-            if(radioGroup.getCheckedRadioButtonId() == -1)
-                createToast("Please select sugar level");
-
-            else {
-                int sugarLevel = -1;
-                int checkedId = radioGroup.getCheckedRadioButtonId();
-
-                if (checkedId == R.id.noSugarOption) {
-                    sugarLevel = 0;
-                } else if (checkedId == R.id.halfSugarOption) {
-                    sugarLevel = 50;
-                } else if (checkedId == R.id.normalSugarOption) {
-                    sugarLevel = 100;
+            if(!(order == null)) {
+                if(editItem) {
+                    Cart.cartList.set(position, order);
+                    startActivity(new Intent(this, Cart.class));
                 }
-
-                LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
-                for (CheckBox checkBox : checkBoxes) {
-                    if (checkBox.isChecked()) {
-                        String addOnName = checkBox.getText().toString();
-                        float price = selectedItem.getAddOns().get(addOnName);
-                        addOns.put(addOnName, price);
-                    }
-                }
-                ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
-                        selectedItem.getDescription(), selectedItem.getImageResource(), addOns, quan.get(), sugarLevel);
-                Cart.cartList.add(order);
-
-                createToast("Successfully added order!");
+                else
+                    Cart.cartList.add(order);
                 finish();
             }
         });
@@ -104,6 +89,66 @@ public class AddItem extends AppCompatActivity {
 
             updatePrice();
         });
+    }
+
+    void initializeOrder(ItemOrder order) {
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+
+        switch(order.getSugarLevel()) {
+            case 0:
+                radioGroup.check(R.id.noSugarOption);
+                break;
+            case 50:
+                radioGroup.check(R.id.halfSugarOption);
+                break;
+            case 100:
+                radioGroup.check(R.id.normalSugarOption);
+                break;
+            default: createToast("Can't find sugar level!");
+        }
+
+        for (CheckBox checkBox : checkBoxes) {
+            if (order.getCheckedAddOns().containsKey(checkBox.getText().toString())) {
+                checkBox.setChecked(true);
+            }
+        }
+
+    }
+
+    ItemOrder getOrder(AtomicInteger quan) {
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+
+        if(radioGroup.getCheckedRadioButtonId() == -1)
+            createToast("Please select sugar level");
+
+        else {
+            int sugarLevel = -1;
+            int checkedId = radioGroup.getCheckedRadioButtonId();
+
+            if (checkedId == R.id.noSugarOption) {
+                sugarLevel = 0;
+            } else if (checkedId == R.id.halfSugarOption) {
+                sugarLevel = 50;
+            } else if (checkedId == R.id.normalSugarOption) {
+                sugarLevel = 100;
+            }
+
+            LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
+            for (CheckBox checkBox : checkBoxes) {
+                if (checkBox.isChecked()) {
+                    String addOnName = checkBox.getText().toString();
+                    float price = selectedItem.getAddOns().get(addOnName);
+                    addOns.put(addOnName, price);
+                }
+            }
+            ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
+                    selectedItem.getDescription(), selectedItem.getImageResource(), selectedItem.getAddOns(),
+                    addOns, quan.get(), sugarLevel);
+
+            createToast("Successfully added order!");
+            return order;
+        }
+        return null;
     }
 
     void updatePrice() {

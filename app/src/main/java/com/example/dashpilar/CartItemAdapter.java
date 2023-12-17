@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
     Context context;
@@ -33,7 +34,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
                 items.get(position).setQuantity(items.get(position).getQuantity() - 1);
 
             holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
-            holder.price.setText(String.format("₱%.2f", items.get(position).calculatePrice()));
+            holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
             if (priceUpdateListener != null) {
                 priceUpdateListener.onPriceUpdate();
             }
@@ -43,7 +44,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
             items.get(position).setQuantity(items.get(position).getQuantity() + 1);
 
             holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
-            holder.price.setText(String.format("₱%.2f", items.get(position).calculatePrice()));
+            holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
             if (priceUpdateListener != null) {
                 priceUpdateListener.onPriceUpdate();
             }
@@ -51,16 +52,20 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
 
         holder.itemImage.setImageResource(items.get(position).getImageResource());
         holder.name.setText(items.get(position).getName());
-        holder.price.setText(String.format("₱%.2f", items.get(position).calculatePrice()));
+        holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
         if (priceUpdateListener != null) {
             priceUpdateListener.onPriceUpdate();
         }
-        holder.addOnItems.setText(items.get(position).getAddOnString());
+        holder.addOnItems.setText(items.get(position).getCheckedAddOnString());
         holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
 
         holder.editButton.setOnClickListener(v -> {
             AddItem.selectedItem = items.get(position);
-            context.startActivity(new Intent(context, AddItem.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            Intent intent = new Intent(context, AddItem.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("edit_item", true);
+            intent.putExtra("item_position", position);
+            context.startActivity(intent);
         });
     }
 

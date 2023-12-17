@@ -43,7 +43,6 @@ public class MainOrderMenu extends AppCompatActivity {
 
                 runOnUiThread(() -> cartQuantity.setText(String.valueOf(totalOrders.get())));
 
-
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -61,7 +60,7 @@ public class MainOrderMenu extends AppCompatActivity {
 
         FrameLayout cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> {
-            if(Cart.cartList.size() == 0)
+            if (Cart.cartList.size() == 0)
                 createToast();
 
             startActivity(new Intent(this, Cart.class));
@@ -96,6 +95,7 @@ public class MainOrderMenu extends AppCompatActivity {
         recyclerView.setId(View.generateViewId());
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(new ItemAdapter(getApplicationContext(), items));
 
         constraintLayout.addView(textView);
@@ -104,11 +104,9 @@ public class MainOrderMenu extends AppCompatActivity {
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
 
-        // Set constraints using ConstraintSet
         constraintSet.connect(textView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        if (lastTextView != null) {
+        if (lastTextView != null)
             constraintSet.connect(textView.getId(), ConstraintSet.TOP, lastRecyclerView.getId(), ConstraintSet.BOTTOM);
-        }
 
         constraintSet.connect(recyclerView.getId(), ConstraintSet.TOP, textView.getId(), ConstraintSet.BOTTOM);
         constraintSet.connect(recyclerView.getId(), ConstraintSet.START, scrollView.getId(), ConstraintSet.START);

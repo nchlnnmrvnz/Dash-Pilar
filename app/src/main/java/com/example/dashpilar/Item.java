@@ -1,7 +1,6 @@
 package com.example.dashpilar;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class Item {
     private String name;
@@ -44,29 +43,6 @@ public class Item {
 
     public LinkedHashMap<String, Float> getAddOns() {
         return addOns;
-    }
-
-    public String getAddOnString() {
-        StringBuilder str = new StringBuilder();
-
-        for(Map.Entry<String, Float> addOn : addOns.entrySet()) {
-            String addOnStr;
-            switch(addOn.getKey()) {
-                case "Pearls": addOnStr = "P"; break;
-                case "Salty Cream": addOnStr = "SC"; break;
-                case "Crushed Oreo": addOnStr = "CO"; break;
-                case "Coffee Shot": addOnStr = "CS"; break;
-                default: addOnStr = "";
-            }
-            str.append(addOnStr).append(", ");
-        }
-
-        if (str.length() >= 2)
-            str = new StringBuilder(str.substring(0, str.length() - 2));
-        else if(str.toString().equals(""))
-            str = new StringBuilder("No add ons");
-
-        return str.toString();
     }
 
     void setAddOns(LinkedHashMap<String, Float> addOns) {
