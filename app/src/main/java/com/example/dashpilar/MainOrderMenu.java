@@ -17,8 +17,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class MainOrderMenu extends AppCompatActivity implements CartUpdateListener {
+public class MainOrderMenu extends AppCompatActivity {
     RecyclerView lastRecyclerView = null;
     TextView lastTextView = null;
     private Toast toast;
@@ -28,9 +29,29 @@ public class MainOrderMenu extends AppCompatActivity implements CartUpdateListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_order_menu);
 
-        AddItem addItem = new AddItem();
-        addItem.setCartUpdateListener(this);
-        onCartUpdate();
+        TextView cartQuantity = findViewById(R.id.cartQuantity);
+
+        AtomicInteger totalOrders = new AtomicInteger(0);
+        Thread t = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                int numberOfOrders = 0;
+                for (ItemOrder order : Cart.cartList) {
+                    numberOfOrders += order.getQuantity();
+                }
+
+                totalOrders.set(numberOfOrders);
+
+                runOnUiThread(() -> cartQuantity.setText(String.valueOf(totalOrders.get())));
+
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        t.start();
 
         createScrollViewForCategory("Specialty Coffee", Constants.coffeeCollection);
         createScrollViewForCategory("Milktea with Pearls", Constants.milkteaCollection);
@@ -108,16 +129,5 @@ public class MainOrderMenu extends AppCompatActivity implements CartUpdateListen
 
         toast = Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT);
         toast.show();
-    }
-
-    @Override
-    public void onCartUpdate() {
-        TextView cartQuantity = findViewById(R.id.cartQuantity);
-
-        int numberOfOrders = 0;
-        for(ItemOrder order : Cart.cartList)
-            numberOfOrders += order.getQuantity();
-
-        cartQuantity.setText(String.valueOf(numberOfOrders));
     }
 }

@@ -1,6 +1,5 @@
 package com.example.dashpilar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,7 +19,7 @@ public class AddItem extends AppCompatActivity {
     static Item selectedItem;
     static ArrayList<CheckBox> checkBoxes;
     private Toast toast;
-    private CartUpdateListener cartUpdateListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,14 +90,7 @@ public class AddItem extends AppCompatActivity {
                         selectedItem.getDescription(), selectedItem.getImageResource(), addOns, quan.get(), sugarLevel);
                 Cart.cartList.add(order);
 
-                if (cartUpdateListener != null) {
-                    cartUpdateListener.onCartUpdate();
-                }
-
                 createToast("Successfully added order!");
-                Intent intent = new Intent(this, MainOrderMenu.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
                 finish();
             }
         });
@@ -112,10 +104,6 @@ public class AddItem extends AppCompatActivity {
 
             updatePrice();
         });
-    }
-
-    public void setCartUpdateListener(CartUpdateListener cartUpdateListener) {
-        this.cartUpdateListener = cartUpdateListener;
     }
 
     void updatePrice() {
