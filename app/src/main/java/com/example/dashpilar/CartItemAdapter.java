@@ -56,6 +56,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
         if (priceUpdateListener != null) {
             priceUpdateListener.onPriceUpdate();
         }
+        holder.sugarLevel.setText(items.get(position).getSugarLevel() + "% sugar");
         holder.addOnItems.setText(items.get(position).getCheckedAddOnString());
         holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
 

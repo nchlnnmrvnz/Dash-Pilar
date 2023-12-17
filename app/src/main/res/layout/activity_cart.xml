@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/ubuntu_bold"
         android:paddingHorizontal="8dp"
-        android:text="@string/customize_order"
+        android:text="@string/cart_items"
         android:textAlignment="textStart"
         android:textColor="@color/white"
         android:textSize="25sp"
@@ -44,8 +44,8 @@
         app:srcCompat="@drawable/white_back" />
 
     <!--Order Summary Recycler View-->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -68,7 +68,7 @@
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <!--Order Details Rectangle View-->
     <View

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "971970137164",
+    "project_id": "dash-coffee-pilar",
+    "storage_bucket": "dash-coffee-pilar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971970137164:android:b89552180fe6de1575f8e9",
+        "android_client_info": {
+          "package_name": "com.example.dashpilar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4jxy0m0oM246kLzPJrM6G3FMyYNRy3hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

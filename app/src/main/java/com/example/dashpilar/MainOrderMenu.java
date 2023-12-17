@@ -72,7 +72,7 @@ public class MainOrderMenu extends AppCompatActivity {
 
     private void createScrollViewForCategory(String category, ArrayList<Item> items) {
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutForRecyclerView);
-        NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
+        NestedScrollView scrollView = findViewById(R.id.scrollView);
 
         TextView textView = new TextView(this);
         textView.setId(View.generateViewId());

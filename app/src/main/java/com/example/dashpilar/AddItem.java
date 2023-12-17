@@ -54,6 +54,9 @@ public class AddItem extends AppCompatActivity {
         AtomicInteger quan = new AtomicInteger(1);
         quantity.setText(String.valueOf(quan.get()));
 
+        ImageView backButton = findViewById(R.id.back);
+        backButton.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
         ImageView incrementQuantity = findViewById(R.id.addQuantity);
         incrementQuantity.setOnClickListener(view -> {
             quantity.setText(String.valueOf(quan.incrementAndGet()));
@@ -72,10 +75,15 @@ public class AddItem extends AppCompatActivity {
             if(!(order == null)) {
                 if(editItem) {
                     Cart.cartList.set(position, order);
-                    startActivity(new Intent(this, Cart.class));
+
+                    Intent intent = new Intent(this, Cart.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
                 else
                     Cart.cartList.add(order);
+
                 finish();
             }
         });

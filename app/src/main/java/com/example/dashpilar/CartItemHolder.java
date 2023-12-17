@@ -14,6 +14,7 @@ public class CartItemHolder extends RecyclerView.ViewHolder {
     TextView name;
     TextView quantity;
     TextView price;
+    TextView sugarLevel;
     TextView addOnItems;
     ImageView editButton;
 
@@ -25,6 +26,7 @@ public class CartItemHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.itemName);
         quantity = itemView.findViewById(R.id.quantity);
         price = itemView.findViewById(R.id.itemPrice);
+        sugarLevel = itemView.findViewById(R.id.sugarLevel);
         addOnItems = itemView.findViewById(R.id.addOnItems);
         editButton = itemView.findViewById(R.id.editButton);
     }

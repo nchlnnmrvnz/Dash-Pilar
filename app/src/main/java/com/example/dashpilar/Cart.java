@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,8 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
     static ArrayList<ItemOrder> cartList = new ArrayList<>();
     Button place_order;
     String currentOrderNumber;
+    String serviceMode = null;
+    String paymentMethod = null;
     private Toast toast;
 
     @Override
@@ -59,6 +62,38 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
         place_order = findViewById(R.id.placeOrder);
         place_order.setOnClickListener(v -> {
+            RadioGroup serviceModeRadioGroup = findViewById(R.id.serviceModeRadioGroup);
+
+            if(serviceModeRadioGroup.getCheckedRadioButtonId() == -1) {
+                createToast("Select service mode!");
+                return;
+            }
+            else {
+                int checkedId = serviceModeRadioGroup.getCheckedRadioButtonId();
+
+                if (checkedId == R.id.dineInServiceModeOption) {
+                    serviceMode = "Dine In";
+                } else if (checkedId == R.id.takeOutServiceModeOption) {
+                    serviceMode = "Take out";
+                }
+            }
+
+            RadioGroup radioGroup = findViewById(R.id.paymentMethodRadioGroup);
+
+            if(radioGroup.getCheckedRadioButtonId() == -1) {
+                createToast("Select payment method!");
+                return;
+            }
+            else {
+                int checkedId = radioGroup.getCheckedRadioButtonId();
+
+                if (checkedId == R.id.cashPaymentMethodOption) {
+                    paymentMethod = "Cash";
+                } else if (checkedId == R.id.gcashPaymentMethodOption) {
+                    paymentMethod = "GCash";
+                }
+            }
+
             if(!cartList.isEmpty()) {
                 printBluetooth();
                 Cart.cartList = new ArrayList<>();
@@ -66,7 +101,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                 getOnBackPressedDispatcher().onBackPressed();
             }
             else
-                createToast();
+                createToast("Cart is empty!");
         });
 
         ImageView goBack = findViewById(R.id.back);
@@ -164,14 +199,14 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                 "[L]\n" +
                 "[L]Date: " + formattedDate + "\n" +
                 "[L]Time: " + formattedTime + "\n" +
-                "[L]Service Mode: Dine in\n" +
+                "[L]Service Mode: " + serviceMode +"\n" +
                 "[C]\n" +
                 "[L]Order No.: " + currentOrderNumber + "\n" +
                 itemList +
                 "[C]\n" +
                 String.format(Locale.getDefault(), "[R]Subtotal: [R]%.2f\n", subTotal) +
                 String.format(Locale.getDefault(),"[R]TOTAL: [R]%.2f\n", total) +
-                "[R]Payment Method: [R]Cash\n" +
+                "[R]Payment Method: [R]" + paymentMethod + "\n" +
                 "[C]\n" +
                 "[C]Thank you for ordering!\n" +
                 "[C]\n" +
@@ -236,12 +271,12 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         place_order.setText(String.format(Locale.getDefault(), "Place Order - ₱%.2f", totalPrice));
     }
 
-    void createToast() {
+    void createToast(String message) {
         if (toast != null) {
             toast.cancel();
         }
 
-        toast = Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT);
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
     }
 }
