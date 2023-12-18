@@ -50,7 +50,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
         currentOrderNumber = getCurrentOrderNumber();
         TextView orderNumberTextView = findViewById(R.id.orderNumber);
-        orderNumberTextView.setText("Order no. " + currentOrderNumber);
+        orderNumberTextView.setText(String.format(getResources().getString(R.string.order_no), currentOrderNumber));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -96,7 +96,12 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
             if(!cartList.isEmpty()) {
                 printBluetooth();
+
+                FirestoreSalesWriter fsw = new FirestoreSalesWriter();
+                fsw.writeToSalesCollection(currentOrderNumber, paymentMethod, serviceMode, cartList);
+
                 Cart.cartList = new ArrayList<>();
+
                 generateNewOrderNumber();
                 getOnBackPressedDispatcher().onBackPressed();
             }

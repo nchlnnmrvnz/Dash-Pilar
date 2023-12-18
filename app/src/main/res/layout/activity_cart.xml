@@ -47,8 +47,9 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/orderDetailsRectangleView"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/guideline_top">
@@ -62,8 +63,8 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:overScrollMode="never"
                 android:background="@drawable/background_white_border_green_less_rounded"
+                android:overScrollMode="never"
                 android:scrollbars="vertical" />
 
         </LinearLayout>
@@ -180,7 +181,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="@string/order_no_2023_01"
+        android:text="@string/order_no"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
