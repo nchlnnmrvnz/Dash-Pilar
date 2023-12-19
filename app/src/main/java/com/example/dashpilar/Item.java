@@ -17,6 +17,13 @@ public class Item {
         this.setAddOns(addOns);
     }
 
+    public Item (String name, float price, String description, int imageResource) {
+        this.setName(name);
+        this.setPrice(price);
+        this.setDescription(description);
+        this.setImageResource(imageResource);
+    }
+
     public String getName() {
         return name;
     }

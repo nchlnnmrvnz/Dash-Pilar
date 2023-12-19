@@ -57,6 +57,8 @@ public class MainOrderMenu extends AppCompatActivity {
         createScrollViewForCategory("Dessert with Salty Cream", Constants.dessertCollection);
         createScrollViewForCategory("Blended Frappe", Constants.frappeCollection);
         createScrollViewForCategory("Hot Drinks", Constants.hotDrinksCollection);
+        createScrollViewForCategory("Croffles", Constants.crofflesCollection);
+        createScrollViewForCategory("Plain Combo", Constants.plainCroffleComboCollection);
 
         FrameLayout cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> {
