@@ -8,29 +8,16 @@ public class Item {
     private float price;
     private String description;
     private int imageResource;
-    private ArrayList<Item> drinkChoices = new ArrayList<>();
+    private boolean sugarLevelSelectable;
     private LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
+    private ArrayList<Item> drinkChoices = new ArrayList<>();
 
-    public Item (String name, float price, String description, int imageResource, LinkedHashMap<String, Float> addOns) {
+    public Item (String name, float price, String description, int imageResource, boolean sugarLevelSelectable, LinkedHashMap<String, Float> addOns, ArrayList<Item> drinkChoices) {
         this.setName(name);
         this.setPrice(price);
         this.setDescription(description);
         this.setImageResource(imageResource);
-        this.setAddOns(addOns);
-    }
-
-    public Item (String name, float price, String description, int imageResource) {
-        this.setName(name);
-        this.setPrice(price);
-        this.setDescription(description);
-        this.setImageResource(imageResource);
-    }
-
-    public Item (String name, float price, String description, int imageResource, LinkedHashMap<String, Float> addOns, ArrayList<Item> drinkChoices) {
-        this.setName(name);
-        this.setPrice(price);
-        this.setDescription(description);
-        this.setImageResource(imageResource);
+        this.setSugarLevelSelectable(sugarLevelSelectable);
         this.setAddOns(addOns);
         this.setDrinkChoices(drinkChoices);
     }
@@ -81,5 +68,13 @@ public class Item {
 
     private void setDrinkChoices(ArrayList<Item> drinkChoices) {
         this.drinkChoices = drinkChoices;
+    }
+
+    public boolean isSugarLevelSelectable() {
+        return sugarLevelSelectable;
+    }
+
+    public void setSugarLevelSelectable(boolean sugarLevelSelectable) {
+        this.sugarLevelSelectable = sugarLevelSelectable;
     }
 }

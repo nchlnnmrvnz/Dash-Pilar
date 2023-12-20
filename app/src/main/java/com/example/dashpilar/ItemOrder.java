@@ -1,5 +1,6 @@
 package com.example.dashpilar;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -8,8 +9,10 @@ public class ItemOrder extends Item {
     private int sugarLevel;
     private LinkedHashMap<String, Float> checkedAddOns = new LinkedHashMap<>();
 
-    public ItemOrder (String name, float price, String description, int imageResource, LinkedHashMap<String, Float> addOns, LinkedHashMap<String, Float> checkedAddOns, int quantity, int sugarLevel) {
-        super(name, price, description, imageResource, addOns);
+    public ItemOrder (String name, float price, String description, int imageResource, boolean sugarLevelSelectable,
+                      LinkedHashMap<String, Float> addOns, ArrayList<Item> drinkChoices,
+                      LinkedHashMap<String, Float> checkedAddOns, int quantity, int sugarLevel) {
+        super(name, price, description, imageResource, sugarLevelSelectable, addOns, drinkChoices);
         this.setQuantity(quantity);
         this.setSugarLevel(sugarLevel);
         this.setCheckedAddOns(checkedAddOns);

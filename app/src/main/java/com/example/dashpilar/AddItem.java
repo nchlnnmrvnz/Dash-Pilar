@@ -2,14 +2,18 @@ package com.example.dashpilar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddItem extends AppCompatActivity {
     static Item selectedItem;
+    static RadioGroup drinkChoiceRadioGroup;
     static ArrayList<CheckBox> checkBoxes;
     private Toast toast;
 
@@ -26,16 +31,87 @@ public class AddItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        //checkBoxes = new ArrayList<>();
-        //checkBoxes.add(findViewById(R.id.addOnPearlsOption));
-        //checkBoxes.get(0).setOnClickListener(v -> updatePrice());
-        //checkBoxes.add(findViewById(R.id.addOnSaltyCreamOption));
-//        checkBoxes.get(1).setOnClickListener(v -> updatePrice());
-//        checkBoxes.add(findViewById(R.id.addOnCrushedOreoOption));
-//        checkBoxes.get(2).setOnClickListener(v -> updatePrice());
-//        checkBoxes.add(findViewById(R.id.addOnCoffeeShotOption));
-//        checkBoxes.get(3).setOnClickListener(v -> updatePrice());
-//        updatePrice();
+        drinkChoiceRadioGroup = new RadioGroup(this);
+        drinkChoiceRadioGroup.removeAllViews();
+        checkBoxes = new ArrayList<>();
+        TextView quantity = findViewById(R.id.editText);
+        Button addOrderButton = findViewById(R.id.addOrder);
+
+        LinearLayout drinkChoicesRectangleView = findViewById(R.id.drinkChoicesRectangleView);
+        RecyclerView drinkChoicesRecyclerView = findViewById(R.id.drinkChoicesRecyclerView);
+
+        LinearLayout addOnsRectangle = findViewById(R.id.addOnsRectangleView);
+        RecyclerView recyclerView = findViewById(R.id.addOnsRecyclerView);
+
+        if(selectedItem.getDrinkChoices() == null)
+            drinkChoicesRectangleView.setVisibility(View.GONE);
+        else {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            drinkChoicesRecyclerView.setLayoutManager(linearLayoutManager);
+
+            DrinkChoiceAdapter adapter = new DrinkChoiceAdapter(this, selectedItem.getDrinkChoices());
+            drinkChoicesRecyclerView.setAdapter(adapter);
+        }
+
+        if(!selectedItem.isSugarLevelSelectable()) {
+            View v = findViewById(R.id.sugarLevelRectangleView);
+            v.setVisibility(View.GONE);
+
+            v = findViewById(R.id.sugarLevel);
+            v.setVisibility(View.GONE);
+
+            v = findViewById(R.id.required);
+            v.setVisibility(View.GONE);
+
+            v = findViewById(R.id.radioGroup);
+            v.setVisibility(View.GONE);
+
+            v = findViewById(R.id.noSugarAddOnFee);
+            v.setVisibility(View.GONE);
+
+            v = findViewById(R.id.halfSugarAddOnFee);
+            v.setVisibility(View.GONE);
+
+            v = findViewById(R.id.normalSugarAddOnFee);
+            v.setVisibility(View.GONE);
+        }
+
+        if(selectedItem.getAddOns() == null)
+            addOnsRectangle.setVisibility(View.GONE);
+        else {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            AddOnsAdapter adapter = new AddOnsAdapter(this, selectedItem.getAddOns());
+            recyclerView.setAdapter(adapter);
+        }
+
+        Thread t = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                String addOrderFormat = "ADD TO CART - ₱%.2f";
+                float itemTotal = selectedItem.getPrice();
+
+                if(!(selectedItem.getAddOns() == null)) {
+                    for (CheckBox checkBox : checkBoxes) {
+                        if (checkBox.isChecked()) {
+                            itemTotal += selectedItem.getAddOns().get(checkBox.getText().toString());
+                        }
+                    }
+                }
+
+                float finalItemTotal = itemTotal;
+                runOnUiThread(() -> addOrderButton.setText(String.format(Locale.getDefault(), addOrderFormat,
+                        finalItemTotal * Integer.parseInt(quantity.getText().toString()))));
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        t.start();
+
 
         ImageView imageView = findViewById(R.id.imageView);
         imageView.setImageResource(selectedItem.getImageResource());
@@ -50,7 +126,6 @@ public class AddItem extends AppCompatActivity {
         TextView itemDescription = findViewById(R.id.itemDescription);
         itemDescription.setText(selectedItem.getDescription());
 
-        TextView quantity = findViewById(R.id.editText);
         AtomicInteger quan = new AtomicInteger(1);
         quantity.setText(String.valueOf(quan.get()));
 
@@ -60,32 +135,32 @@ public class AddItem extends AppCompatActivity {
         ImageView incrementQuantity = findViewById(R.id.addQuantity);
         incrementQuantity.setOnClickListener(view -> {
             quantity.setText(String.valueOf(quan.incrementAndGet()));
-            updatePrice();
         });
 
-        boolean editItem = getIntent().getBooleanExtra("edit_item", false);
-        int position = getIntent().getIntExtra("item_position", -1);
-        if(editItem)
-            initializeOrder(Cart.cartList.get(position));
+        recyclerView.post(() -> {
+            boolean editItem = getIntent().getBooleanExtra("edit_item", false);
+            int position = getIntent().getIntExtra("item_position", -1);
+            if(editItem)
+                initializeOrder(Cart.cartList.get(position));
 
-        Button addOrderButton = findViewById(R.id.addOrder);
-        addOrderButton.setOnClickListener(view -> {
-            ItemOrder order = getOrder(quan);
+            addOrderButton.setOnClickListener(view -> {
+                ItemOrder order = getOrder(quan);
 
-            if(!(order == null)) {
-                if(editItem) {
-                    Cart.cartList.set(position, order);
+                if(!(order == null)) {
+                    if(editItem) {
+                        Cart.cartList.set(position, order);
 
-                    Intent intent = new Intent(this, Cart.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                        Intent intent = new Intent(this, Cart.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                    else
+                        Cart.cartList.add(order);
+
+                    finish();
                 }
-                else
-                    Cart.cartList.add(order);
-
-                finish();
-            }
+            });
         });
 
         ImageView decrementQuantity = findViewById(R.id.minusQuantity);
@@ -94,8 +169,6 @@ public class AddItem extends AppCompatActivity {
                 quantity.setText(String.valueOf(quan.decrementAndGet()));
             else
                 createToast("Quantity cannot be less than 1");
-
-            updatePrice();
         });
     }
 
@@ -125,12 +198,13 @@ public class AddItem extends AppCompatActivity {
 
     ItemOrder getOrder(AtomicInteger quan) {
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
+        int sugarLevel = -1;
+        LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
 
-        if(radioGroup.getCheckedRadioButtonId() == -1)
+        if(radioGroup.getCheckedRadioButtonId() == -1 && selectedItem.isSugarLevelSelectable())
             createToast("Please select sugar level");
 
         else {
-            int sugarLevel = -1;
             int checkedId = radioGroup.getCheckedRadioButtonId();
 
             if (checkedId == R.id.noSugarOption) {
@@ -141,7 +215,6 @@ public class AddItem extends AppCompatActivity {
                 sugarLevel = 100;
             }
 
-            LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
             for (CheckBox checkBox : checkBoxes) {
                 if (checkBox.isChecked()) {
                     String addOnName = checkBox.getText().toString();
@@ -149,29 +222,15 @@ public class AddItem extends AppCompatActivity {
                     addOns.put(addOnName, price);
                 }
             }
-            ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
-                    selectedItem.getDescription(), selectedItem.getImageResource(), selectedItem.getAddOns(),
-                    addOns, quan.get(), sugarLevel);
-
-            createToast("Successfully added order!");
-            return order;
         }
-        return null;
-    }
 
-    void updatePrice() {
-        Button addOrderButton = findViewById(R.id.addOrder);
-        String addOrderFormat = "ADD TO CART - ₱%.2f";
-        float itemTotal = selectedItem.getPrice();
-        for(CheckBox checkBox : checkBoxes) {
-            if(checkBox.isChecked()) {
-                itemTotal += selectedItem.getAddOns().get(checkBox.getText().toString());
-            }
-        }
-        TextView quantity = findViewById(R.id.editText);
-        addOrderButton.setText(String.format(Locale.getDefault(), addOrderFormat, itemTotal * Integer.parseInt(quantity.getText().toString())));
-    }
+        ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
+                selectedItem.getDescription(), selectedItem.getImageResource(), selectedItem.isSugarLevelSelectable(),
+                selectedItem.getAddOns(), selectedItem.getDrinkChoices(), addOns, quan.get(), sugarLevel);
 
+        createToast("Successfully added order!");
+        return order;
+    }
 
     void createToast(String message) {
         if (toast != null) {
