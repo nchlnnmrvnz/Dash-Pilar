@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
-    Context context;
-    ArrayList<Item> items;
+    private final Context context;
+    private final ArrayList<Item> items;
 
     public ItemAdapter(Context context, ArrayList<Item> items) {
         this.context = context;
@@ -27,9 +30,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        holder.image.setImageResource(items.get(position).getImageResource());
+        Picasso.get().load(items.get(position).getImageResource()).into(holder.image);
+
         holder.name.setText(items.get(position).getName());
-        holder.price.setText(String.format("₱%.2f", items.get(position).getPrice()));
+        holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).getPrice()));
         holder.materialCardView.setOnClickListener(v -> {
             AddItem.selectedItem = items.get(position);
             context.startActivity(new Intent(context, AddItem.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

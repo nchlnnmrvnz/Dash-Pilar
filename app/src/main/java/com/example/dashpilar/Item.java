@@ -1,5 +1,6 @@
 package com.example.dashpilar;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Item {
@@ -7,6 +8,7 @@ public class Item {
     private float price;
     private String description;
     private int imageResource;
+    private ArrayList<Item> drinkChoices = new ArrayList<>();
     private LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
 
     public Item (String name, float price, String description, int imageResource, LinkedHashMap<String, Float> addOns) {
@@ -22,6 +24,15 @@ public class Item {
         this.setPrice(price);
         this.setDescription(description);
         this.setImageResource(imageResource);
+    }
+
+    public Item (String name, float price, String description, int imageResource, LinkedHashMap<String, Float> addOns, ArrayList<Item> drinkChoices) {
+        this.setName(name);
+        this.setPrice(price);
+        this.setDescription(description);
+        this.setImageResource(imageResource);
+        this.setAddOns(addOns);
+        this.setDrinkChoices(drinkChoices);
     }
 
     public String getName() {
@@ -62,5 +73,13 @@ public class Item {
 
     private void setImageResource(int imageResource) {
         this.imageResource = imageResource;
+    }
+
+    public ArrayList<Item> getDrinkChoices() {
+        return drinkChoices;
+    }
+
+    private void setDrinkChoices(ArrayList<Item> drinkChoices) {
+        this.drinkChoices = drinkChoices;
     }
 }

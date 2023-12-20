@@ -26,16 +26,16 @@ public class AddItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        checkBoxes = new ArrayList<>();
-        checkBoxes.add(findViewById(R.id.addOnPearlsOption));
-        checkBoxes.get(0).setOnClickListener(v -> updatePrice());
-        checkBoxes.add(findViewById(R.id.addOnSaltyCreamOption));
-        checkBoxes.get(1).setOnClickListener(v -> updatePrice());
-        checkBoxes.add(findViewById(R.id.addOnCrushedOreoOption));
-        checkBoxes.get(2).setOnClickListener(v -> updatePrice());
-        checkBoxes.add(findViewById(R.id.addOnCoffeeShotOption));
-        checkBoxes.get(3).setOnClickListener(v -> updatePrice());
-        updatePrice();
+        //checkBoxes = new ArrayList<>();
+        //checkBoxes.add(findViewById(R.id.addOnPearlsOption));
+        //checkBoxes.get(0).setOnClickListener(v -> updatePrice());
+        //checkBoxes.add(findViewById(R.id.addOnSaltyCreamOption));
+//        checkBoxes.get(1).setOnClickListener(v -> updatePrice());
+//        checkBoxes.add(findViewById(R.id.addOnCrushedOreoOption));
+//        checkBoxes.get(2).setOnClickListener(v -> updatePrice());
+//        checkBoxes.add(findViewById(R.id.addOnCoffeeShotOption));
+//        checkBoxes.get(3).setOnClickListener(v -> updatePrice());
+//        updatePrice();
 
         ImageView imageView = findViewById(R.id.imageView);
         imageView.setImageResource(selectedItem.getImageResource());

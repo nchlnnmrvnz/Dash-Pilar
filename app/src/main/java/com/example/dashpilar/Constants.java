@@ -8,59 +8,20 @@ public class Constants {
     public static ArrayList<Item> milkteaCollection = new ArrayList<>();
     public static ArrayList<Item> dessertCollection = new ArrayList<>();
     public static ArrayList<Item> frappeCollection = new ArrayList<>();
-    public static ArrayList<Item> hotDrinksCollection = new ArrayList<>();
+    public static ArrayList<Item>
+
+
+            hotDrinksCollection = new ArrayList<>();
     public static ArrayList<Item> allItemsCollection = new ArrayList<>();
     public static ArrayList<Item> crofflesCollection = new ArrayList<>();
     public static ArrayList<Item> plainCroffleComboCollection = new ArrayList<>();
     public static LinkedHashMap<String, Float> drinkAddOnsCollection = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> specialtyCoffeeChoices = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> milkteaChoices = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> dessertChoices = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> frappeChoices = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Float> hotDrinkChoices = new LinkedHashMap<>();
 
     static {
         drinkAddOnsCollection.put("Pearls", 9.00f);
         drinkAddOnsCollection.put("Salty Cream", 9.00f);
         drinkAddOnsCollection.put("Crushed Oreo", 9.00f);
         drinkAddOnsCollection.put("Coffee Shot", 9.00f);
-
-        specialtyCoffeeChoices.put("Dash Latte", 0.00f);
-        specialtyCoffeeChoices.put("Cloud Latte", 0.00f);
-        specialtyCoffeeChoices.put("Cloud Seasalt", 0.00f);
-        specialtyCoffeeChoices.put("Spanish Latte", 0.00f);
-        specialtyCoffeeChoices.put("Macchiato", 0.00f);
-        specialtyCoffeeChoices.put("Sweet Americano", 0.00f);
-        specialtyCoffeeChoices.put("Dark Mocha", 0.00f);
-
-        milkteaChoices.put("Tokyo", 0.00f);
-        milkteaChoices.put("Sapporo", 0.00f);
-        milkteaChoices.put("Hokkaido", 0.00f);
-        milkteaChoices.put("Okinawa", 0.00f);
-        milkteaChoices.put("Nagoya", 0.00f);
-        milkteaChoices.put("Kyoto", 0.00f);
-        milkteaChoices.put("Osaka", 0.00f);
-
-        dessertChoices.put("Forrest Cake", 0.00f);
-        dessertChoices.put("Matcha Cream", 0.00f);
-        dessertChoices.put("Choco Nutty", 0.00f);
-        dessertChoices.put("Mango Dream", 0.00f);
-        dessertChoices.put("Dark Chocolate", 0.00f);
-        dessertChoices.put("Velvet Cake", 0.00f);
-
-        frappeChoices.put("Dark Forrest", 0.00f);
-        frappeChoices.put("Taro Cream", 0.00f);
-        frappeChoices.put("Red Chocolate", 0.00f);
-        frappeChoices.put("Vanilla Bean", 0.00f);
-        frappeChoices.put("Oreo Cream", 0.00f);
-        frappeChoices.put("Nutty Choco", 0.00f);
-
-        hotDrinkChoices.put("Dash Latte", 0.00f);
-        hotDrinkChoices.put("Spanish Latte", 0.00f);
-        hotDrinkChoices.put("Caramel Macchiato", 0.00f);
-        hotDrinkChoices.put("Matcha Latte", 0.00f);
-        hotDrinkChoices.put("Dark Chocolate", 0.00f);
-        hotDrinkChoices.put("Hazelnut", 0.00f);
 
         coffeeCollection.add(new Item("Dash Latte Coffee", 39.00f,
                 "A cold coffee-based signature latte drink",
@@ -178,19 +139,19 @@ public class Constants {
 
         plainCroffleComboCollection.add(new Item("Plain Croffle + Any Specialty Coffee", 99.00f,
                 "A combination of our sugar coated croffle with a choice of any specialty coffee",
-                R.drawable.croffle, specialtyCoffeeChoices));
+                R.drawable.croffle, drinkAddOnsCollection, coffeeCollection));
         plainCroffleComboCollection.add(new Item("Plain Croffle + Any Milktea Flavor", 99.00f,
                 "A combination of our sugar coated croffle with a choice of any milktea flavor with pearls",
-                R.drawable.croffle, milkteaChoices));
+                R.drawable.croffle, drinkAddOnsCollection, milkteaCollection));
         plainCroffleComboCollection.add(new Item("Plain Croffle + Any Dessert Flavor", 109.00f,
                 "A combination of our sugar coated croffle with a choice of any dessert with salty cream",
-                R.drawable.croffle, dessertChoices));
+                R.drawable.croffle, drinkAddOnsCollection, dessertCollection));
         plainCroffleComboCollection.add(new Item("Plain Croffle + Any Blended Frappe Flavor", 119.00f,
                 "A combination of our sugar coated croffle with a choice of any blended frappe flavor with whipped cream",
-                R.drawable.croffle, frappeChoices));
+                R.drawable.croffle, drinkAddOnsCollection, frappeCollection));
         plainCroffleComboCollection.add(new Item("Plain Croffle + Any Hot Drink", 109.00f,
                 "A combination of our sugar coated croffle with a choice of any hot drink flavor",
-                R.drawable.croffle, hotDrinkChoices));
+                R.drawable.croffle, drinkAddOnsCollection, hotDrinksCollection));
 
         allItemsCollection.addAll(coffeeCollection);
         allItemsCollection.addAll(milkteaCollection);
