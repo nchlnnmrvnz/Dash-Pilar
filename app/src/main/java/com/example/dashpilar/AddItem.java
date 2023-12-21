@@ -1,12 +1,14 @@
 package com.example.dashpilar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +40,6 @@ public class AddItem extends AppCompatActivity {
         Button addOrderButton = findViewById(R.id.addOrder);
 
         LinearLayout drinkChoicesRectangleView = findViewById(R.id.drinkChoicesRectangleView);
-        RecyclerView drinkChoicesRecyclerView = findViewById(R.id.drinkChoicesRecyclerView);
 
         LinearLayout addOnsRectangle = findViewById(R.id.addOnsRectangleView);
         RecyclerView recyclerView = findViewById(R.id.addOnsRecyclerView);
@@ -46,11 +47,65 @@ public class AddItem extends AppCompatActivity {
         if(selectedItem.getDrinkChoices() == null)
             drinkChoicesRectangleView.setVisibility(View.GONE);
         else {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            drinkChoicesRecyclerView.setLayoutManager(linearLayoutManager);
+            RadioGroup radioGroup = new RadioGroup(this);
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
+                    RadioGroup.LayoutParams.MATCH_PARENT,
+                    RadioGroup.LayoutParams.WRAP_CONTENT,
+                    1f
+            );
+            params.setMargins(64, 0, 64, 64);
+            radioGroup.setLayoutParams(params);
+            radioGroup.setId(View.generateViewId());
 
-            DrinkChoiceAdapter adapter = new DrinkChoiceAdapter(this, selectedItem.getDrinkChoices());
-            drinkChoicesRecyclerView.setAdapter(adapter);
+            LinearLayout linearLayout = new LinearLayout(this);
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            linearLayout.setPadding(0, 0, 64, 0);
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayout.setId(View.generateViewId());
+
+            LinearLayout textViewLinearLayout = new LinearLayout(this);
+            textViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            textViewLinearLayout.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
+            textViewLinearLayout.setOrientation(LinearLayout.VERTICAL);
+            textViewLinearLayout.setId(View.generateViewId());
+
+            boolean firstItem = true;
+            for (Item drink : selectedItem.getDrinkChoices()) {
+                RadioButton radioButton = new RadioButton(this);
+                radioButton.setText(drink.getName());
+                radioButton.setTextSize(15);
+                radioButton.setId(View.generateViewId());
+
+                TextView textView = new TextView(this);
+                textView.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
+                textView.setTextColor(Color.BLACK);
+                textView.setText(String.format(Locale.getDefault(), "+₱%.2f", 0f));
+                textView.setTextSize(15);
+
+                if(firstItem)
+                    textView.setPadding(0, 8, 0, 0);
+                else
+                    textView.setPadding(0, 24, 0, 0);
+                firstItem = false;
+
+                radioGroup.setLayoutParams(params);
+                textView.setId(View.generateViewId());
+
+                textViewLinearLayout.addView(textView);
+                radioGroup.addView(radioButton);
+            }
+            linearLayout.addView(radioGroup);
+            linearLayout.addView(textViewLinearLayout);
+            drinkChoicesRectangleView.addView(linearLayout);
         }
 
         if(!selectedItem.isSugarLevelSelectable()) {
@@ -133,9 +188,7 @@ public class AddItem extends AppCompatActivity {
         backButton.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         ImageView incrementQuantity = findViewById(R.id.addQuantity);
-        incrementQuantity.setOnClickListener(view -> {
-            quantity.setText(String.valueOf(quan.incrementAndGet()));
-        });
+        incrementQuantity.setOnClickListener(view -> quantity.setText(String.valueOf(quan.incrementAndGet())));
 
         recyclerView.post(() -> {
             boolean editItem = getIntent().getBooleanExtra("edit_item", false);

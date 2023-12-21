@@ -34,7 +34,7 @@ public class AddOnsAdapter extends RecyclerView.Adapter<AddOnsHolder> {
 
         holder.checkBox.setText(currentItem.getKey());
         AddItem.checkBoxes.add(holder.checkBox);
-        holder.price.setText(String.format(Locale.getDefault(), "₱%.2f", currentItem.getValue()));
+        holder.price.setText(String.format(Locale.getDefault(), "+₱%.2f", currentItem.getValue()));
     }
 
     @Override
