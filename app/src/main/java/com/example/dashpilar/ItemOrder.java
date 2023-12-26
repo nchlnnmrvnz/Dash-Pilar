@@ -52,23 +52,24 @@ public class ItemOrder extends Item {
     public String getCheckedAddOnString() {
         StringBuilder str = new StringBuilder();
 
-        for(Map.Entry<String, Float> addOn : checkedAddOns.entrySet()) {
-            String addOnStr;
-            switch(addOn.getKey()) {
-                case "Pearls": addOnStr = "P"; break;
-                case "Salty Cream": addOnStr = "SC"; break;
-                case "Crushed Oreo": addOnStr = "CO"; break;
-                case "Coffee Shot": addOnStr = "CS"; break;
-                default: addOnStr = "";
+        if (isSugarLevelSelectable()) {
+            for(Map.Entry<String, Float> addOn : checkedAddOns.entrySet()) {
+                String addOnStr;
+                switch(addOn.getKey()) {
+                    case "Pearls": addOnStr = "P"; break;
+                    case "Salty Cream": addOnStr = "SC"; break;
+                    case "Crushed Oreo": addOnStr = "CO"; break;
+                    case "Coffee Shot": addOnStr = "CS"; break;
+                    default: addOnStr = "";
+                }
+                str.append(addOnStr).append(", ");
             }
-            str.append(addOnStr).append(", ");
+
+            if (str.length() >= 2)
+                str = new StringBuilder(str.substring(0, str.length() - 2));
+            else if(str.toString().equals(""))
+                str = new StringBuilder("No add ons");
         }
-
-        if (str.length() >= 2)
-            str = new StringBuilder(str.substring(0, str.length() - 2));
-        else if(str.toString().equals(""))
-            str = new StringBuilder("No add ons");
-
         return str.toString();
     }
 

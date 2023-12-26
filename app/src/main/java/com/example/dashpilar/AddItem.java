@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddItem extends AppCompatActivity {
     static Item selectedItem;
-    static RadioGroup drinkChoiceRadioGroup;
+    RadioGroup drinkChoiceRadioGroup;
     static ArrayList<CheckBox> checkBoxes;
     private Toast toast;
 
@@ -193,9 +193,12 @@ public class AddItem extends AppCompatActivity {
         recyclerView.post(() -> {
             boolean editItem = getIntent().getBooleanExtra("edit_item", false);
             int position = getIntent().getIntExtra("item_position", -1);
-            if(editItem)
+            if(editItem) {
                 initializeOrder(Cart.cartList.get(position));
-
+                Intent intent = new Intent(this, AddItem.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("edit_item", false);
+                intent.putExtra("item_position", -1);
+            }
             addOrderButton.setOnClickListener(view -> {
                 ItemOrder order = getOrder(quan);
 
@@ -253,8 +256,8 @@ public class AddItem extends AppCompatActivity {
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         int sugarLevel = -1;
         LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
-
-        if(radioGroup.getCheckedRadioButtonId() == -1 && selectedItem.isSugarLevelSelectable())
+        ItemOrder order = null;
+        if (radioGroup.getCheckedRadioButtonId() == -1 && selectedItem.isSugarLevelSelectable())
             createToast("Please select sugar level");
 
         else {
@@ -275,13 +278,12 @@ public class AddItem extends AppCompatActivity {
                     addOns.put(addOnName, price);
                 }
             }
+            order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
+                    selectedItem.getDescription(), selectedItem.getImageResource(), selectedItem.isSugarLevelSelectable(),
+                    selectedItem.getAddOns(), selectedItem.getDrinkChoices(), addOns, quan.get(), sugarLevel);
+            createToast("Successfully added order!");
         }
 
-        ItemOrder order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
-                selectedItem.getDescription(), selectedItem.getImageResource(), selectedItem.isSugarLevelSelectable(),
-                selectedItem.getAddOns(), selectedItem.getDrinkChoices(), addOns, quan.get(), sugarLevel);
-
-        createToast("Successfully added order!");
         return order;
     }
 

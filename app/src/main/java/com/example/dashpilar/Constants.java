@@ -8,10 +8,7 @@ public class Constants {
     public static ArrayList<Item> milkteaCollection = new ArrayList<>();
     public static ArrayList<Item> dessertCollection = new ArrayList<>();
     public static ArrayList<Item> frappeCollection = new ArrayList<>();
-    public static ArrayList<Item>
-
-
-            hotDrinksCollection = new ArrayList<>();
+    public static ArrayList<Item> hotDrinksCollection = new ArrayList<>();
     public static ArrayList<Item> allItemsCollection = new ArrayList<>();
     public static ArrayList<Item> crofflesCollection = new ArrayList<>();
     public static ArrayList<Item> plainCroffleComboCollection = new ArrayList<>();
