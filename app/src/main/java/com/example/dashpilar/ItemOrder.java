@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ItemOrder extends Item {
+
+    private String getChosenDrink;
     private int quantity;
     private int sugarLevel;
     private LinkedHashMap<String, Float> checkedAddOns = new LinkedHashMap<>();
@@ -16,6 +18,15 @@ public class ItemOrder extends Item {
         this.setQuantity(quantity);
         this.setSugarLevel(sugarLevel);
         this.setCheckedAddOns(checkedAddOns);
+        this.setGetChosenDrink(null);
+    }
+
+    public String getChosenDrink() {
+        return getChosenDrink;
+    }
+
+    public void setGetChosenDrink(String getChosenDrink) {
+        this.getChosenDrink = getChosenDrink;
     }
 
     public int getQuantity() {

@@ -104,7 +104,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
                 generateNewOrderNumber();
                 getOnBackPressedDispatcher().onBackPressed();
-            }
+        }
             else
                 createToast("Cart is empty!");
         });
@@ -191,13 +191,23 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
             if(cartList.get(i).getQuantity() == 0)
                 continue;
 
-            itemList.append("[L]").append(cartList.get(i).getQuantity()).append("x ").append(cartList.get(i).getName());
+            if (cartList.get(i).getChosenDrink() != null) {
+                itemList.append("[L]").append(cartList.get(i).getQuantity()).append("x ").append("Plain Combo");
+            }
+            else
+                itemList.append("[L]").append(cartList.get(i).getQuantity()).append("x ").append(cartList.get(i).getName());
+
             itemList.append("[R]").append(String.format(Locale.getDefault(), "%.2f\n", cartList.get(i).calculatePrice()));
 
-            if(!(cartList.get(i).getSugarLevel() == -1))
+            if (cartList.get(i).getChosenDrink() != null)
+                itemList.append("[L]   -").append(cartList.get(i).getChosenDrink()).append("\n");
+
+            if (!(cartList.get(i).getSugarLevel() == -1))
                 itemList.append("[L]   -").append(cartList.get(i).getSugarLevel()).append("% sugar\n");
 
-            itemList.append("[L]   -").append(cartList.get(i).getCheckedAddOnString()).append("\n");
+            if (cartList.get(i).isSugarLevelSelectable())
+                itemList.append("[L]   -").append(cartList.get(i).getCheckedAddOnString()).append("\n");
+
             subTotal += cartList.get(i).calculatePrice();
         }
 
@@ -213,7 +223,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                 "[L]Service Mode: " + serviceMode +"\n" +
                 "[C]\n" +
                 "[L]Order No.: " + currentOrderNumber + "\n" +
-                itemList +
+                itemList + "\n" +
                 "[C]\n" +
                 String.format(Locale.getDefault(), "[R]Subtotal: [R]%.2f\n", subTotal) +
                 String.format(Locale.getDefault(),"[R]TOTAL: [R]%.2f\n", total) +

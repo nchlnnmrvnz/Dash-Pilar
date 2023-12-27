@@ -1,5 +1,6 @@
 package com.example.dashpilar;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -30,19 +31,46 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
     @Override
     public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
         holder.decrement.setOnClickListener(v -> {
-            if(items.get(position).getQuantity() > 0)
-                items.get(position).setQuantity(items.get(position).getQuantity() - 1);
-
+            items.get(position).setQuantity(items.get(position).getQuantity() - 1);
             holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
             holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
-            if (priceUpdateListener != null) {
+            if (priceUpdateListener != null)
                 priceUpdateListener.onPriceUpdate();
+
+            if (items.get(position).getQuantity() < 1) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage("Do you want to remove the item from the cart?")
+                        .setTitle("Confirm Removal");
+                builder.setPositiveButton("Yes", (dialog, which) -> {
+                    Cart.cartList.remove(position);
+                    if (priceUpdateListener != null)
+                        priceUpdateListener.onPriceUpdate();
+                    notifyDataSetChanged();
+                });
+
+                builder.setNegativeButton("No", (dialog, which) -> {
+                    items.get(position).setQuantity(items.get(position).getQuantity() + 1);
+                    holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
+                    holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
+                    if (priceUpdateListener != null)
+                        priceUpdateListener.onPriceUpdate();
+                });
+
+                builder.setOnCancelListener(dialog -> {
+                    items.get(position).setQuantity(items.get(position).getQuantity() + 1);
+                    holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
+                    holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
+                    if (priceUpdateListener != null)
+                        priceUpdateListener.onPriceUpdate();
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
         holder.increment.setOnClickListener(v -> {
             items.get(position).setQuantity(items.get(position).getQuantity() + 1);
-
             holder.quantity.setText(String.valueOf(items.get(position).getQuantity()));
             holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
             if (priceUpdateListener != null) {
@@ -51,11 +79,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
         });
 
         holder.itemImage.setImageResource(items.get(position).getImageResource());
-        holder.name.setText(items.get(position).getName());
+
+        if (!(items.get(position).getDrinkChoices() == null)) {
+            holder.name.setText(String.format(Locale.getDefault(), "%s Combo", items.get(position).getChosenDrink()));
+        } else
+            holder.name.setText(items.get(position).getName());
+
         holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).calculatePrice()));
-        if (priceUpdateListener != null) {
+        if (priceUpdateListener != null)
             priceUpdateListener.onPriceUpdate();
-        }
 
         if (items.get(position).isSugarLevelSelectable())
             holder.sugarLevel.setText(String.format(Locale.getDefault(), "%s%% sugar", items.get(position).getSugarLevel()));

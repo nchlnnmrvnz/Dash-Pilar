@@ -33,8 +33,6 @@ public class AddItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        drinkChoiceRadioGroup = new RadioGroup(this);
-        drinkChoiceRadioGroup.removeAllViews();
         checkBoxes = new ArrayList<>();
         TextView quantity = findViewById(R.id.editText);
         Button addOrderButton = findViewById(R.id.addOrder);
@@ -47,15 +45,15 @@ public class AddItem extends AppCompatActivity {
         if(selectedItem.getDrinkChoices() == null)
             drinkChoicesRectangleView.setVisibility(View.GONE);
         else {
-            RadioGroup radioGroup = new RadioGroup(this);
+            drinkChoiceRadioGroup = new RadioGroup(this);
             RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
                     RadioGroup.LayoutParams.MATCH_PARENT,
                     RadioGroup.LayoutParams.WRAP_CONTENT,
                     1f
             );
             params.setMargins(64, 0, 64, 64);
-            radioGroup.setLayoutParams(params);
-            radioGroup.setId(View.generateViewId());
+            drinkChoiceRadioGroup.setLayoutParams(params);
+            drinkChoiceRadioGroup.setId(View.generateViewId());
 
             LinearLayout linearLayout = new LinearLayout(this);
             linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -97,13 +95,13 @@ public class AddItem extends AppCompatActivity {
                     textView.setPadding(0, 24, 0, 0);
                 firstItem = false;
 
-                radioGroup.setLayoutParams(params);
+                drinkChoiceRadioGroup.setLayoutParams(params);
                 textView.setId(View.generateViewId());
 
                 textViewLinearLayout.addView(textView);
-                radioGroup.addView(radioButton);
+                drinkChoiceRadioGroup.addView(radioButton);
             }
-            linearLayout.addView(radioGroup);
+            linearLayout.addView(drinkChoiceRadioGroup);
             linearLayout.addView(textViewLinearLayout);
             drinkChoicesRectangleView.addView(linearLayout);
         }
@@ -229,19 +227,36 @@ public class AddItem extends AppCompatActivity {
     }
 
     void initializeOrder(ItemOrder order) {
-        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+        if (!(selectedItem.getDrinkChoices() == null)){
 
-        switch(order.getSugarLevel()) {
-            case 0:
-                radioGroup.check(R.id.noSugarOption);
-                break;
-            case 50:
-                radioGroup.check(R.id.halfSugarOption);
-                break;
-            case 100:
-                radioGroup.check(R.id.normalSugarOption);
-                break;
-            default: createToast("Can't find sugar level!");
+            for (int i = 0; i < drinkChoiceRadioGroup.getChildCount(); i++) {
+                View view = drinkChoiceRadioGroup.getChildAt(i);
+
+                if (view instanceof RadioButton) {
+                    RadioButton radioButton = (RadioButton) view;
+                    String text = radioButton.getText().toString();
+
+                    if (text.equals(order.getChosenDrink()))
+                        radioButton.setChecked(true);
+                }
+            }
+        }
+
+        if (order.isSugarLevelSelectable()) {
+            RadioGroup radioGroup = findViewById(R.id.radioGroup);
+            switch (order.getSugarLevel()) {
+                case 0:
+                    radioGroup.check(R.id.noSugarOption);
+                    break;
+                case 50:
+                    radioGroup.check(R.id.halfSugarOption);
+                    break;
+                case 100:
+                    radioGroup.check(R.id.normalSugarOption);
+                    break;
+                default:
+                    createToast("Can't find sugar level!");
+            }
         }
 
         for (CheckBox checkBox : checkBoxes) {
@@ -257,12 +272,13 @@ public class AddItem extends AppCompatActivity {
         int sugarLevel = -1;
         LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
         ItemOrder order = null;
-        if (radioGroup.getCheckedRadioButtonId() == -1 && selectedItem.isSugarLevelSelectable())
-            createToast("Please select sugar level");
 
+        if (drinkChoiceRadioGroup != null && drinkChoiceRadioGroup.getCheckedRadioButtonId() == -1 && !(selectedItem.getDrinkChoices() == null)) {
+            createToast("Please select a drink flavor");
+        } else if (radioGroup.getCheckedRadioButtonId() == -1 && selectedItem.isSugarLevelSelectable())
+            createToast("Please select sugar level");
         else {
             int checkedId = radioGroup.getCheckedRadioButtonId();
-
             if (checkedId == R.id.noSugarOption) {
                 sugarLevel = 0;
             } else if (checkedId == R.id.halfSugarOption) {
@@ -281,8 +297,16 @@ public class AddItem extends AppCompatActivity {
             order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),
                     selectedItem.getDescription(), selectedItem.getImageResource(), selectedItem.isSugarLevelSelectable(),
                     selectedItem.getAddOns(), selectedItem.getDrinkChoices(), addOns, quan.get(), sugarLevel);
+
+            if (!(selectedItem.getDrinkChoices() == null)){
+                int radioButtonID = drinkChoiceRadioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = (RadioButton) drinkChoiceRadioGroup.findViewById(radioButtonID);
+                String drinkChoice = (String) radioButton.getText();
+                order.setGetChosenDrink(drinkChoice);
+            }
             createToast("Successfully added order!");
         }
+
 
         return order;
     }

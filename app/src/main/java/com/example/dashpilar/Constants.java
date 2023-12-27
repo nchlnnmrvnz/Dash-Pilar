@@ -20,25 +20,25 @@ public class Constants {
         drinkAddOnsCollection.put("Crushed Oreo", 9.00f);
         drinkAddOnsCollection.put("Coffee Shot", 9.00f);
 
-        coffeeCollection.add(new Item("Dash Latte Coffee", 39.00f,
+        coffeeCollection.add(new Item("Dash Latte", 39.00f,
                 "A cold coffee-based signature latte drink",
                 R.drawable.dash_latte, true, drinkAddOnsCollection, null));
-        coffeeCollection.add(new Item("Cloud Latte Coffee", 39.00f,
+        coffeeCollection.add(new Item("Cloud Latte", 39.00f,
                 "A cold coffee-based latte drink with cloud foam",
                 R.drawable.cloud_latte, true, drinkAddOnsCollection, null));
-        coffeeCollection.add(new Item("Cloud Seasalt Coffee", 39.00f,
+        coffeeCollection.add(new Item("Cloud Seasalt", 39.00f,
                 "A cold coffee-based signature latte drink with cloud foam and salt",
                 R.drawable.cloud_seasalt, true, drinkAddOnsCollection, null));
-        coffeeCollection.add(new Item("Spanish Latte Coffee", 39.00f,
+        coffeeCollection.add(new Item("Spanish Latte", 39.00f,
                 "A cold coffee-based latte drink with condensed milk",
                 R.drawable.spanish_latte, true, drinkAddOnsCollection, null));
-        coffeeCollection.add(new Item("Macchiato Coffee", 39.00f,
+        coffeeCollection.add(new Item("Macchiato", 39.00f,
                 "A cold coffee-based drink with caramel syrup",
                 R.drawable.macchiato_coffee, true, drinkAddOnsCollection, null));
-        coffeeCollection.add(new Item("Sweet Americano Coffee", 39.00f,
+        coffeeCollection.add(new Item("Sweet Americano", 39.00f,
                 "A cold coffee-based americano drink with condensed milk",
                 R.drawable.sweet_americano, true, drinkAddOnsCollection, null));
-        coffeeCollection.add(new Item("Dark Mocha Coffee", 39.00f,
+        coffeeCollection.add(new Item("Dark Mocha", 39.00f,
                 "A cold coffee-based latte drink with dark mocha",
                 R.drawable.dark_mocha, true, drinkAddOnsCollection, null));
 

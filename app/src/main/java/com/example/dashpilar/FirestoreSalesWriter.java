@@ -29,20 +29,28 @@ public class FirestoreSalesWriter {
         order.put("time", timeFormat.format(Calendar.getInstance().getTime()));
 
         Map<String, Object> itemNames = new HashMap<>();
-        for(ItemOrder item : cart) {
-            Map<String, Object> itemAttributes = new HashMap<>();
+        for (ItemOrder item : cart) {
+            if (item.getQuantity() > 0) {
+                Map<String, Object> itemAttributes = new HashMap<>();
 
-            itemAttributes.put("addOns", item.getCheckedAddOns());
-            itemAttributes.put("basePrice", item.getPrice());
-            itemAttributes.put("itemSubTotal", item.calculatePrice());
-            itemAttributes.put("quantity", item.getQuantity());
-            itemAttributes.put("sugarLevel", item.getSugarLevel());
+                if (item.getAddOns() != null)
+                    itemAttributes.put("addOns", item.getCheckedAddOns());
 
-            itemNames.put(item.getName(), itemAttributes);
+                itemAttributes.put("basePrice", item.getPrice());
+
+                if (item.getChosenDrink() != null)
+                    itemAttributes.put("flavor", item.getChosenDrink());
+
+                itemAttributes.put("itemSubTotal", item.calculatePrice());
+                itemAttributes.put("quantity", item.getQuantity());
+
+                if (item.getSugarLevel() != -1)
+                    itemAttributes.put("sugarLevel", item.getSugarLevel());
+
+                itemNames.put(item.getName(), itemAttributes);
+            }
         }
         order.put("orderedItems", itemNames);
-
-
         order.put("paymentMethod", paymentMethod);
         order.put("serviceMode", serviceMode);
         order.put("totalAmount", getTotalAmount(cart));
