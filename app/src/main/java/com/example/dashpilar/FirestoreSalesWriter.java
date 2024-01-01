@@ -18,7 +18,7 @@ public class FirestoreSalesWriter {
     }
 
     public void writeToSalesCollection(String orderNumber, String paymentMethod, String serviceMode,
-                                       ArrayList<ItemOrder> cart) {
+                                       String collection, ArrayList<ItemOrder> cart) {
         // Get current date and time
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -56,7 +56,7 @@ public class FirestoreSalesWriter {
         order.put("totalAmount", getTotalAmount(cart));
         order.put("totalItems", getTotalItems(cart));
 
-        db.collection("sales").document(orderNumber).set(order);
+        db.collection(collection).document(orderNumber).set(order);
     }
 
     float getTotalAmount(ArrayList<ItemOrder> cart) {

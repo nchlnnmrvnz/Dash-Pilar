@@ -125,7 +125,11 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                     alertDialogBuilder.setPositiveButton("Retry", (dialogInterface, i) -> place_order.performClick());
 
                     alertDialogBuilder.setNegativeButton("Discard", (dialogInterface, i) -> {
+                        FirestoreSalesWriter fsw = new FirestoreSalesWriter();
+                        fsw.writeToSalesCollection(currentOrderNumber, paymentMethod, serviceMode, "unprinted-sales", cartList);
+
                         Cart.cartList = new ArrayList<>();
+                        generateNewOrderNumber();
                         getOnBackPressedDispatcher().onBackPressed();
                     });
 
@@ -136,7 +140,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                 else {
 
                     FirestoreSalesWriter fsw = new FirestoreSalesWriter();
-                    fsw.writeToSalesCollection(currentOrderNumber, paymentMethod, serviceMode, cartList);
+                    fsw.writeToSalesCollection(currentOrderNumber, paymentMethod, serviceMode, "sales", cartList);
 
                     Cart.cartList = new ArrayList<>();
                     generateNewOrderNumber();
