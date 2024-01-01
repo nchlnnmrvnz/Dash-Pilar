@@ -1,5 +1,6 @@
 package com.example.dashpilar.printerconnection;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,6 +13,7 @@ import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
+import com.example.dashpilar.Cart;
 
 import java.lang.ref.WeakReference;
 
@@ -51,6 +53,8 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
             DeviceConnection deviceConnection = printerData.getPrinterConnection();
 
             if(deviceConnection == null) {
+                Cart.errorFound = true;
+                Cart.printDoneSemaphore.release();
                 return new PrinterStatus(null, AsyncEscPosPrint.FINISH_NO_PRINTER);
             }
 
@@ -75,19 +79,30 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
 
         } catch (EscPosConnectionException e) {
             e.printStackTrace();
+            Cart.errorFound = true;
+            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_PRINTER_DISCONNECTED);
         } catch (EscPosParserException e) {
             e.printStackTrace();
+            Cart.errorFound = true;
+            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_PARSER_ERROR);
         } catch (EscPosEncodingException e) {
             e.printStackTrace();
+            Cart.errorFound = true;
+            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_ENCODING_ERROR);
         } catch (EscPosBarcodeException e) {
             e.printStackTrace();
+            Cart.errorFound = true;
+            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_BARCODE_ERROR);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Cart.errorFound = true;
         }
+        Cart.errorFound = false;
+        Cart.printDoneSemaphore.release();
         return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_SUCCESS);
     }
 
@@ -144,6 +159,11 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
                 new AlertDialog.Builder(context)
                         .setTitle("Success")
                         .setMessage("Thank you for ordering!")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            dialog.dismiss();
+                            ((Activity) context).onBackPressed();
+                        })
                         .show();
                 break;
             case AsyncEscPosPrint.FINISH_NO_PRINTER:
@@ -154,27 +174,27 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
                 break;
             case AsyncEscPosPrint.FINISH_PRINTER_DISCONNECTED:
                 new AlertDialog.Builder(context)
-                    .setTitle("Broken connection")
-                    .setMessage("Unable to connect the printer.")
-                    .show();
+                        .setTitle("Broken connection")
+                        .setMessage("Unable to connect the printer.")
+                        .show();
                 break;
             case AsyncEscPosPrint.FINISH_PARSER_ERROR:
                 new AlertDialog.Builder(context)
-                    .setTitle("Invalid formatted text")
-                    .setMessage("It seems to be an invalid syntax problem.")
-                    .show();
+                        .setTitle("Invalid formatted text")
+                        .setMessage("It seems to be an invalid syntax problem.")
+                        .show();
                 break;
             case AsyncEscPosPrint.FINISH_ENCODING_ERROR:
                 new AlertDialog.Builder(context)
-                    .setTitle("Bad selected encoding")
-                    .setMessage("The selected encoding character is returning an error.")
-                    .show();
+                        .setTitle("Bad selected encoding")
+                        .setMessage("The selected encoding character is returning an error.")
+                        .show();
                 break;
             case AsyncEscPosPrint.FINISH_BARCODE_ERROR:
                 new AlertDialog.Builder(context)
-                    .setTitle("Invalid barcode")
-                    .setMessage("Data sent to be converted to barcode or QR code seems to be invalid.")
-                    .show();
+                        .setTitle("Invalid barcode")
+                        .setMessage("Data sent to be converted to barcode or QR code seems to be invalid.")
+                        .show();
                 break;
         }
         if(this.onPrintFinished != null) {

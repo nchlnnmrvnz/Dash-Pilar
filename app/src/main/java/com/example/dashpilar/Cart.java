@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.Semaphore;
 
 
 public class Cart extends AppCompatActivity implements PriceUpdateListener {
@@ -42,11 +44,15 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
     String serviceMode = null;
     String paymentMethod = null;
     private Toast toast;
+    public static Semaphore printDoneSemaphore;
+    public static boolean errorFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        printDoneSemaphore = new Semaphore(1);
 
         currentOrderNumber = getCurrentOrderNumber();
         TextView orderNumberTextView = findViewById(R.id.orderNumber);
@@ -95,16 +101,48 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
             }
 
             if(!cartList.isEmpty()) {
+                try {
+                    printDoneSemaphore.acquire();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
                 printBluetooth();
 
-                FirestoreSalesWriter fsw = new FirestoreSalesWriter();
-                fsw.writeToSalesCollection(currentOrderNumber, paymentMethod, serviceMode, cartList);
+                try {
+                    printDoneSemaphore.acquire();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
-                Cart.cartList = new ArrayList<>();
+                if(errorFound) {
+                    createToast("ERROR!");
 
-                generateNewOrderNumber();
-                getOnBackPressedDispatcher().onBackPressed();
-        }
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    alertDialogBuilder.setTitle("Printing failed!");
+                    alertDialogBuilder.setMessage("Would you like to try again or discard?");
+
+                    alertDialogBuilder.setPositiveButton("Retry", (dialogInterface, i) -> place_order.performClick());
+
+                    alertDialogBuilder.setNegativeButton("Discard", (dialogInterface, i) -> {
+                        Cart.cartList = new ArrayList<>();
+                        getOnBackPressedDispatcher().onBackPressed();
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                    printDoneSemaphore.release();
+                }
+                else {
+
+                    FirestoreSalesWriter fsw = new FirestoreSalesWriter();
+                    fsw.writeToSalesCollection(currentOrderNumber, paymentMethod, serviceMode, cartList);
+
+                    Cart.cartList = new ArrayList<>();
+                    generateNewOrderNumber();
+                    printDoneSemaphore.release();
+                }
+            }
             else
                 createToast("Cart is empty!");
         });
