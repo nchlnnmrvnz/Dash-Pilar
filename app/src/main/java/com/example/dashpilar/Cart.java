@@ -1,5 +1,7 @@
 package com.example.dashpilar;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -28,12 +30,14 @@ import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.example.dashpilar.printerconnection.AsyncBluetoothEscPosPrint;
 import com.example.dashpilar.printerconnection.AsyncEscPosPrint;
 import com.example.dashpilar.printerconnection.AsyncEscPosPrinter;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 
 
@@ -54,9 +58,18 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
         printDoneSemaphore = new Semaphore(1);
 
-        currentOrderNumber = getCurrentOrderNumber();
-        TextView orderNumberTextView = findViewById(R.id.orderNumber);
-        orderNumberTextView.setText(String.format(getResources().getString(R.string.order_no), currentOrderNumber));
+        try {
+            getCurrentOrderNumber();
+        } catch (ExecutionException | InterruptedException e) {
+            createToast("ERROR!");
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("No internet connection!");
+            alertDialogBuilder.setMessage("Please check your internet connection");
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -282,25 +295,39 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         return printer.addTextToPrint(textToPrint);
     }
 
-    public String getCurrentOrderNumber() {
-        String orderNumber;
+    public void getCurrentOrderNumber() throws ExecutionException, InterruptedException {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String lastUsedYear = sharedPreferences.getString("last_used_year", "");
+        db.collection("sales")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        currentOrderNumber = task.getResult().getDocuments().get(task.getResult().getDocuments().size() - 1).getId();
+                        currentOrderNumber = incrementOrderNumber(currentOrderNumber);
 
-        if(lastUsedYear.equals("")) {
-            DateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
-            lastUsedYear = yearFormat.format(Calendar.getInstance().getTime());
+                        TextView orderNumberTextView = findViewById(R.id.orderNumber);
+                        orderNumberTextView.setText(String.format(getResources().getString(R.string.order_no) + " %s", currentOrderNumber));
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+    }
 
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("last_used_year", lastUsedYear);
-            editor.apply();
+    public String incrementOrderNumber(String currentOrderNumber) {
+        String[] parts = currentOrderNumber.split("-");
+        if (parts.length != 2) {
+            return currentOrderNumber;
         }
 
-        int currentOrderNumber = sharedPreferences.getInt("last_used_order_number", 1);
+        String year = parts[0];
+        String orderNumber = parts[1];
 
-        orderNumber = lastUsedYear + "-" + String.format(Locale.getDefault(), "%05d", currentOrderNumber);
-        return orderNumber;
+        int orderNum = Integer.parseInt(orderNumber);
+        orderNum++;
+
+        String newOrderNumber = String.format("%0" + orderNumber.length() + "d", orderNum);
+
+        return year + "-" + newOrderNumber;
     }
 
     public void generateNewOrderNumber() {

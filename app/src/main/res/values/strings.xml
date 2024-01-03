@@ -42,7 +42,7 @@
     <string name="icon_to_edit_details">icon to edit details</string>
     <string name="cart_items">Cart Items</string>
     <string name="service_mode">Service Mode</string>
-    <string name="order_no">Order No. %s</string>
+    <string name="order_no">Order No.</string>
     <string name="cash">Cash</string>
     <string name="gcash">GCash</string>
     <string name="payment_method">Payment Method</string>
