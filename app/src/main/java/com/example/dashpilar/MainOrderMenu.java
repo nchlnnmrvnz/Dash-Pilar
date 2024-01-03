@@ -52,6 +52,7 @@ public class MainOrderMenu extends AppCompatActivity {
         });
         t.start();
 
+        createScrollViewForCategory("Limited Edition", Constants.limitedEditionCollection);
         createScrollViewForCategory("Specialty Coffee", Constants.coffeeCollection);
         createScrollViewForCategory("Milktea with Pearls", Constants.milkteaCollection);
         createScrollViewForCategory("Dessert with Salty Cream", Constants.dessertCollection);
