@@ -12,7 +12,7 @@ public class ItemOrder extends Item {
     private LinkedHashMap<String, Float> checkedAddOns = new LinkedHashMap<>();
 
     public ItemOrder (String name, float price, String description, int imageResource, boolean sugarLevelSelectable,
-                      LinkedHashMap<String, Float> addOns, ArrayList<Item> drinkChoices,
+                      ArrayList<AddOn> addOns, ArrayList<Item> drinkChoices,
                       LinkedHashMap<String, Float> checkedAddOns, int quantity, int sugarLevel) {
         super(name, price, description, imageResource, sugarLevelSelectable, addOns, drinkChoices);
         this.setQuantity(quantity);

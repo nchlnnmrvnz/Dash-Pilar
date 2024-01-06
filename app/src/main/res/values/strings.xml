@@ -50,4 +50,5 @@
     <string name="with">With</string>
     <string name="without">Without</string>
     <string name="drink_choices">Drink Choices</string>
+    <string name="unavailable_items">UNAVAILABLE ITEMS</string>
 </resources>

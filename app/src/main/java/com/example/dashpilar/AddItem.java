@@ -75,6 +75,9 @@ public class AddItem extends AppCompatActivity {
 
             boolean firstItem = true;
             for (Item drink : selectedItem.getDrinkChoices()) {
+                if(!drink.isAvailable())
+                    continue;
+
                 RadioButton radioButton = new RadioButton(this);
                 radioButton.setText(drink.getName());
                 radioButton.setTextSize(15);
@@ -147,7 +150,7 @@ public class AddItem extends AppCompatActivity {
                 if(!(selectedItem.getAddOns() == null)) {
                     for (CheckBox checkBox : checkBoxes) {
                         if (checkBox.isChecked()) {
-                            itemTotal += selectedItem.getAddOns().get(checkBox.getText().toString());
+                            itemTotal += selectedItem.getAddOn(checkBox.getText().toString());
                         }
                     }
                 }
@@ -290,7 +293,7 @@ public class AddItem extends AppCompatActivity {
             for (CheckBox checkBox : checkBoxes) {
                 if (checkBox.isChecked()) {
                     String addOnName = checkBox.getText().toString();
-                    float price = selectedItem.getAddOns().get(addOnName);
+                    float price = selectedItem.getAddOn(addOnName);
                     addOns.put(addOnName, price);
                 }
             }

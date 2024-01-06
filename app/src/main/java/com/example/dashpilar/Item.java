@@ -1,7 +1,6 @@
 package com.example.dashpilar;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class Item {
     private String name;
@@ -9,10 +8,12 @@ public class Item {
     private String description;
     private int imageResource;
     private boolean sugarLevelSelectable;
-    private LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
+    private boolean available;
+    private ArrayList<AddOn> addOns = new ArrayList<>();
     private ArrayList<Item> drinkChoices = new ArrayList<>();
 
-    public Item (String name, float price, String description, int imageResource, boolean sugarLevelSelectable, LinkedHashMap<String, Float> addOns, ArrayList<Item> drinkChoices) {
+    public Item (String name, float price, String description, int imageResource, boolean sugarLevelSelectable,
+                 ArrayList<AddOn> addOns, ArrayList<Item> drinkChoices) {
         this.setName(name);
         this.setPrice(price);
         this.setDescription(description);
@@ -20,6 +21,15 @@ public class Item {
         this.setSugarLevelSelectable(sugarLevelSelectable);
         this.setAddOns(addOns);
         this.setDrinkChoices(drinkChoices);
+        available = true;
+    }
+
+    public float getAddOn(String name) {
+        for(AddOn addOn : addOns) {
+            if(addOn.getName().equals(name))
+                return addOn.getPrice();
+        }
+        return -1;
     }
 
     public String getName() {
@@ -46,11 +56,11 @@ public class Item {
         this.description = description;
     }
 
-    public LinkedHashMap<String, Float> getAddOns() {
+    public ArrayList<AddOn> getAddOns() {
         return addOns;
     }
 
-    void setAddOns(LinkedHashMap<String, Float> addOns) {
+    void setAddOns(ArrayList<AddOn> addOns) {
         this.addOns = addOns;
     }
 
@@ -76,5 +86,13 @@ public class Item {
 
     public void setSugarLevelSelectable(boolean sugarLevelSelectable) {
         this.sugarLevelSelectable = sugarLevelSelectable;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

@@ -52,14 +52,15 @@ public class MainOrderMenu extends AppCompatActivity {
         });
         t.start();
 
-        createScrollViewForCategory("Limited Edition", Constants.limitedEditionCollection);
-        createScrollViewForCategory("Specialty Coffee", Constants.coffeeCollection);
-        createScrollViewForCategory("Milktea with Pearls", Constants.milkteaCollection);
-        createScrollViewForCategory("Dessert with Salty Cream", Constants.dessertCollection);
-        createScrollViewForCategory("Blended Frappe", Constants.frappeCollection);
-        createScrollViewForCategory("Hot Drinks", Constants.hotDrinksCollection);
-        createScrollViewForCategory("Croffles", Constants.crofflesCollection);
-        createScrollViewForCategory("Plain Combo", Constants.plainCroffleComboCollection);
+        populateAvailableMenu("Limited Edition", Constants.limitedEditionCollection);
+        populateAvailableMenu("Specialty Coffee", Constants.coffeeCollection);
+        populateAvailableMenu("Milktea with Pearls", Constants.milkteaCollection);
+        populateAvailableMenu("Dessert with Salty Cream", Constants.dessertCollection);
+        populateAvailableMenu("Blended Frappe", Constants.frappeCollection);
+        populateAvailableMenu("Hot Drinks", Constants.hotDrinksCollection);
+        populateAvailableMenu("Croffles", Constants.crofflesCollection);
+        populateAvailableMenu("Plain Combo", Constants.plainCroffleComboCollection);
+        populateSoldOutMenu(Constants.allItemsCollection);
 
         FrameLayout cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> {
@@ -73,7 +74,7 @@ public class MainOrderMenu extends AppCompatActivity {
         back.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
     }
 
-    private void createScrollViewForCategory(String category, ArrayList<Item> items) {
+    private void populateAvailableMenu(String category, ArrayList<Item> items) {
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutForRecyclerView);
         NestedScrollView scrollView = findViewById(R.id.scrollView);
 
@@ -100,6 +101,57 @@ public class MainOrderMenu extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(new ItemAdapter(getApplicationContext(), items));
+
+        constraintLayout.addView(textView);
+        constraintLayout.addView(recyclerView);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+
+        constraintSet.connect(textView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        if (lastTextView != null)
+            constraintSet.connect(textView.getId(), ConstraintSet.TOP, lastRecyclerView.getId(), ConstraintSet.BOTTOM);
+
+        constraintSet.connect(recyclerView.getId(), ConstraintSet.TOP, textView.getId(), ConstraintSet.BOTTOM);
+        constraintSet.connect(recyclerView.getId(), ConstraintSet.START, scrollView.getId(), ConstraintSet.START);
+        constraintSet.connect(recyclerView.getId(), ConstraintSet.END, scrollView.getId(), ConstraintSet.END);
+
+        lastTextView = textView;
+        lastRecyclerView = recyclerView;
+
+        constraintSet.applyTo(constraintLayout);
+
+        scrollView.post(() -> scrollView.smoothScrollTo(0, 0));
+    }
+
+    private void populateSoldOutMenu(ArrayList<Item> items) {
+        ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutForRecyclerView);
+        NestedScrollView scrollView = findViewById(R.id.scrollView);
+
+        TextView textView = new TextView(this);
+        textView.setId(View.generateViewId());
+        textView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ));
+        textView.setTextSize(40);
+        textView.setAllCaps(true);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setPadding(0, 16, 0, 0);
+        textView.setTextColor(getResources().getColor(R.color.green));
+        textView.setText(R.string.unavailable_items);
+
+        RecyclerView recyclerView = new RecyclerView(getApplicationContext());
+        recyclerView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ));
+        recyclerView.setId(View.generateViewId());
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        recyclerView.setAdapter(new SoldOutItemAdapter(getApplicationContext(), Constants.unavailableItems));
 
         constraintLayout.addView(textView);
         constraintLayout.addView(recyclerView);

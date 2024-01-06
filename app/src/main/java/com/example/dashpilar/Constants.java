@@ -1,25 +1,25 @@
 package com.example.dashpilar;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class Constants {
-    public static ArrayList<Item> coffeeCollection = new ArrayList<>();
-    public static ArrayList<Item> milkteaCollection = new ArrayList<>();
-    public static ArrayList<Item> dessertCollection = new ArrayList<>();
-    public static ArrayList<Item> frappeCollection = new ArrayList<>();
-    public static ArrayList<Item> hotDrinksCollection = new ArrayList<>();
-    public static ArrayList<Item> allItemsCollection = new ArrayList<>();
-    public static ArrayList<Item> crofflesCollection = new ArrayList<>();
-    public static ArrayList<Item> plainCroffleComboCollection = new ArrayList<>();
-    public static ArrayList<Item> limitedEditionCollection = new ArrayList<>();
-    public static LinkedHashMap<String, Float> drinkAddOnsCollection = new LinkedHashMap<>();
+    public static final ArrayList<Item> coffeeCollection = new ArrayList<>();
+    public static final ArrayList<Item> milkteaCollection = new ArrayList<>();
+    public static final ArrayList<Item> dessertCollection = new ArrayList<>();
+    public static final ArrayList<Item> frappeCollection = new ArrayList<>();
+    public static final ArrayList<Item> hotDrinksCollection = new ArrayList<>();
+    public static final ArrayList<Item> allItemsCollection = new ArrayList<>();
+    public static final ArrayList<Item> crofflesCollection = new ArrayList<>();
+    public static final ArrayList<Item> plainCroffleComboCollection = new ArrayList<>();
+    public static final ArrayList<Item> limitedEditionCollection = new ArrayList<>();
+    public static final ArrayList<AddOn> drinkAddOnsCollection = new ArrayList<>();
+    public static final ArrayList<String> unavailableItems = new ArrayList<>();
 
     static {
-        drinkAddOnsCollection.put("Pearls", 9.00f);
-        drinkAddOnsCollection.put("Salty Cream", 9.00f);
-        drinkAddOnsCollection.put("Crushed Oreo", 9.00f);
-        drinkAddOnsCollection.put("Coffee Shot", 9.00f);
+        drinkAddOnsCollection.add(new AddOn("Pearls", 9.00f));
+        drinkAddOnsCollection.add(new AddOn("Salty Cream", 9.00f));
+        drinkAddOnsCollection.add(new AddOn("Crushed Oreo", 9.00f));
+        drinkAddOnsCollection.add(new AddOn("Coffee Shot", 9.00f));
 
         coffeeCollection.add(new Item("Dash Latte", 39.00f,
                 "A cold coffee-based signature latte drink",
