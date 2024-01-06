@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -150,7 +149,7 @@ public class AddItem extends AppCompatActivity {
                 if(!(selectedItem.getAddOns() == null)) {
                     for (CheckBox checkBox : checkBoxes) {
                         if (checkBox.isChecked()) {
-                            itemTotal += selectedItem.getAddOn(checkBox.getText().toString());
+                            itemTotal += selectedItem.getAddOn(checkBox.getText().toString()).getPrice();
                         }
                     }
                 }
@@ -263,9 +262,10 @@ public class AddItem extends AppCompatActivity {
         }
 
         for (CheckBox checkBox : checkBoxes) {
-            if (order.getCheckedAddOns().containsKey(checkBox.getText().toString())) {
-                checkBox.setChecked(true);
-            }
+            for(AddOn addOn : order.getCheckedAddOns())
+                if (addOn.getName().equals(checkBox.getText().toString())) {
+                    checkBox.setChecked(true);
+                }
         }
 
     }
@@ -273,7 +273,7 @@ public class AddItem extends AppCompatActivity {
     ItemOrder getOrder(AtomicInteger quan) {
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         int sugarLevel = -1;
-        LinkedHashMap<String, Float> addOns = new LinkedHashMap<>();
+        ArrayList<AddOn> addOns = new ArrayList<>();
         ItemOrder order = null;
 
         if (drinkChoiceRadioGroup != null && drinkChoiceRadioGroup.getCheckedRadioButtonId() == -1 && !(selectedItem.getDrinkChoices() == null)) {
@@ -293,8 +293,8 @@ public class AddItem extends AppCompatActivity {
             for (CheckBox checkBox : checkBoxes) {
                 if (checkBox.isChecked()) {
                     String addOnName = checkBox.getText().toString();
-                    float price = selectedItem.getAddOn(addOnName);
-                    addOns.put(addOnName, price);
+                    float price = selectedItem.getAddOn(addOnName).getPrice();
+                    addOns.add(selectedItem.getAddOn(addOnName));
                 }
             }
             order = new ItemOrder(selectedItem.getName(), selectedItem.getPrice(),

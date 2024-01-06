@@ -1,8 +1,11 @@
 package com.example.dashpilar;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,7 +19,12 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainOrderMenu extends AppCompatActivity {
@@ -52,15 +60,7 @@ public class MainOrderMenu extends AppCompatActivity {
         });
         t.start();
 
-        populateAvailableMenu("Limited Edition", Constants.limitedEditionCollection);
-        populateAvailableMenu("Specialty Coffee", Constants.coffeeCollection);
-        populateAvailableMenu("Milktea with Pearls", Constants.milkteaCollection);
-        populateAvailableMenu("Dessert with Salty Cream", Constants.dessertCollection);
-        populateAvailableMenu("Blended Frappe", Constants.frappeCollection);
-        populateAvailableMenu("Hot Drinks", Constants.hotDrinksCollection);
-        populateAvailableMenu("Croffles", Constants.crofflesCollection);
-        populateAvailableMenu("Plain Combo", Constants.plainCroffleComboCollection);
-        populateSoldOutMenu(Constants.allItemsCollection);
+        populateMenu();
 
         FrameLayout cart = findViewById(R.id.cart);
         cart.setOnClickListener(v -> {
@@ -72,9 +72,67 @@ public class MainOrderMenu extends AppCompatActivity {
 
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("availability")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error);
+                        return;
+                    }
+
+                    Constants.unavailableItems.clear();
+
+                    for (DocumentSnapshot snapshot : value.getDocuments()) {
+                        for (Map.Entry<String, Object> entry : snapshot.getData().entrySet()) {
+                            Object unavailableItems = entry.getValue();
+                            if (unavailableItems instanceof List<?>) {
+                                List<?> list = (List<?>) unavailableItems;
+                                for (Object item : list) {
+                                    if (item instanceof String) {
+                                        Constants.unavailableItems.add(((String) item).toUpperCase());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for(Item item : Constants.allItemsCollection) {
+                        item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
+                    }
+
+                    for(AddOn item : Constants.drinkAddOnsCollection) {
+                        item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
+                    }
+
+                    populateMenu();
+                });
+    }
+
+    void populateMenu() {
+        ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutForRecyclerView);
+        constraintLayout.removeAllViews();
+
+        populateAvailableMenu("Limited Edition", filterUnavailableItems(Constants.limitedEditionCollection));
+        populateAvailableMenu("Specialty Coffee", filterUnavailableItems(Constants.coffeeCollection));
+        populateAvailableMenu("Milktea with Pearls", filterUnavailableItems(Constants.milkteaCollection));
+        populateAvailableMenu("Dessert with Salty Cream", filterUnavailableItems(Constants.dessertCollection));
+        populateAvailableMenu("Blended Frappe", filterUnavailableItems(Constants.frappeCollection));
+        populateAvailableMenu("Hot Drinks", filterUnavailableItems(Constants.hotDrinksCollection));
+        populateAvailableMenu("Croffles", filterUnavailableItems(Constants.crofflesCollection));
+        populateAvailableMenu("Plain Combo", filterUnavailableItems(Constants.plainCroffleComboCollection));
+        populateSoldOutMenu(Constants.allItemsCollection);
     }
 
     private void populateAvailableMenu(String category, ArrayList<Item> items) {
+        boolean oneItemAvailable = false;
+        for(Item item : items) {
+            if(item.isAvailable())
+                oneItemAvailable = true;
+        }
+        if(!oneItemAvailable)
+            return;
+
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutForRecyclerView);
         NestedScrollView scrollView = findViewById(R.id.scrollView);
 
@@ -100,7 +158,9 @@ public class MainOrderMenu extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setAdapter(new ItemAdapter(getApplicationContext(), items));
+
+        ItemAdapter adapter = new ItemAdapter(getApplicationContext(), items);
+        recyclerView.setAdapter(adapter);
 
         constraintLayout.addView(textView);
         constraintLayout.addView(recyclerView);
@@ -125,6 +185,14 @@ public class MainOrderMenu extends AppCompatActivity {
     }
 
     private void populateSoldOutMenu(ArrayList<Item> items) {
+        boolean oneItemAvailable = false;
+        for(Item item : items) {
+            if(item.isAvailable())
+                oneItemAvailable = true;
+        }
+        if(!oneItemAvailable)
+            return;
+
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutForRecyclerView);
         NestedScrollView scrollView = findViewById(R.id.scrollView);
 
@@ -151,7 +219,8 @@ public class MainOrderMenu extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
 
-        recyclerView.setAdapter(new SoldOutItemAdapter(getApplicationContext(), Constants.unavailableItems));
+        SoldOutItemAdapter adapter = new SoldOutItemAdapter(getApplicationContext(), Constants.unavailableItems);
+        recyclerView.setAdapter(adapter);
 
         constraintLayout.addView(textView);
         constraintLayout.addView(recyclerView);
@@ -173,6 +242,17 @@ public class MainOrderMenu extends AppCompatActivity {
         constraintSet.applyTo(constraintLayout);
 
         scrollView.post(() -> scrollView.smoothScrollTo(0, 0));
+    }
+
+    ArrayList<Item> filterUnavailableItems(ArrayList<Item> items) {
+        ArrayList<Item> filteredItems = new ArrayList<>();
+
+        for(Item item : items) {
+            if(item.isAvailable())
+                filteredItems.add(item);
+        }
+
+        return filteredItems;
     }
 
     void createToast() {

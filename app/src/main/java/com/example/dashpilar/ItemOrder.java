@@ -1,19 +1,17 @@
 package com.example.dashpilar;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ItemOrder extends Item {
 
     private String getChosenDrink;
     private int quantity;
     private int sugarLevel;
-    private LinkedHashMap<String, Float> checkedAddOns = new LinkedHashMap<>();
+    private ArrayList<AddOn> checkedAddOns = new ArrayList<>();
 
     public ItemOrder (String name, float price, String description, int imageResource, boolean sugarLevelSelectable,
                       ArrayList<AddOn> addOns, ArrayList<Item> drinkChoices,
-                      LinkedHashMap<String, Float> checkedAddOns, int quantity, int sugarLevel) {
+                      ArrayList<AddOn> checkedAddOns, int quantity, int sugarLevel) {
         super(name, price, description, imageResource, sugarLevelSelectable, addOns, drinkChoices);
         this.setQuantity(quantity);
         this.setSugarLevel(sugarLevel);
@@ -48,15 +46,15 @@ public class ItemOrder extends Item {
     public float calculatePrice() {
         float price = this.getPrice();
 
-        for(Map.Entry<String, Float> addOn : this.getCheckedAddOns().entrySet()) {
-            price += addOn.getValue();
+        for(AddOn addOn : this.getCheckedAddOns()) {
+            price += addOn.getPrice();
         }
         price *= this.getQuantity();
 
         return price;
     }
 
-    public LinkedHashMap<String, Float> getCheckedAddOns() {
+    public ArrayList<AddOn> getCheckedAddOns() {
         return checkedAddOns;
     }
 
@@ -64,9 +62,9 @@ public class ItemOrder extends Item {
         StringBuilder str = new StringBuilder();
 
         if (isSugarLevelSelectable()) {
-            for(Map.Entry<String, Float> addOn : checkedAddOns.entrySet()) {
+            for(AddOn addOn : checkedAddOns) {
                 String addOnStr;
-                switch(addOn.getKey()) {
+                switch(addOn.getName()) {
                     case "Pearls": addOnStr = "P"; break;
                     case "Salty Cream": addOnStr = "SC"; break;
                     case "Crushed Oreo": addOnStr = "CO"; break;
@@ -84,7 +82,7 @@ public class ItemOrder extends Item {
         return str.toString();
     }
 
-    public void setCheckedAddOns(LinkedHashMap<String, Float> checkedAddOns) {
+    public void setCheckedAddOns(ArrayList<AddOn> checkedAddOns) {
         this.checkedAddOns = checkedAddOns;
     }
 }

@@ -12,7 +12,7 @@ public class Constants {
     public static final ArrayList<Item> crofflesCollection = new ArrayList<>();
     public static final ArrayList<Item> plainCroffleComboCollection = new ArrayList<>();
     public static final ArrayList<Item> limitedEditionCollection = new ArrayList<>();
-    public static final ArrayList<AddOn> drinkAddOnsCollection = new ArrayList<>();
+    public static volatile ArrayList<AddOn> drinkAddOnsCollection = new ArrayList<>();
     public static final ArrayList<String> unavailableItems = new ArrayList<>();
 
     static {

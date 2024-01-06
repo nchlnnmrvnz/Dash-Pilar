@@ -23,16 +23,19 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("availability")
-            .get()
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    List<DocumentSnapshot> snapshots = task.getResult().getDocuments();
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error);
+                        return;
+                    }
 
-                    for (DocumentSnapshot snapshot : snapshots) {
+                    Constants.unavailableItems.clear();
+
+                    for (DocumentSnapshot snapshot : value.getDocuments()) {
                         for (Map.Entry<String, Object> entry : snapshot.getData().entrySet()) {
-                            Object value = entry.getValue();
-                            if (value instanceof List<?>) {
-                                List<?> list = (List<?>) value;
+                            Object unavailableItems = entry.getValue();
+                            if (unavailableItems instanceof List<?>) {
+                                List<?> list = (List<?>) unavailableItems;
                                 for (Object item : list) {
                                     if (item instanceof String) {
                                         Constants.unavailableItems.add(((String) item).toUpperCase());
@@ -43,21 +46,15 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     for(Item item : Constants.allItemsCollection) {
-                        if(Constants.unavailableItems.contains(item.getName().toUpperCase()))
-                            item.setAvailable(false);
+                        item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
                     }
 
                     for(AddOn item : Constants.drinkAddOnsCollection) {
-                        if(Constants.unavailableItems.contains(item.getName().toUpperCase()))
-                            item.setAvailable(false);
+                        item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
                     }
 
                     Button button = findViewById(R.id.button);
                     button.setOnClickListener(v -> startActivity(new Intent(this, MainOrderMenu.class)));
-
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
             });
     }
 }

@@ -24,12 +24,12 @@ public class Item {
         available = true;
     }
 
-    public float getAddOn(String name) {
+    public AddOn getAddOn(String name) {
         for(AddOn addOn : addOns) {
             if(addOn.getName().equals(name))
-                return addOn.getPrice();
+                return addOn;
         }
-        return -1;
+        return null;
     }
 
     public String getName() {

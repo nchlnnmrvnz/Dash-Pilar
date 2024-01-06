@@ -32,35 +32,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        for(Item item : items) {
-            if (!items.get(position).isAvailable() || displayedItems.contains(items.get(position).getName()))
-                position++;
-            else
-                break;
-        }
-        displayedItems.add(items.get(position).getName());
-
         Picasso.get().load(items.get(position).getImageResource()).into(holder.image);
 
         holder.name.setText(items.get(position).getName());
-        holder.price.setText(String.format(Locale.getDefault(),"₱%.2f", items.get(position).getPrice()));
-        int finalPosition = position;
+        holder.price.setText(String.format(Locale.getDefault(), "₱%.2f", items.get(position).getPrice()));
         holder.materialCardView.setOnClickListener(v -> {
-            AddItem.selectedItem = items.get(finalPosition);
+            AddItem.selectedItem = items.get(position);
             context.startActivity(new Intent(context, AddItem.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        });
+            });
     }
 
     @Override
     public int getItemCount() {
-        int size = 0;
-
-        for(Item item : items) {
-            if(item.isAvailable()) {
-                size++;
-            }
-        }
-
-        return size;
+        return items.size();
     }
 }

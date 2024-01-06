@@ -43,10 +43,12 @@ import java.util.concurrent.Semaphore;
 
 public class Cart extends AppCompatActivity implements PriceUpdateListener {
     static ArrayList<ItemOrder> cartList = new ArrayList<>();
+    ArrayList<String> unavailableItems = new ArrayList<>();
     Button place_order;
     String currentOrderNumber;
     String serviceMode = null;
     String paymentMethod = null;
+    CartItemAdapter adapter;
     private Toast toast;
     public static Semaphore printDoneSemaphore;
     public static boolean errorFound;
@@ -75,7 +77,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        CartItemAdapter adapter = new CartItemAdapter(this, cartList);
+        adapter = new CartItemAdapter(this, cartList);
         adapter.setPriceUpdateListener(this);
         recyclerView.setAdapter(adapter);
 
@@ -114,6 +116,26 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
             }
 
             if(!cartList.isEmpty()) {
+                if(!allItemsAvailable()) {
+                    createToast("ERROR!");
+
+                    StringBuilder message = new StringBuilder("The following items from your cart are now out of stock:\n");
+
+                    for(String itemName : unavailableItems)
+                        message.append(" - ").append(itemName).append("\n");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Out of Stock!");
+                    builder.setMessage(message);
+                    builder.setPositiveButton("Remove Unavailable Items", (dialog, which) -> {
+                        removeUnavailableItems();
+                        place_order.performClick();
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+
                 try {
                     printDoneSemaphore.acquire();
                 } catch (InterruptedException e) {
@@ -168,6 +190,54 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         goBack.setOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
 
         onPriceUpdate();
+    }
+
+    public void removeUnavailableItems() {
+        for(int i = 0; i < cartList.size(); i++) {
+            ItemOrder item = cartList.get(i);
+            if(item.isAvailable()) {
+
+                for(int j = 0; j < item.getCheckedAddOns().size(); j++) {
+                    AddOn addOn = item.getCheckedAddOns().get(j);
+                    if(!addOn.isAvailable()) {
+                        item.getCheckedAddOns().remove(addOn);
+                        --j;
+                    }
+                }
+
+            }
+            else {
+                cartList.remove(item);
+                --i;
+            }
+
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+    public boolean allItemsAvailable() {
+        boolean allItemsAvailable = true;
+        for(ItemOrder item : cartList) {
+
+            if(item.isAvailable()) {
+
+                for(AddOn addOn : item.getCheckedAddOns()) {
+                    if(!addOn.isAvailable()) {
+                        allItemsAvailable = false;
+                        unavailableItems.add(addOn.getName());
+                    }
+                }
+
+            }
+            else {
+                allItemsAvailable = false;
+                unavailableItems.add(item.getName());
+            }
+
+        }
+
+        return allItemsAvailable;
     }
 
 
