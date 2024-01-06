@@ -30,13 +30,16 @@ import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.example.dashpilar.printerconnection.AsyncBluetoothEscPosPrint;
 import com.example.dashpilar.printerconnection.AsyncEscPosPrint;
 import com.example.dashpilar.printerconnection.AsyncEscPosPrinter;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 
@@ -49,6 +52,8 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
     String serviceMode = null;
     String paymentMethod = null;
     CartItemAdapter adapter;
+    RecyclerView recyclerView;
+    LinearLayoutManager linearLayoutManager;
     private Toast toast;
     public static Semaphore printDoneSemaphore;
     public static boolean errorFound;
@@ -59,6 +64,47 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         setContentView(R.layout.activity_cart);
 
         printDoneSemaphore = new Semaphore(1);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("availability")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error);
+                        return;
+                    }
+
+                    Constants.unavailableItems.clear();
+
+                    for (DocumentSnapshot snapshot : value.getDocuments()) {
+                        for (Map.Entry<String, Object> entry : snapshot.getData().entrySet()) {
+                            Object unavailableItems = entry.getValue();
+                            if (unavailableItems instanceof List<?>) {
+                                List<?> list = (List<?>) unavailableItems;
+                                for (Object item : list) {
+                                    if (item instanceof String) {
+                                        Constants.unavailableItems.add(((String) item).toUpperCase());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for(Item item : Constants.allItemsCollection) {
+                        item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
+                    }
+
+                    for(AddOn item : Constants.drinkAddOnsCollection) {
+                        item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
+                    }
+
+                    populateCart();
+                });
+
+        recyclerView = findViewById(R.id.recyclerView);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        populateCart();
 
         try {
             getCurrentOrderNumber();
@@ -72,14 +118,6 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        adapter = new CartItemAdapter(this, cartList);
-        adapter.setPriceUpdateListener(this);
-        recyclerView.setAdapter(adapter);
 
         place_order = findViewById(R.id.placeOrder);
         place_order.setOnClickListener(v -> {
@@ -129,11 +167,12 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                     builder.setMessage(message);
                     builder.setPositiveButton("Remove Unavailable Items", (dialog, which) -> {
                         removeUnavailableItems();
-                        place_order.performClick();
+                        populateCart();
                     });
 
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
+                    return;
                 }
 
                 try {
@@ -193,13 +232,17 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
     }
 
     public void removeUnavailableItems() {
+        unavailableItems = new ArrayList<>();
         for(int i = 0; i < cartList.size(); i++) {
             ItemOrder item = cartList.get(i);
-            if(item.isAvailable()) {
+            if(!Constants.unavailableItems.contains(item.getName().toUpperCase())) {
 
-                for(int j = 0; j < item.getCheckedAddOns().size(); j++) {
+                for(int j = 0; item.getCheckedAddOns() != null &&
+                        j < item.getCheckedAddOns().size(); j++) {
                     AddOn addOn = item.getCheckedAddOns().get(j);
-                    if(!addOn.isAvailable()) {
+                    if(Constants.unavailableItems
+                            .contains(
+                                    item.getCheckedAddOns().get(j).getName().toUpperCase())) {
                         item.getCheckedAddOns().remove(addOn);
                         --j;
                     }
@@ -216,16 +259,26 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         adapter.notifyDataSetChanged();
     }
 
+    void populateCart() {
+        recyclerView.removeAllViews();
+
+        adapter = new CartItemAdapter(this, cartList);
+        adapter.setPriceUpdateListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
     public boolean allItemsAvailable() {
         boolean allItemsAvailable = true;
         for(ItemOrder item : cartList) {
 
-            if(item.isAvailable()) {
+            if(!Constants.unavailableItems.contains(item.getName().toUpperCase())) {
 
-                for(AddOn addOn : item.getCheckedAddOns()) {
-                    if(!addOn.isAvailable()) {
-                        allItemsAvailable = false;
-                        unavailableItems.add(addOn.getName());
+                if(item.getCheckedAddOns() != null) {
+                    for (AddOn addOn : item.getCheckedAddOns()) {
+                        if (Constants.unavailableItems.contains(addOn.getName().toUpperCase())) {
+                            allItemsAvailable = false;
+                            unavailableItems.add(addOn.getName());
+                        }
                     }
                 }
 

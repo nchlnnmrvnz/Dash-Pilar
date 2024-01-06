@@ -1,8 +1,11 @@
 package com.example.dashpilar;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,14 +20,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddItem extends AppCompatActivity {
     static Item selectedItem;
     RadioGroup drinkChoiceRadioGroup;
     static ArrayList<CheckBox> checkBoxes;
+    RecyclerView recyclerView;
+    LinearLayoutManager linearLayoutManager;
     private Toast toast;
 
     @Override
@@ -38,8 +48,9 @@ public class AddItem extends AppCompatActivity {
 
         LinearLayout drinkChoicesRectangleView = findViewById(R.id.drinkChoicesRectangleView);
 
-        LinearLayout addOnsRectangle = findViewById(R.id.addOnsRectangleView);
-        RecyclerView recyclerView = findViewById(R.id.addOnsRecyclerView);
+        recyclerView = findViewById(R.id.addOnsRecyclerView);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         if(selectedItem.getDrinkChoices() == null)
             drinkChoicesRectangleView.setVisibility(View.GONE);
@@ -131,14 +142,45 @@ public class AddItem extends AppCompatActivity {
             v.setVisibility(View.GONE);
         }
 
-        if(selectedItem.getAddOns() == null)
+        if(selectedItem.getAddOns() == null) {
+            LinearLayout addOnsRectangle = findViewById(R.id.addOnsRectangleView);
             addOnsRectangle.setVisibility(View.GONE);
+        }
         else {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("availability")
+                    .addSnapshotListener((value, error) -> {
+                        if (error != null) {
+                            Log.w(TAG, "Listen failed.", error);
+                            return;
+                        }
 
-            AddOnsAdapter adapter = new AddOnsAdapter(this, selectedItem.getAddOns());
-            recyclerView.setAdapter(adapter);
+                        Constants.unavailableItems.clear();
+
+                        for (DocumentSnapshot snapshot : value.getDocuments()) {
+                            for (Map.Entry<String, Object> entry : snapshot.getData().entrySet()) {
+                                Object unavailableItems = entry.getValue();
+                                if (unavailableItems instanceof List<?>) {
+                                    List<?> list = (List<?>) unavailableItems;
+                                    for (Object item : list) {
+                                        if (item instanceof String) {
+                                            Constants.unavailableItems.add(((String) item).toUpperCase());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        for(Item item : Constants.allItemsCollection) {
+                            item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
+                        }
+
+                        for(AddOn item : Constants.drinkAddOnsCollection) {
+                            item.setAvailable(!Constants.unavailableItems.contains(item.getName().toUpperCase()));
+                        }
+
+                        populateAddOns();
+                    });
         }
 
         Thread t = new Thread(() -> {
@@ -226,6 +268,26 @@ public class AddItem extends AppCompatActivity {
             else
                 createToast("Quantity cannot be less than 1");
         });
+    }
+
+    void populateAddOns() {
+        linearLayoutManager.removeAllViews();
+
+        AddOnsAdapter adapter = new AddOnsAdapter(this, filterAddOns(selectedItem.getAddOns()));
+        recyclerView.setAdapter(adapter);
+    }
+
+    ArrayList<AddOn> filterAddOns(ArrayList<AddOn> items) {
+        ArrayList<AddOn> filteredItems = new ArrayList<>();
+
+        if(!(items == null)) {
+            for (AddOn item : items) {
+                if (item.isAvailable())
+                    filteredItems.add(item);
+            }
+        }
+
+        return filteredItems;
     }
 
     void initializeOrder(ItemOrder order) {
