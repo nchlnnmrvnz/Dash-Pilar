@@ -33,8 +33,12 @@ public class FirestoreSalesWriter {
             if (item.getQuantity() > 0) {
                 Map<String, Object> itemAttributes = new HashMap<>();
 
-                if (item.getAddOns() != null)
-                    itemAttributes.put("addOns", item.getCheckedAddOns());
+                Map<String, Object> addOns = new HashMap<>();
+                if (item.getCheckedAddOns() != null) {
+                    for(AddOn addOn : item.getCheckedAddOns())
+                        addOns.put(addOn.getName(), addOn.getPrice());
+                }
+                itemAttributes.put("addOns", addOns);
 
                 itemAttributes.put("basePrice", item.getPrice());
 
