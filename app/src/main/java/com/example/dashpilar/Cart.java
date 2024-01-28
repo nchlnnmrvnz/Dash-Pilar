@@ -175,6 +175,17 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                     return;
                 }
 
+                if(currentOrderNumber == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Order Error!");
+                    builder.setMessage("Cannot determine the last order number.");
+                    builder.setPositiveButton("Retry", (dialog, which) -> place_order.performClick());
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    return;
+                }
+
                 try {
                     printDoneSemaphore.acquire();
                 } catch (InterruptedException e) {
