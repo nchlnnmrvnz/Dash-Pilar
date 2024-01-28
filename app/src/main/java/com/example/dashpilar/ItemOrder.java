@@ -66,6 +66,7 @@ public class ItemOrder extends Item {
                 String addOnStr;
                 switch(addOn.getName()) {
                     case "Pearls": addOnStr = "P"; break;
+                    case "Nata": addOnStr = "N"; break;
                     case "Salty Cream": addOnStr = "SC"; break;
                     case "Crushed Oreo": addOnStr = "CO"; break;
                     case "Coffee Shot": addOnStr = "CS"; break;

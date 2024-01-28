@@ -119,7 +119,8 @@ public class MainOrderMenu extends AppCompatActivity {
         populateAvailableMenu("Dessert with Salty Cream", filterUnavailableItems(Constants.dessertCollection));
         populateAvailableMenu("Blended Frappe", filterUnavailableItems(Constants.frappeCollection));
         populateAvailableMenu("Hot Drinks", filterUnavailableItems(Constants.hotDrinksCollection));
-        populateAvailableMenu("Croffles", filterUnavailableItems(Constants.crofflesCollection));
+        populateAvailableMenu("Fruiteas", filterUnavailableItems(Constants.fruiteasCollection));
+        populateAvailableMenu("Food", filterUnavailableItems(Constants.foodCollection));
         populateAvailableMenu("Plain Combo", filterUnavailableItems(Constants.plainCroffleComboCollection));
         populateSoldOutMenu(Constants.allItemsCollection);
     }

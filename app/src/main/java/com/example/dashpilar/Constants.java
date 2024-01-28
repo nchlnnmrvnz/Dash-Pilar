@@ -9,14 +9,16 @@ public class Constants {
     public static final ArrayList<Item> frappeCollection = new ArrayList<>();
     public static final ArrayList<Item> hotDrinksCollection = new ArrayList<>();
     public static final ArrayList<Item> allItemsCollection = new ArrayList<>();
-    public static final ArrayList<Item> crofflesCollection = new ArrayList<>();
+    public static final ArrayList<Item> foodCollection = new ArrayList<>();
     public static final ArrayList<Item> plainCroffleComboCollection = new ArrayList<>();
     public static final ArrayList<Item> limitedEditionCollection = new ArrayList<>();
+    public static final ArrayList<Item> fruiteasCollection = new ArrayList<>();
     public static volatile ArrayList<AddOn> drinkAddOnsCollection = new ArrayList<>();
     public static final ArrayList<String> unavailableItems = new ArrayList<>();
 
     static {
         drinkAddOnsCollection.add(new AddOn("Pearls", 9.00f));
+        drinkAddOnsCollection.add(new AddOn("Nata", 9.00f));
         drinkAddOnsCollection.add(new AddOn("Salty Cream", 9.00f));
         drinkAddOnsCollection.add(new AddOn("Crushed Oreo", 9.00f));
         drinkAddOnsCollection.add(new AddOn("Coffee Shot", 9.00f));
@@ -122,21 +124,24 @@ public class Constants {
                 "A hot coffee-based hazelnut drink",
                 R.drawable.hazelnut, true, drinkAddOnsCollection, null));
 
-        crofflesCollection.add(new Item("Plain Croffle", 69.00f,
+        foodCollection.add(new Item("Plain Croffle", 69.00f,
                 "A sugar coated croffle delicacy",
                 R.drawable.croffle, false, null, null));
-        crofflesCollection.add(new Item("Cinnamon Croffle", 79.00f,
+        foodCollection.add(new Item("Cinnamon Croffle", 79.00f,
                 "A cinnamon sprinkled croffle delicacy",
                 R.drawable.croffle, false, null, null));
-        crofflesCollection.add(new Item("Chocolate Croffle", 79.00f,
+        foodCollection.add(new Item("Chocolate Croffle", 79.00f,
                 "A chocolate drizzled croffle delicacy",
                 R.drawable.croffle, false, null, null));
-        crofflesCollection.add(new Item("Peanut Butter Croffle", 79.00f,
+        foodCollection.add(new Item("Peanut Butter Croffle", 79.00f,
                 "A peanut butter drizzled croffle delicacy",
                 R.drawable.croffle, false, null, null));
-        crofflesCollection.add(new Item("Salted Caramel Croffle", 89.00f,
+        foodCollection.add(new Item("Salted Caramel Croffle", 89.00f,
                 "A salted caramel drizzled croffle delicacy",
                 R.drawable.croffle, false, null, null));
+        foodCollection.add(new Item("Hopia", 89.00f,
+                "A Filipino bean-filled moon cake-like pastry delicacy",
+                R.drawable.hopia, false, null, null));
 
         plainCroffleComboCollection.add(new Item("Plain Croffle + Any Specialty Coffee", 99.00f,
                 "A combination of our sugar coated croffle with a choice of any specialty coffee",
@@ -161,13 +166,27 @@ public class Constants {
                 "A milk-based strawberry drink with matcha flavor",
                 R.drawable.matcha_strawberry, true, drinkAddOnsCollection, null));
 
+        fruiteasCollection.add(new Item("Green Apple", 39,
+                "A green apple flavored fruit tea",
+                R.drawable.green_apple, true, drinkAddOnsCollection, null));
+        fruiteasCollection.add(new Item("Lychee", 39,
+                "A lychee flavored fruit tea",
+                R.drawable.lychee, true, drinkAddOnsCollection, null));
+        fruiteasCollection.add(new Item("Mango", 39,
+                "A mango flavored fruit tea",
+                R.drawable.mango , true, drinkAddOnsCollection, null));
+        fruiteasCollection.add(new Item("Strawberry", 39,
+                "A strawberry flavored fruit tea",
+                R.drawable.strawberry_fruit , true, drinkAddOnsCollection, null));
+
         allItemsCollection.addAll(coffeeCollection);
         allItemsCollection.addAll(milkteaCollection);
         allItemsCollection.addAll(dessertCollection);
         allItemsCollection.addAll(frappeCollection);
         allItemsCollection.addAll(hotDrinksCollection);
         allItemsCollection.addAll(limitedEditionCollection);
-        allItemsCollection.addAll(crofflesCollection);
+        allItemsCollection.addAll(fruiteasCollection);
+        allItemsCollection.addAll(foodCollection);
         allItemsCollection.addAll(plainCroffleComboCollection);
     }
 }
