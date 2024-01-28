@@ -25,6 +25,7 @@ public class FirestoreSalesWriter {
 
         // Create a new sales document
         Map<String, Object> order = new HashMap<>();
+        order.put("orderNumber", orderNumber);
         order.put("date", dateFormat.format(Calendar.getInstance().getTime()));
         order.put("time", timeFormat.format(Calendar.getInstance().getTime()));
 
