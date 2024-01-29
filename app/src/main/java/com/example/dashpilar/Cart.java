@@ -63,7 +63,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        printDoneSemaphore = new Semaphore(1);
+        //printDoneSemaphore = new Semaphore(1);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("availability")
@@ -186,19 +186,19 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                     return;
                 }
 
-                try {
-                    printDoneSemaphore.acquire();
+                /*try {
+                    //printDoneSemaphore.acquire();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
 
-                printBluetooth();
+                //printBluetooth();
 
                 try {
-                    printDoneSemaphore.acquire();
+                    //printDoneSemaphore.acquire();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
-                }
+                }*/
 
                 if(errorFound) {
                     createToast("ERROR!");
@@ -220,7 +220,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
-                    printDoneSemaphore.release();
+                    //printDoneSemaphore.release();
                 }
                 else {
 
@@ -229,7 +229,7 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
                     Cart.cartList = new ArrayList<>();
                     generateNewOrderNumber();
-                    printDoneSemaphore.release();
+                    //printDoneSemaphore.release();
                 }
             }
             else

@@ -253,8 +253,9 @@ public class AddItem extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
-                    else
-                        Cart.cartList.add(order);
+                    else {
+                        addToCart(order);
+                    }
 
                     finish();
                 }
@@ -268,6 +269,19 @@ public class AddItem extends AppCompatActivity {
             else
                 createToast("Quantity cannot be less than 1");
         });
+    }
+
+    void addToCart(ItemOrder order) {
+        boolean hasSameItem = false;
+        for(ItemOrder prevOrder : Cart.cartList) {
+            if(prevOrder.equals(order)) {
+                hasSameItem = true;
+                prevOrder.setQuantity(prevOrder.getQuantity() + order.getQuantity());
+            }
+        }
+
+        if(!hasSameItem)
+            Cart.cartList.add(order);
     }
 
     void populateAddOns() {
@@ -355,7 +369,6 @@ public class AddItem extends AppCompatActivity {
             for (CheckBox checkBox : checkBoxes) {
                 if (checkBox.isChecked()) {
                     String addOnName = checkBox.getText().toString();
-                    float price = selectedItem.getAddOn(addOnName).getPrice();
                     addOns.add(selectedItem.getAddOn(addOnName));
                 }
             }
