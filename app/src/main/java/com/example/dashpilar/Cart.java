@@ -3,8 +3,15 @@ package com.example.dashpilar;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,10 +33,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
+import com.dantsu.escposprinter.connection.usb.UsbConnection;
+import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.example.dashpilar.printerconnection.AsyncBluetoothEscPosPrint;
 import com.example.dashpilar.printerconnection.AsyncEscPosPrint;
 import com.example.dashpilar.printerconnection.AsyncEscPosPrinter;
+import com.example.dashpilar.printerconnection.AsyncUsbEscPosPrint;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -41,7 +51,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Semaphore;
 
 
 public class Cart extends AppCompatActivity implements PriceUpdateListener {
@@ -55,15 +64,12 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     private Toast toast;
-    public static Semaphore printDoneSemaphore;
     public static boolean errorFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
-        //printDoneSemaphore = new Semaphore(1);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("availability")
@@ -186,24 +192,22 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                     return;
                 }
 
-                /*try {
-                    //printDoneSemaphore.acquire();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setTitle("Printing Options");
+                alertDialogBuilder.setMessage("Choose preferred printing method.");
 
-                //printBluetooth();
+                alertDialogBuilder.setPositiveButton("Bluetooth", (dialogInterface, i) -> printBluetooth());
 
-                try {
-                    //printDoneSemaphore.acquire();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }*/
+                alertDialogBuilder.setNegativeButton("USB", (dialogInterface, i) -> printUsb());
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
 
                 if(errorFound) {
                     createToast("ERROR!");
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    new AlertDialog.Builder(this);
                     alertDialogBuilder.setTitle("Printing failed!");
                     alertDialogBuilder.setMessage("Would you like to try again or discard?");
 
@@ -218,9 +222,8 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
                         getOnBackPressedDispatcher().onBackPressed();
                     });
 
-                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialogBuilder.create();
                     alertDialog.show();
-                    //printDoneSemaphore.release();
                 }
                 else {
 
@@ -229,7 +232,6 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
                     Cart.cartList = new ArrayList<>();
                     generateNewOrderNumber();
-                    //printDoneSemaphore.release();
                 }
             }
             else
@@ -427,6 +429,65 @@ public class Cart extends AppCompatActivity implements PriceUpdateListener {
 
         System.out.println(textToPrint);
         return printer.addTextToPrint(textToPrint);
+    }
+
+    /*==============================================================================================
+    ===========================================USB PART=============================================
+    ==============================================================================================*/
+
+    private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+    private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (Cart.ACTION_USB_PERMISSION.equals(action)) {
+                synchronized (this) {
+                    UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+                    UsbDevice usbDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                        if (usbManager != null && usbDevice != null) {
+                            new AsyncUsbEscPosPrint(
+                                    context,
+                                    new AsyncEscPosPrint.OnPrintFinished() {
+                                        @Override
+                                        public void onError(AsyncEscPosPrinter asyncEscPosPrinter, int codeException) {
+                                            Log.e("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
+                                        }
+
+                                        @Override
+                                        public void onSuccess(AsyncEscPosPrinter asyncEscPosPrinter) {
+                                            Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : Print is finished !");
+                                        }
+                                    }
+                            )
+                                    .execute(getAsyncEscPosPrinter(new UsbConnection(usbManager, usbDevice)));
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    public void printUsb() {
+        UsbConnection usbConnection = UsbPrintersConnections.selectFirstConnected(this);
+        UsbManager usbManager = (UsbManager) this.getSystemService(Context.USB_SERVICE);
+
+        if (usbConnection == null || usbManager == null) {
+            new AlertDialog.Builder(this)
+                    .setTitle("USB Connection")
+                    .setMessage("No USB printer found.")
+                    .show();
+            return;
+        }
+
+        PendingIntent permissionIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                new Intent(Cart.ACTION_USB_PERMISSION),
+                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0
+        );
+        IntentFilter filter = new IntentFilter(Cart.ACTION_USB_PERMISSION);
+        registerReceiver(this.usbReceiver, filter);
+        usbManager.requestPermission(usbConnection.getDevice(), permissionIntent);
     }
 
     public void getCurrentOrderNumber() throws ExecutionException, InterruptedException {

@@ -34,6 +34,9 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
     protected WeakReference<Context> weakContext;
     protected OnPrintFinished onPrintFinished;
 
+    public AsyncEscPosPrint(Context context) {
+        this(context, null);
+    }
 
     public AsyncEscPosPrint(Context context, OnPrintFinished onPrintFinished) {
         this.weakContext = new WeakReference<>(context);
@@ -54,7 +57,6 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
 
             if(deviceConnection == null) {
                 Cart.errorFound = true;
-                Cart.printDoneSemaphore.release();
                 return new PrinterStatus(null, AsyncEscPosPrint.FINISH_NO_PRINTER);
             }
 
@@ -80,29 +82,24 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
         } catch (EscPosConnectionException e) {
             e.printStackTrace();
             Cart.errorFound = true;
-            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_PRINTER_DISCONNECTED);
         } catch (EscPosParserException e) {
             e.printStackTrace();
             Cart.errorFound = true;
-            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_PARSER_ERROR);
         } catch (EscPosEncodingException e) {
             e.printStackTrace();
             Cart.errorFound = true;
-            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_ENCODING_ERROR);
         } catch (EscPosBarcodeException e) {
             e.printStackTrace();
             Cart.errorFound = true;
-            Cart.printDoneSemaphore.release();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_BARCODE_ERROR);
         } catch (InterruptedException e) {
             e.printStackTrace();
             Cart.errorFound = true;
         }
         Cart.errorFound = false;
-        Cart.printDoneSemaphore.release();
         return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_SUCCESS);
     }
 
