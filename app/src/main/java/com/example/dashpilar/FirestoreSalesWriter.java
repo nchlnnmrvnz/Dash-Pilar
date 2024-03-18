@@ -29,11 +29,10 @@ public class FirestoreSalesWriter {
         order.put("date", dateFormat.format(Calendar.getInstance().getTime()));
         order.put("time", timeFormat.format(Calendar.getInstance().getTime()));
 
-        ArrayList<Object> itemNames = new ArrayList<>();
+        Map<String, Object> itemNames = new HashMap<>();
         for (ItemOrder item : cart) {
             if (item.getQuantity() > 0) {
                 Map<String, Object> itemAttributes = new HashMap<>();
-                itemAttributes.put("itemName", item.getName());
 
                 Map<String, Object> addOns = new HashMap<>();
                 if (item.getCheckedAddOns() != null) {
@@ -53,7 +52,7 @@ public class FirestoreSalesWriter {
                 if (item.getSugarLevel() != -1)
                     itemAttributes.put("sugarLevel", item.getSugarLevel());
 
-                itemNames.add(itemAttributes);
+                itemNames.put(item.getName(), itemAttributes);
             }
         }
         order.put("orderedItems", itemNames);

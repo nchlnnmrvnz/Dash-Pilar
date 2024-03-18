@@ -19,38 +19,6 @@ public class ItemOrder extends Item {
         this.setGetChosenDrink(null);
     }
 
-    @Override
-    public boolean equals(Object order) {
-        if (this == order)
-            return true;
-
-        if (order == null
-                || this.getClass() != order.getClass())
-            return false;
-
-        ItemOrder itemOrder = (ItemOrder) order;
-
-        if(!(itemOrder.getName().equals(this.getName()) && itemOrder.getPrice() == this.getPrice()))
-            return false;
-
-        if(itemOrder.getChosenDrink != null && this.getChosenDrink != null) {
-            return  itemOrder.getDescription().equals(this.getDescription()) &&
-                    itemOrder.getChosenDrink.equals(this.getChosenDrink) &&
-                    itemOrder.getSugarLevel() == this.getSugarLevel() &&
-                    itemOrder.getCheckedAddOns().equals(this.getCheckedAddOns());
-        }
-        else if (itemOrder.isSugarLevelSelectable() && this.isSugarLevelSelectable()){
-            return  itemOrder.getDescription().equals(this.getDescription()) &&
-                    itemOrder.getSugarLevel() == this.getSugarLevel() &&
-                    itemOrder.getCheckedAddOns().equals(this.getCheckedAddOns());
-        }
-        else {
-            return itemOrder.getName().equals(this.getName()) &&
-                    itemOrder.getPrice() == this.getPrice() &&
-                    itemOrder.getDescription().equals(this.getDescription());
-        }
-    }
-
     public String getChosenDrink() {
         return getChosenDrink;
     }
