@@ -122,6 +122,7 @@ public class MainOrderMenu extends AppCompatActivity {
         populateAvailableMenu("Fruiteas", filterUnavailableItems(Constants.fruiteasCollection));
         populateAvailableMenu("Food", filterUnavailableItems(Constants.foodCollection));
         populateAvailableMenu("Plain Combo", filterUnavailableItems(Constants.plainCroffleComboCollection));
+        populateAvailableMenu("Others", filterUnavailableItems(Constants.othersCollection));
         populateSoldOutMenu(Constants.allItemsCollection);
     }
 

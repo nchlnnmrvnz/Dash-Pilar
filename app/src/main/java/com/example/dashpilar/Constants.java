@@ -13,6 +13,7 @@ public class Constants {
     public static final ArrayList<Item> plainCroffleComboCollection = new ArrayList<>();
     public static final ArrayList<Item> limitedEditionCollection = new ArrayList<>();
     public static final ArrayList<Item> fruiteasCollection = new ArrayList<>();
+    public static final ArrayList<Item> othersCollection = new ArrayList<>();
     public static volatile ArrayList<AddOn> drinkAddOnsCollection = new ArrayList<>();
     public static final ArrayList<String> unavailableItems = new ArrayList<>();
 
@@ -178,6 +179,22 @@ public class Constants {
         fruiteasCollection.add(new Item("Strawberry", 39,
                 "A strawberry flavored fruit tea",
                 R.drawable.strawberry_fruit , true, drinkAddOnsCollection, null));
+        fruiteasCollection.add(new Item("Watermelon", 39,
+                "A watermelon flavored fruit tea",
+                R.drawable.strawberry_fruit, true, drinkAddOnsCollection, null));
+        fruiteasCollection.add(new Item("Honey Punch", 39,
+                "A honey flavored fruit tea",
+                R.drawable.mango, true, drinkAddOnsCollection, null));
+        fruiteasCollection.add(new Item("Lemon", 39,
+                "A lemon flavored fruit tea",
+                R.drawable.mango, true, drinkAddOnsCollection, null));
+        fruiteasCollection.add(new Item("Passion fruit", 39,
+                "A passion fruit flavored fruit tea",
+                R.drawable.strawberry_fruit, true, drinkAddOnsCollection, null));
+
+        othersCollection.add(new Item("Internet Voucher", 10,
+                "An internet voucher that can extend your internet access for 1 hour. The code is for one device's single use only. Your internet access cannot be paused and resumed once claimed via the network portal. For further assistance with this, please approach any of our staff personnel",
+                R.drawable.internet_voucher, false, null, null));
 
         allItemsCollection.addAll(coffeeCollection);
         allItemsCollection.addAll(milkteaCollection);
