@@ -140,7 +140,7 @@ public class Constants {
         foodCollection.add(new Item("Salted Caramel Croffle", 89.00f,
                 "A salted caramel drizzled croffle delicacy",
                 R.drawable.croffle, false, null, null));
-        foodCollection.add(new Item("Hopia", 89.00f,
+        foodCollection.add(new Item("Hopia", 10.00f,
                 "A Filipino bean-filled moon cake-like pastry delicacy",
                 R.drawable.hopia, false, null, null));
 
