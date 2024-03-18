@@ -193,7 +193,7 @@ public class Constants {
                 R.drawable.strawberry_fruit, true, drinkAddOnsCollection, null));
 
         othersCollection.add(new Item("Internet Voucher", 10,
-                "An internet voucher that can extend your internet access for 1 hour. The code is for one device's single use only. Your internet access cannot be paused and resumed once claimed via the network portal. For further assistance with this, please approach any of our staff personnel",
+                "A single-use internet voucher that can extend your device's internet access for 1 hour. For further assistance with this, please approach any of our staff personnel.",
                 R.drawable.internet_voucher, false, null, null));
 
         allItemsCollection.addAll(coffeeCollection);
